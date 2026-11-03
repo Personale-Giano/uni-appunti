@@ -111,7 +111,29 @@ def main():
     rec("OK" if not g.stdout.strip() else "ATTENZIONE", "git: modifiche non salvate", f"{len(g.stdout.splitlines())} file" if g.stdout.strip() else "tutto committato")
     g = subprocess.run(["git", "-C", str(UNI), "log", "origin/master..HEAD", "--oneline"], capture_output=True, text=True)
     rec("OK" if not g.stdout.strip() else "ATTENZIONE", "git: commit non inviati a GitHub", f"{len(g.stdout.splitlines())}" if g.stdout.strip() else "tutto inviato")
-    # 8. Moodle
+    # 8. convertitore delle bozze del sito: i casi che il 3 nov 2026 erano finiti sbagliati sul sito
+    try:
+        sys.path.insert(0, str(HERE))
+        from aggiungi_capitolo_sito import parti_da_testo
+        from migra_word import html_parti
+        casi = [
+            ("la tilde ~; e il punto", "la tilde ~; e il punto"),
+            ("Σ_{σ ∈ S_{n}} sgn(σ)", "Σ<sub>σ ∈ Sn</sub> sgn(σ)"),
+            ("5 \\* 3 e x^{2}", "5 * 3 e x<sup>2</sup>"),
+            ("`a ~b~ **c**` fine", "<code>a ~b~ **c**</code> fine"),
+            ('`printf("%d\\n", x)`', '<code>printf(&quot;%d\\n&quot;, x)</code>'),
+            ("un ~corsivo~ e **grassetto**", "un <em>corsivo</em> e <strong>grassetto</strong>"),
+        ]
+        sbagliati = [(s, html_parti(parti_da_testo(s)), atteso) for s, atteso in casi if html_parti(parti_da_testo(s)) != atteso]
+        rec("OK" if not sbagliati else "ERRORE", "convertitore bozze → sito",
+            f"{len(casi)} casi di prova superati" if not sbagliati else "; ".join(f"{s!r} → {o!r} (atteso {a!r})" for s, o, a in sbagliati))
+        from lint_bozza import controlla_contenuti
+        prob = [r for r in controlla_contenuti() if "[evidenziato" not in r]
+        rec("OK" if not prob else "ATTENZIONE", "controllo dei contenuti del sito",
+            "nessun problema fuori dalle evidenziazioni" if not prob else f"{len(prob)} problemi: python lint_bozza.py --contenuti")
+    except Exception as e:  # noqa: BLE001
+        rec("ERRORE", "convertitore bozze → sito", str(e))
+    # 9. Moodle
     rep = BASE / "moodle_report.md"
     rec("OK" if rep.exists() else "ATTENZIONE", "controllo Moodle eseguito almeno una volta", "report presente" if rep.exists() else "mai eseguito: premi Run now nell'attivita' pianificata")
 

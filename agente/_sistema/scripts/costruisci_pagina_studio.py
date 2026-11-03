@@ -31,13 +31,6 @@ WORD = {
     "Fondamenti Info": ["Riassunto Fondamenti Informatica.docx", "Fondamenti Info/Fondamenti Informatica.docx"],
     "Programmazione": ["Riassunto Programmazione.docx", "Programmazione/Riassunto Programmazione.docx"],
 }
-# Testi a mano (non deducibili dai file): lezioni coperte e note. I capitoli studiati si calcolano dalle evidenziazioni.
-LEZIONI = {
-    "Algebra lineare": "3 di 26 (L4 Polinomi pronta, in attesa dell'ok)",
-    "Matematica discreta": "5 fatte",
-    "Fondamenti Info": "cap. 1 del libro",
-    "Programmazione": "slide 00-02C, laboratorio Lab01",
-}
 # Date d'esame (AAAA-MM-GG), da compilare quando Moodle le pubblica; si possono anche inserire nella pagina.
 ESAMI = {}
 
@@ -87,8 +80,12 @@ COPERTURA_RX = {
     ("Matematica discreta", "Binario"): r"notazione binaria|scrittura in base|base 2",
     ("Algebra lineare", "Campi"): r"\bcamp[oi]\b", ("Algebra lineare", "Numeri complessi"): r"numeri complessi", ("Algebra lineare", "Coniugato e modulo"): r"coniugat",
     ("Algebra lineare", "Forma polare"): r"polare", ("Algebra lineare", "Potenze e radici"): r"radic[ei] n-esim|moivre|potenz", ("Algebra lineare", "Vettori"): r"vettor",
+    ("Algebra lineare", "Matrici"): r"prodotto fra matrici|\btraccia\b|trasposta", ("Algebra lineare", "Rango"): r"\brango\b|rk\(",
+    ("Algebra lineare", "Determinante"): r"determinant", ("Algebra lineare", "Matrice inversa"): r"invertibil|matrice inversa|cofattor",
+    ("Programmazione", "Funzioni e parametri"): r"passaggio per valore|parametr[oi] formal|prototip",
     ("Fondamenti Info", "Rappresentazione binaria"): r"binari|complemento a due|esadecimal", ("Fondamenti Info", "Circuiti e memoria"): r"flip-flop|\bram\b|memoria",
     ("Fondamenti Info", "Compressione ed errori"): r"compressione|hamming", ("Fondamenti Info", "Logica proposizionale"): r"tavol[ae] di verit|tautologi|contraddizion",
+    ("Fondamenti Info", "Logica avanzata"): r"quantificat|regol[ae] di inferenza|predicat",
     ("Fondamenti Info", "Automi e grammatiche"): r"\bautom[ai]\b|grammatic", ("Fondamenti Info", "Insiemi e relazioni"): r"relazion[ei] di equivalenza|prodotto cartesiano",
     ("Programmazione", "Algoritmi"): r"algoritm", ("Programmazione", "Assembly e macchina"): r"assembly", ("Programmazione", "Tipi e memoria"): r"memoria",
     ("Programmazione", "Variabili e assegnamento"): r"assegnament", ("Programmazione", "Operatori"): r"operator", ("Programmazione", "Puntatori"): r"puntator",
@@ -99,6 +96,97 @@ COPERTURA_RX = {
 def copertura(texts):
     """{(materia, tema): occorrenze nel Word}; i temi senza espressione (es. «Altro») non sono mai coperti."""
     return {k: len(re.findall(rx, texts.get(k[0], ""), re.I)) for k, rx in COPERTURA_RX.items()}
+
+
+def _intervalli(nums):
+    """[21, 22, 23, 26] -> 'cap. 21-23, 26'"""
+    parti, i = [], 0
+    while i < len(nums):
+        j = i
+        while j + 1 < len(nums) and nums[j + 1] == nums[j] + 1:
+            j += 1
+        parti.append(str(nums[i]) if i == j else f"{nums[i]}-{nums[j]}")
+        i = j + 1
+    return "cap. " + ", ".join(parti)
+
+
+def capitoli_per_tema():
+    """{materia: {tema: {"cap": "cap. 21-31", "n": primo capitolo}}}: dove i riassunti trattano ogni tema dei quiz
+    (almeno 2 occorrenze delle parole chiave di COPERTURA_RX nel capitolo). Serve ai suggerimenti «Rivedi» dopo un errore."""
+    out = {}
+    for mat, slug in SLUG.items():
+        f = SITO / "contenuti" / f"{slug}.json"
+        if not f.exists():
+            continue
+        caps = json.loads(f.read_text(encoding="utf-8"))["capitoli"]
+        testi = [(c["num"], c["titolo"] + "\n" + "\n".join(re.sub(r"<[^>]+>", "", b.get("h", "")) for b in c["blocks"])) for c in caps]
+        for (m, tema), rx in COPERTURA_RX.items():
+            if m != mat:
+                continue
+            conta = {n: len(re.findall(rx, t, re.I)) for n, t in testi if n}
+            mx = max(conta.values() or [0])
+            # solo i capitoli dove il tema è denso (almeno il 35% del capitolo che ne parla di più): niente citazioni di passaggio
+            nums = sorted(n for n, k in conta.items() if k >= max(2, 0.35 * mx))
+            if nums:
+                out.setdefault(mat, {})[tema] = {"cap": _intervalli(nums), "n": max(nums, key=lambda n: conta[n])}
+    return out
+
+
+# Schede generate dai riassunti: una per ogni Definizione/Teorema/Proposizione dei capitoli che non hanno già schede scritte a mano
+# (le schede in _sistema/flashcard arrivano fino a questi capitoli esclusi). L'id è quello del blocco: i progressi restano stabili.
+SCHEDE_AUTO_DA = {"Algebra lineare": 10, "Matematica discreta": 21, "Fondamenti Info": 12, "Programmazione": 9}
+# etichetta vera («Definizione.», «Teorema (Binet):», «Definizione Formale:»), non la voce di un elenco («Definizione (function definition)…»)
+_ETICHETTA = re.compile(r"^\s*<strong>\s*(Definizione|Teorema|Proposizione|Lemma|Corollario)\b(?:\s+formale)?(?:\s*\([^)<]{1,40}\))?\s*(?:[.:]\s*</strong>|</strong>\s*[.:])\s*", re.I)
+_SUP = str.maketrans("0123456789+-−n", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁻ⁿ")
+_SUB = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+
+
+def _testo_scheda(h):
+    import html as _h
+    h = re.sub(r"<sup>([^<]*)</sup>", lambda m: m.group(1).translate(_SUP) if all(c in "0123456789+-−n" for c in m.group(1)) else "^(" + m.group(1) + ")", h)
+    h = re.sub(r"<sub>([^<]*)</sub>", lambda m: m.group(1).translate(_SUB) if m.group(1).isdigit() else "_" + m.group(1), h)
+    h = re.sub(r"</?strong>", "**", h)
+    h = re.sub(r"</?code>", "`", h)
+    return _h.unescape(re.sub(r"<[^>]+>", "", h)).strip()
+
+
+def schede_dai_riassunti():
+    out = []
+    for mat, slug in SLUG.items():
+        f = SITO / "contenuti" / f"{slug}.json"
+        if not f.exists():
+            continue
+        for c in json.loads(f.read_text(encoding="utf-8"))["capitoli"]:
+            if not c["num"] or c["num"] < SCHEDE_AUTO_DA.get(mat, 10 ** 6):
+                continue
+            titolo = re.sub(r"^\s*(?:Capitolo\s+)?\d+\s*[.:]?\s*", "", c["titolo"])
+            sezione, blocchi = titolo, c["blocks"]
+            for i, b in enumerate(blocchi):
+                if b["t"] == "h3":
+                    sezione = _testo_scheda(b["h"]).replace("**", "")
+                    continue
+                m = _ETICHETTA.match(b.get("h", "")) if b["t"] in ("p", "li") else None
+                if not m:
+                    continue
+                tipo = m.group(1).capitalize()
+                # la risposta è il blocco più i seguiti (formula, elenco delle condizioni, «In parole povere»), fino alla prossima sezione
+                risposta = [_testo_scheda(b["h"][m.end():])]
+                for nb in blocchi[i + 1:i + 6]:
+                    if nb["t"] == "h3" or (nb["t"] in ("p", "li") and _ETICHETTA.match(nb.get("h", ""))) or "h" not in nb:
+                        break
+                    t = _testo_scheda(nb["h"])
+                    risposta.append(("In parole povere: " + t) if nb.get("c") == "pp" else (("- " + t) if nb["t"] == "li" else t))
+                    if nb.get("c") == "pp":
+                        break
+                termine = re.search(r"\*\*([^*]{2,60})\*\*", risposta[0])
+                if tipo == "Definizione" and termine:
+                    domanda = f"Definizione: che cos'è {termine.group(1).strip()}? (cap. {c['num']}, {sezione})"
+                else:
+                    domanda = f"{tipo} del cap. {c['num']} «{titolo}», sezione «{sezione}»: enunciala."
+                r = "\n".join(x for x in risposta if x)
+                out.append(dict(id="riass-" + b["b"].replace(".", "-") + "-" + slug[:4], m=mat, t=f"Cap. {c['num']} · {sezione}",
+                                d=domanda, r=r, lungo=len(r) > 400, da_quiz=False, auto=True))
+    return out
 
 
 def parse_quizzes():
@@ -257,7 +345,7 @@ def avanzamento():
         else:
             p = find_word(mat)
             if p is None:
-                out[mat] = dict(capitoli=0, studiati=0, lezioni=LEZIONI[mat], prossimo="Riassunto non trovato.", elenco=[])
+                out[mat] = dict(capitoli=0, studiati=0, lezioni="nessun capitolo", prossimo="Riassunto non trovato.", elenco=[])
                 continue
             res, text = chapters(p)
             texts[mat] = text
@@ -276,7 +364,7 @@ def avanzamento():
                     a = l[i + 1] if i + 1 < len(l) else None
             return ", ".join(parts)
         nota = f"Studiati: {rng(done)}." + (f" In parte: {rng(part)}." if part else "") + (f" Da studiare: {rng(todo)}." if todo else " Tutto studiato.")
-        out[mat] = dict(capitoli=len(res), studiati=len(done), lezioni=LEZIONI[mat], prossimo=nota,
+        out[mat] = dict(capitoli=len(res), studiati=len(done), lezioni=f"{len(res)} capitoli (ultimo: {res[-1][0]}. {res[-1][1]})" if res else "nessun capitolo", prossimo=nota,
                         elenco=[dict(n=n, t=t, s=s, hl=hl, tot=tot) for n, t, s, hl, tot in res])
     lab = capitoli_sito("laboratorio", evid, man_sito)   # il laboratorio fa parte di ciò che è stato trattato per Programmazione
     if lab is not None and "Programmazione" in texts:
@@ -289,10 +377,20 @@ def avanzamento():
 
 
 def piano():
+    """La sezione «## Oggi» del piano serale, solo se il piano è di ieri o di oggi: un piano vecchio (attività ferma)
+    mostrerebbe consigli superati, come è successo dal 16 ott al 3 nov 2026."""
     p = BASE / "piano_oggi.md"
     if not p.exists():
         return ""
     t = p.read_text(encoding="utf-8")
+    d = re.search(r"\d{4}-\d{2}-\d{2}", t.splitlines()[0] if t else "")
+    try:
+        vecchio = (date.today() - date.fromisoformat(d.group(0))).days > 1 if d else True
+    except ValueError:
+        vecchio = True
+    if vecchio:
+        print(f"  piano_oggi.md è del {d.group(0) if d else '?'}: non lo mostro nel Quaderno")
+        return ""
     m = re.search(r"(?ms)^## Oggi.*?\n(.*?)(?=^## Da tenere|\Z)", t)
     return m.group(1).strip() if m else ""
 
@@ -325,6 +423,9 @@ def main():
         q["theme"] = next((t for t in PRIORITA if any(TAG_TEMA.get(x) == t for x in q["args"])), TAG_TEMA.get(q["args"][0], "Altro") if q["args"] else "Altro")
     from quiz_banche import tutte
     quiz, probs, cards = tutte(mate), parse_problems(), parse_all_cards()
+    auto = schede_dai_riassunti()
+    cards += auto
+    print(f"  schede dai riassunti (definizioni e proposizioni): {len(auto)}")
     avanz, texts = avanzamento()
     cop = copertura(texts)
     visibili, nascoste = [], {}
@@ -359,7 +460,7 @@ def main():
     mx = max(pesi.values()) or 1
     pesi = {k: round(v / mx, 3) for k, v in pesi.items()}
     data = dict(oggi=str(date.today()), quiz=quiz, problemi=probs, cards=cards, materie=avanz, freq=freq,
-                tagTema=TAG_TEMA, priorita=PRIORITA, temi=TEMI, pesi=pesi, piano=piano(), esami=ESAMI, nascoste=nascoste, coperti=coperti)
+                tagTema=TAG_TEMA, priorita=PRIORITA, temi=TEMI, temiCap=capitoli_per_tema(), pesi=pesi, piano=piano(), esami=ESAMI, nascoste=nascoste, coperti=coperti)
     (PAG / "data.json").write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     head = (PAG / "template.html").read_text(encoding="utf-8").split('<div class="app">')[0]

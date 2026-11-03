@@ -21,21 +21,43 @@ OUT = BASE / "trascrizioni"
 EXT = {".m4a", ".mp3", ".wav", ".mp4", ".ogg", ".flac"}
 
 # Termini del corso: aiutano Whisper a scrivere correttamente il lessico tecnico.
-PROMPT = (
-    "Lezione universitaria di informatica in italiano: algebra lineare, numeri complessi, "
-    "spazi vettoriali, matematica discreta, insiemi, relazioni di equivalenza, induzione, "
-    "fondamenti dell'informatica, bit, complemento a due, virgola mobile, programmazione in C, "
-    "variabili, stack, CPU, memoria."
-)
+# Il prompt iniziale vale solo per la prima finestra di 30 s (con condition_on_previous_text=False faster-whisper
+# lo azzera) ed è limitato a ~224 token: per questo i termini della materia vanno anche in `hotwords`,
+# che faster-whisper (>= 1.0) ripete in ogni finestra.
+PROMPT = "Lezione universitaria di {materia} in italiano, corso di laurea in Informatica."
+# prefisso del nome del file audio -> (nome della materia, sezione di glossario.txt)
+MATERIE = {
+    "algebra": ("algebra lineare e geometria", "# Algebra e Geometria"),
+    "mate": ("matematica discreta", "# Matematica discreta"),
+    "fondamenti": ("fondamenti dell'informatica", "# Fondamenti dell'informatica"),
+    "prog": ("programmazione in C", "# Programmazione"),
+    "lab": ("programmazione in C, laboratorio", "# Programmazione"),
+}
+MAX_HOTWORDS = 60
 
 
-def load_glossary() -> str:
-    """Aggiunge al prompt i termini di `glossario.txt` (uno per riga), cosi' Whisper li scrive bene."""
+def glossario() -> dict:
+    """Sezioni di `glossario.txt` -> elenco dei termini."""
     g = BASE / "glossario.txt"
-    if not g.exists():
-        return PROMPT
-    terms = [l.strip() for l in g.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")]
-    return PROMPT + " Termini: " + ", ".join(terms[:150]) + "."
+    sez, cur = {}, None
+    if g.exists():
+        for riga in g.read_text(encoding="utf-8").splitlines():
+            if riga.startswith("# "):
+                cur = riga.strip(); sez.setdefault(cur, []); continue
+            if cur and riga.strip():
+                sez[cur] += [t.strip() for t in riga.split(",") if t.strip()]
+    return sez
+
+
+def suggerimenti(src: Path) -> tuple:
+    """(initial_prompt, hotwords) per la materia del file, riconosciuta dal prefisso del nome."""
+    chiave = next((k for k in MATERIE if src.stem.lower().startswith(k)), None)
+    if not chiave:
+        return PROMPT.format(materia="informatica"), None
+    nome, sezione = MATERIE[chiave]
+    termini = glossario().get(sezione, [])
+    # i termini aggiunti per ultimi (lezioni recenti) contano di più: si tengono quelli in coda
+    return PROMPT.format(materia=nome), ", ".join(termini[-MAX_HOTWORDS:]) or None
 
 
 def fmt(sec: float) -> str:
@@ -47,6 +69,7 @@ def transcribe(model: WhisperModel, src: Path, fast: bool = False) -> None:
     dst = OUT / (src.stem + ".txt")
     tmp = dst.with_suffix(".part")
     t0 = time.time()
+    prompt, hotwords = suggerimenti(src)
     segments, info = model.transcribe(
         str(src),
         language="it",
@@ -54,7 +77,8 @@ def transcribe(model: WhisperModel, src: Path, fast: bool = False) -> None:
         beam_size=1 if fast else 5,
         # fast: niente "temperature fallback" (ripetizioni della decodifica sui tratti rumorosi, che possono bloccare per ore)
         temperature=0.0 if fast else [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
-        initial_prompt=load_glossary(),
+        initial_prompt=prompt,
+        hotwords=hotwords,
         condition_on_previous_text=False,
     )
     print(f"{src.name}: durata {fmt(info.duration)}", flush=True)
@@ -100,6 +124,9 @@ def main() -> None:
             print(f"manca: {p}", file=sys.stderr)
             continue
         transcribe(model, p, fast=args.fast)
+    # frasi "da esame / attenzione / errore" con timestamp, per i capitoli (prima girava solo a mano)
+    import subprocess
+    subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "frasi_docente.py")], check=False)
 
 
 if __name__ == "__main__":

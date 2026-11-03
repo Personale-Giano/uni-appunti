@@ -27,9 +27,12 @@ Leggi `CLAUDE.md`, `_sistema/esami/MAPPA_ESAMI.md` e `_sistema/errori.md`. Scopo
 - Non inventare domande a mano se esiste il generatore: le risposte devono essere verificate.
 - Se Emanuele chiede un argomento non ancora fatto a lezione (es. gruppi), dillo ma procedi: serve come anteprima.
 
+## Algebra lineare e Programmazione: `/esame algebra|programmazione [argomento]`
+Banche: `_sistema/esami/banca_algebra.md` e `banca_programmazione.md` (domande a scelta multipla con RISPOSTA e SPIEGAZIONE) più gli esercizi generati e verificati del Quaderno (`_sistema/pagina_studio/gen.js`: determinanti, matrici, «cosa stampa?» in C). Stesse regole: mostra solo testo e opzioni, correggi spiegando, registra gli errori in `_sistema/errori.md`, indica il capitolo del riassunto da rivedere. Per Programmazione l'esame vero è al PC (Moodle, gcc -Wall -Werror): proponi anche un esercizio da scrivere e compilare.
+
 ## Fondamenti dell'Informatica: `/esame fondamenti [argomento]`
 Banca: `_sistema/esami/fondamenti_quiz.md` (269 domande dei quiz del sito esami, con RISPOSTA e SPIEGAZIONE; tipi misti: scelta multipla, vero/falso, abbinamenti, numeriche, a risposta breve) e `_sistema/esami/FONDAMENTI_MAPPA.md` (domande per gruppo di lezioni). Formato dell'esame vero: **9 quiz a risposta chiusa da 3 punti in 45 minuti**, servono almeno 18 punti; poi domanda aperta facoltativa (solo con almeno 24).
 - Pesca 9 domande (modalità esame) o N su un argomento (`argomenti:` nel titolo di ogni domanda), mescolando i tipi come nell'esame; mostra solo testo e opzioni, mai RISPOSTA/SPIEGAZIONE.
 - Correggi con 3 punti a risposta (abbinamenti: parziale per voci giuste), spiega con il campo SPIEGAZIONE e, se manca, ricalcolando tu; registra gli errori in `_sistema/errori.md` come per Mate discreta.
-- Le domande di logica (lezioni 7-35) non sono ancora nel Word di Fondamenti: dopo ogni quiz suggerisci quali capitoli scrivere con `/riassunto`.
+- Logica proposizionale, inferenza e quantificatori (anche annidati) sono nei cap. 12-27 del riassunto di Fondamenti; dopo ogni quiz indica il capitolo da rivedere (link `https://quaderno-privato.vercel.app/riassunti/fondamenti.html#cap<N>`). Argomenti dopo le lezioni 13 (prove, induzione, Boole, automi): non ancora nei riassunti.
 - I quiz si possono rifare sul sito (voto più alto): per aggiungere altre domande servirebbe di nuovo l'autorizzazione di Emanuele a eseguire tentativi.

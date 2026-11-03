@@ -12,18 +12,67 @@ try {
 } catch (e) {}
 fixS();
 let SERVER = false, saveT = null;
+const ONLINE = !/^(127\.0\.0\.1|localhost)$/.test(location.hostname); // sito su Vercel (con login) o Quaderno locale (serve.py)
+/* Sincronizzazione con il server. SYNC è l'ultimo stato concordato: a ogni salvataggio si mandano anche gli id
+   cambiati da allora (dirty) e il ts di SYNC (base). Se nel frattempo un altro dispositivo ha salvato, il server
+   unisce i due stati invece di sovrascrivere (prima il telefono rimasto aperto cancellava il lavoro fatto sul PC). */
+const SEZ = ['qs', 'cards', 'probs', 'th', 'exams'];
+let SYNC = null;
+const clone = o => JSON.parse(JSON.stringify(o));
+const keepLocal = () => { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) {} };
+function dirtyIds() {
+  const d = {};
+  for (const k of SEZ) {
+    const a = S[k] || {}, b = (SYNC && SYNC[k]) || {};
+    const ids = Object.keys(a).filter(i => JSON.stringify(a[i]) !== JSON.stringify(b[i])).concat(Object.keys(b).filter(i => !(i in a)));
+    if (ids.length) d[k] = ids;
+  }
+  return d;
+}
+function adoptServer(x) { // stato del server dentro S, senza perdere ciò che è cambiato qui dopo l'ultima sincronizzazione
+  const mine = dirtyIds(), loc = S;
+  S = Object.assign(newState(), clone(x)); fixS();
+  for (const k of Object.keys(mine)) for (const id of mine[k]) { if (id in (loc[k] || {})) S[k][id] = loc[k][id]; else delete S[k][id]; }
+  const seen = new Set(S.hist.map(h => JSON.stringify(h)));
+  (loc.hist || []).forEach(h => { if (!seen.has(JSON.stringify(h))) S.hist.push(h); });
+  S.days = Array.from(new Set(S.days.concat(loc.days || []))).sort();
+  for (const [g, n] of Object.entries(loc.act || {})) S.act[g] = Math.max(S.act[g] || 0, n);
+  SYNC = clone(x); keepLocal();
+  return Object.keys(mine).length > 0;
+}
+function push(atExit) {
+  const body = JSON.stringify({ stato: S, base: SYNC ? (SYNC.ts || 0) : 0, dirty: dirtyIds() });
+  const sent = clone(S);
+  return fetch('api/stato', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: !!atExit && body.length < 60000 })
+    .then(r => r.ok ? r.json() : null)
+    .then(j => {
+      if (!j) return;
+      if (j.stato) { if (adoptServer(j.stato)) save(); return; }
+      SYNC = sent;
+      if (j.ts) { SYNC.ts = j.ts; if (S.ts === sent.ts) { S.ts = j.ts; keepLocal(); } }
+    })
+    .catch(() => {});
+}
 const save = () => {
   S.ts = Date.now();
-  try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) {}
-  if (SERVER) { clearTimeout(saveT); saveT = setTimeout(() => fetch('api/stato', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(S) }).catch(() => {}), 400); }
+  keepLocal();
+  if (SERVER) { clearTimeout(saveT); saveT = setTimeout(() => { saveT = null; push(false); }, 400); }
 };
-async function loadServerState() { // se la pagina è servita da serve.py, i progressi stanno anche in _sistema/progressi.json
+async function loadServerState() { // online: progressi dell'account; in locale (serve.py) anche in _sistema/progressi.json
   try {
     const r = await fetch('api/stato'); if (!r.ok) return; SERVER = true; const x = await r.json();
-    if (x && x.v === 2 && (x.ts || 0) > (S.ts || 0)) { S = Object.assign(newState(), x); fixS(); try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) {} }
-    else if (S.ts) save();
+    if (x && x.v === 2 && (x.ts || 0) > (S.ts || 0)) { S = Object.assign(newState(), x); fixS(); keepLocal(); SYNC = clone(x); }
+    else { SYNC = x && x.v === 2 ? clone(x) : null; if (S.ts) save(); }
   } catch (e) {}
 }
+// tornando sull'app (telefono, altra scheda) si riprendono le novità degli altri dispositivi; uscendo si salva subito
+document.addEventListener('visibilitychange', () => {
+  if (!SERVER) return;
+  if (document.visibilityState === 'hidden') { if (saveT) { clearTimeout(saveT); saveT = null; push(true); } return; }
+  fetch('api/stato').then(r => r.ok ? r.json() : null).then(x => {
+    if (x && x.v === 2 && (x.ts || 0) > ((SYNC && SYNC.ts) || 0)) { if (adoptServer(x)) save(); if (typeof refreshAfterSync === 'function') refreshAfterSync(); }
+  }).catch(() => {});
+});
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -186,11 +235,13 @@ function capInterval(days, mat) { // a ridosso dell'esame gli intervalli si acco
   return Math.max(1, Math.min(days, Math.floor(left / 3)));
 }
 function bumpTheme(theme, ok) { S.th[theme] = Math.max(0, (S.th[theme] || 0) + (ok ? -0.5 : 1)); }
-function chapterHint(theme, mat) {
-  if (mat && mat !== 'Matematica discreta') return '';
-  const t = DATA.temi[theme];
-  if (!t) return '';
-  return t.capitoli ? `<p class="hint">Rivedi: Matematica discreta, ${esc(t.capitoli)} del riassunto.</p>` : '<p class="hint">Tema non ancora nei riassunti: arriva con le prossime lezioni.</p>';
+function chapterHint(theme, mat) { // dove ripassare il tema: capitoli calcolati dalla build sui riassunti (temiCap)
+  const m = mat || 'Matematica discreta';
+  const t = ((DATA.temiCap || {})[m] || {})[theme];
+  if (!t) return (m === 'Matematica discreta' && DATA.temi[theme]) ? '<p class="hint">Tema non ancora nei riassunti: arriva con le prossime lezioni.</p>' : '';
+  const slug = typeof RSLUG !== 'undefined' ? RSLUG[m] : '';
+  const link = slug ? ` <a href="riassunti/${slug}.html#cap${t.n}">Apri il cap. ${t.n} &rarr;</a>` : '';
+  return `<p class="hint">Rivedi: ${esc(m)}, ${esc(t.cap)} del riassunto.${link}</p>`;
 }
 const subjIdx = m => Math.max(0, Object.keys(DATA.materie).indexOf(m));
 
@@ -691,7 +742,7 @@ document.addEventListener('keydown', e => {
 function boot(d) {
   DATA = d;
   $('#agg').textContent = itDate(DATA.oggi);
-  if (SERVER) { const m = $('#xfer-p'); if (m) m.textContent = 'I progressi sono salvati anche nel file progressi.json del computer, quindi restano cambiando browser. Qui puoi comunque copiarli a mano.'; }
+  if (SERVER) { const m = $('#xfer-p'); if (m) m.textContent = ONLINE ? 'I progressi sono salvati nel tuo account, quindi li ritrovi su ogni dispositivo. Qui puoi comunque copiarli a mano.' : 'I progressi sono salvati anche nel file progressi.json del computer, quindi restano cambiando browser. Qui puoi comunque copiarli a mano.'; }
   DATA.quiz.forEach(q => { if (!q.theme) q.theme = themeOf(q.args); });
   DATA.problemi.forEach(p => { p.theme = themeOf(p.args); });
   $('#skel').hidden = true; $('#bento').hidden = false;
@@ -702,7 +753,7 @@ function boot(d) {
 $('#load-retry').addEventListener('click', () => location.reload());
 loadServerState().then(() => fetch('data.json')).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(boot).catch(err => {
   $('#skel').hidden = true; TABS.forEach(t => { $('#tab-' + t).hidden = true; });
-  const e = $('#load-err'); e.hidden = false; $('#load-err-t').textContent = 'Non riesco a caricare i dati (' + err.message + '). Ricarica la pagina; se resta così, controlla che il sito sia acceso (apri_quaderno.bat).';
+  const e = $('#load-err'); e.hidden = false; $('#load-err-t').textContent = 'Non riesco a caricare i dati (' + err.message + '). Ricarica la pagina; ' + (ONLINE ? 'se resta così, esci e rientra (la sessione potrebbe essere scaduta).' : 'se resta così, controlla che il sito sia acceso (apri_quaderno.bat).');
 });
 
 $('#reset-btn').addEventListener('click', () => {

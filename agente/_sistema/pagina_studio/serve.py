@@ -74,6 +74,8 @@ def make_handler(port):
                 return self._send(413, b"dimensione non valida")
             try:
                 x = json.loads(self.rfile.read(n))
+                if isinstance(x, dict) and isinstance(x.get("stato"), dict):   # formato nuovo {stato, base, dirty}: in locale c'è un solo dispositivo
+                    x = x["stato"]
                 if not isinstance(x, dict) or x.get("v") != 2:
                     raise ValueError
             except Exception:
@@ -81,7 +83,7 @@ def make_handler(port):
             tmp = STATO.with_suffix(".tmp")
             tmp.write_text(json.dumps(x, ensure_ascii=False), encoding="utf-8")
             tmp.replace(STATO)
-            self._send(200, b"ok")
+            self._send(200, b'{"ok":true}')
 
     return H
 

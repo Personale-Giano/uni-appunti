@@ -7,7 +7,7 @@ La logica proposizionale studia il modo più semplice di combinare affermazioni.
 
 Una proposizione è dunque una frase che è vera oppure falsa, ma non entrambe. Il libro la dimostra con una serie di frasi da classificare:
 - "I soli interi positivi che dividono 7 sono 1 e 7": è **vera**, e si verifica provando che 2, 3, 4, 5 e 6 non dividono 7 (è un altro modo di dire che 7 è primo);
-- "Alfred Hitchcock ha vinto l'Oscar per la regia nel 1940 con *Rebecca*": è **falsa**; si controlla su un archivio o chiedendolo a internet, ed è *Rebecca* ad aver vinto l'Oscar come miglior film, mentre per la regia vinse un altro regista;
+- "Alfred Hitchcock ha vinto l'Oscar per la regia nel 1940 con ~Rebecca~": è **falsa**; si controlla su un archivio o chiedendolo a internet, ed è ~Rebecca~ ad aver vinto l'Oscar come miglior film, mentre per la regia vinse un altro regista;
 - "Per ogni intero positivo n esiste un numero primo più grande di n": è **vera**, ed è il teorema di Euclide (i numeri primi sono infiniti): un'affermazione complessa che per la logica proposizionale ha comunque un valore di verità;
 - "La Terra è l'unico pianeta dell'universo che contiene vita": non sappiamo se è vera o falsa e magari non lo sapremo mai, ma ha **un valore di verità** anche se ignoto. La logica proposizionale copre anche questi casi, in cui si suppone soltanto che il valore esista.
 
@@ -21,7 +21,7 @@ Non tutte le frasi sono proposizioni. Il linguaggio contiene anche:
 Per indicare le proposizioni si usano variabili come p, q e r, un po' come in algebra si usano le lettere per i numeri. Si può anche **definire** una variabile con una proposizione, scrivendo per esempio `p: 1 + 1 = 3`, cioè "p è la proposizione 1 + 1 = 3" (che è falsa).
 
 ## Perché si parla di valori booleani
-I valori di verità si chiamano anche **valori booleani**, dal nome di George Boole, il primo a trattare la logica proposizionale in modo scientifico: la logica proposizionale esisteva da mille anni, ma fino ad allora era una parte della filosofia. Per un informatico le affermazioni composte con i connettivi sono il primo compito da affidare ai **circuiti** (visti nelle prime settimane del corso, capitoli 1 e 5 di questo Word): una formula di logica proposizionale si può realizzare con un circuito, ma anche scrivere e studiare su carta.
+I valori di verità si chiamano anche **valori booleani**, dal nome di George Boole, il primo a trattare la logica proposizionale in modo scientifico: la logica proposizionale esisteva da mille anni, ma fino ad allora era una parte della filosofia. Per un informatico le affermazioni composte con i connettivi sono il primo compito da affidare ai **circuiti** (visti nelle prime settimane del corso, capitoli 1 e 5 di questo riassunto): una formula di logica proposizionale si può realizzare con un circuito, ma anche scrivere e studiare su carta.
 
 La logica proposizionale si usa di fatto, anche senza dirlo, in tutte le dimostrazioni di matematica. Come ha sottolineato il docente, qui l'interesse è la base per il ragionamento automatico: si studieranno affermazioni più semplici di quelle di un corso di matematica, ma con più dettaglio, perché poi bisogna spiegare alle macchine come ragionare.
 

@@ -353,6 +353,7 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
 .q-slide { display: grid; gap: 18px; animation: slideIn .38s var(--ease) both; }
 .q-text { font-size: 1.22rem; line-height: 1.5; font-weight: 500; max-width: 68ch; overflow-wrap: break-word; }
 .q-text p { margin-bottom: 8px; } .q-text ul { margin: 6px 0; padding-left: 22px; }
+.q-text p:has(> code:only-child) { margin-bottom: 2px; } /* righe di codice dei «Che cosa stampa?»: vicine come in un editor */
 .opts { display: grid; gap: 10px; }
 .opt { text-align: left; appearance: none; background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 16px 12px 12px; font: 500 1.05rem/1.4 var(--font-body); cursor: pointer; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; align-items: center; min-height: 58px; overflow-wrap: break-word; transition: border-color .18s, background-color .25s, transform .14s var(--ease), box-shadow .2s, opacity .3s; }
 .opt .n { width: 34px; height: 34px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); display: grid; place-items: center; font: 600 .9rem var(--font-mono); color: var(--muted); transition: background-color .25s, color .25s, border-color .25s; }

@@ -493,7 +493,19 @@ def figura_html(b):
     if b.get("w"):
         stile = f' style="width:{b["w"]}px' + (f';aspect-ratio:{b["cx"]}/{b["cy"]}' if b.get("cy") else "") + '"'
     cap = f'<figcaption>{html.escape(b["cap"])}</figcaption>' if b.get("cap") else ""
-    return f'<figure><img src="img/{b["src"]}" loading="lazy" alt="Figura"{stile}>{cap}</figure>'
+    # testo alternativo: la didascalia (chi usa un lettore di schermo sente cosa mostra la figura)
+    alt = html.escape(b["cap"], quote=True) if b.get("cap") else "Figura"
+    return f'<figure><img src="img/{b["src"]}" loading="lazy" alt="{alt}"{stile}>{cap}</figure>'
+
+
+# L'HTML dei blocchi viene inserito così com'è: solo questi tag, senza attributi (niente script, on*, link esterni).
+TAG_AMMESSI = {"strong", "em", "sub", "sup", "code", "br", "table", "tbody", "thead", "tr", "td", "th"}
+
+
+def controlla_html(b):
+    for nome, attr in re.findall(r"<\s*/?\s*([a-zA-Z0-9]+)([^>]*)>", b.get("h", "")):
+        if nome.lower() not in TAG_AMMESSI or attr.strip().strip("/"):
+            sys.exit(f"HTML non ammesso nel blocco {b.get('b')}: <{nome}{attr}> (ammessi: {', '.join(sorted(TAG_AMMESSI))}, senza attributi)")
 
 
 def render_blocchi(blocchi):
@@ -506,6 +518,7 @@ def render_blocchi(blocchi):
 
     for b in blocchi:
         t = b["t"]
+        controlla_html(b)
         if t == "li":
             il, kind = b.get("l", 0), b.get("k", "ul")
             while lista and lista[-1][1] > il:
@@ -565,7 +578,10 @@ def main(argv):
             cp["min"] = max(1, round(sum(len(x.split()) for x in testi) / 190))
             cp["tot"] = sum(1 for b in cp["blocks"] if b["t"] in ("p", "li", "pre"))
         tot_min = sum(cp["min"] for cp in caps)
-        meta[slug] = {"nome": nome, "capitoli": [{"id": cp["id"], "num": cp["num"], "titolo": cp["titolo"], "min": cp["min"], "tot": cp["tot"]} for cp in caps]}
+        # "b": id dei blocchi di testo che esistono ancora: l'avanzamento online conta solo le evidenziazioni su questi
+        # (stessa regola di capitoli_sito() nella build: un blocco tolto non deve più contare come studiato)
+        meta[slug] = {"nome": nome, "capitoli": [{"id": cp["id"], "num": cp["num"], "titolo": cp["titolo"], "min": cp["min"], "tot": cp["tot"],
+                                                  "b": [b["b"] for b in cp["blocks"] if b["t"] in ("p", "li", "pre")]} for cp in caps]}
         voci, quadr = [], []
         for i, cp in enumerate(caps):
             n = cp["num"]

@@ -18,11 +18,13 @@ ABS = AGENTE.as_posix()          # es. C:/Users/admin/Desktop/UNI/agente
 
 
 def absolutize(text: str) -> str:
-    text = re.sub(r"(?<![\w/\\.])_sistema/", f"{ABS}/_sistema/", text)
-    text = re.sub(r"(?<![\w/\\.`])(?<![/\\])\b(CLAUDE|STILE|STATO)\.md\b", rf"{ABS}/\1.md", text)
-    text = text.replace("`CLAUDE.md`", f"`{ABS}/CLAUDE.md`")
-    text = text.replace("`STILE.md`", f"`{ABS}/STILE.md`").replace("`STATO.md`", f"`{ABS}/STATO.md`")
+    text = re.sub(r"(?<![\w/\\.])_sistema[/\\]", f"{ABS}/_sistema/", text)   # anche _sistema\scripts\...
+    text = re.sub(r"(?<![\w/\\.`])(?<![/\\])\b(CLAUDE|STILE|STATO|COPERTURA)\.md\b", rf"{ABS}/\1.md", text)
+    for nome in ("CLAUDE", "STILE", "STATO", "COPERTURA"):
+        text = text.replace(f"`{nome}.md`", f"`{ABS}/{nome}.md`")
     text = text.replace("python _sistema", f"python {ABS}/_sistema")
+    # il repo del sito citato per nome: percorso completo
+    text = re.sub(r"(?<![\w/\\])quaderno-privato/contenuti", "C:/Users/admin/Documents/GitHub/quaderno-privato/contenuti", text)
     return text
 
 

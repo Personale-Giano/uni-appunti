@@ -14,4 +14,4 @@ Corsi (id): Mate discreta P1 = 3829, Algebra P2 = 3831, Fondamenti B = 3747, Pro
 2. Confronta con quello che c'è già in `_sistema/fonti/<materia>/` e con `STATO.md`. Riassumi a Emanuele **solo le novità**: file nuovi (nome, dimensione via HEAD), annunci (date esame, cambi aula/orario), registrazioni Webex nuove.
 3. **Scaricare file richiede il suo ok esplicito** (nome, fonte, dimensione). Dopo l'ok: avvia il download dal browser (anchor con `download`), poi sposta il file da `C:\Users\admin\Downloads` a `_sistema/fonti/<materia>/` con il nome `L<n>_...` o `slide_...`.
 4. Webex: le registrazioni si aprono senza password; il pulsante di download è l'icona accanto al titolo. Sono MP4 grandi: chiedi sempre prima.
-5. Aggiorna `STATO.md` e, per audio/video scaricati, proponi `/trascrivi`.
+5. Aggiorna l'elenco «Da riassumere» di `STATO.md` (lezioni nuove con le loro fonti) e, per audio/video scaricati, proponi `/trascrivi`.

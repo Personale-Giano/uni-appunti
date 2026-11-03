@@ -32,12 +32,9 @@ Per stampare un numero reale con printf si usano tre specificatori di conversion
 Come per gli interi, dove `%6d` fissa la larghezza minima del campo (capitolo 8), anche qui si può controllare la formattazione: scrivendo un punto e un numero tra il simbolo % e la lettera, come in `%.3f`, si indica la **precisione**, cioè quante cifre decimali stampare. Con la stessa variabile z:
 
 ```c
-printf("z vale %f
-", z);      // z vale 2.500000
-printf("z vale %.3f
-", z);    // z vale 2.500
-printf("z vale %.3e
-", z);    // z vale 2.500e+00
+printf("z vale %f\n", z);      // z vale 2.500000
+printf("z vale %.3f\n", z);    // z vale 2.500
+printf("z vale %.3e\n", z);    // z vale 2.500e+00
 ```
 
 Con `%.3f` la stampa si ferma al terzo decimale (più precisamente il valore viene arrotondato: 2.5678 con `%.3f` diventa 2.568); con `%.3e` la notazione esponenziale mostra tre decimali. Gli specificatori di printf sono descritti nel manuale della libreria C di GNU (sezione sull'output formattato), a cui conviene abituarsi a ricorrere.

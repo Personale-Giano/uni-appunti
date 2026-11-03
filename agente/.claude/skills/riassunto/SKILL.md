@@ -1,40 +1,46 @@
 ---
 name: riassunto
-description: Crea il riassunto di una lezione universitaria (Algebra lineare, Matematica discreta, Fondamenti Info, Programmazione) continuando i riassunti del sito di Emanuele (i Word non si usano più). Si usa con /riassunto <materia> <lezione> o quando chiede di "fare il riassunto della lezione N", "continuare il Word", "aggiungere la lezione".
+description: Crea il riassunto di una lezione universitaria (Algebra lineare, Matematica discreta, Fondamenti Info, Programmazione, Laboratorio) come nuovi capitoli dei riassunti sul sito di Emanuele (il Quaderno online). Si usa con /riassunto <materia> <lezione> o quando chiede di "fare il riassunto della lezione N", "aggiungere la lezione", "gli appunti di oggi".
 ---
 
 # /riassunto <materia> <lezione>
 
-Sostituisce il flusso NotebookLM di Emanuele. Leggi sempre prima `CLAUDE.md`, `STILE.md`, `STATO.md` nella cartella UNI.
+Sostituisce il flusso NotebookLM di Emanuele. Lavora nella cartella `UNI\agente`. Leggi sempre prima `CLAUDE.md`, `STILE.md`, `STATO.md`.
+I riassunti vivono nel sito (repo privato `quaderno-privato`, `contenuti/<materia>.json`); i Word sono archiviati in `UNI\_archivio_word` e non si usano più.
 
 ## 1. Preparazione (senza chiedere nulla)
-1. Da `STATO.md` ricava: materia di destinazione, prossima numerazione, cosa è già coperto. **Dal 20 ott 2026 i riassunti vivono nel sito** (repo privato `quaderno-privato`, cartella `contenuti/<materia>.json`); i Word sono congelati e obsoleti: non si modificano più.
-2. Raccogli le fonti della lezione in `_sistema/fonti_testo/<materia>/` (testo già estratto/trascritto: PDF con testo, appunti a mano trascritti `L<n>_appunti_*.md`) e, solo se serve, nei PDF originali in `_sistema/fonti/<materia>/` (leggili con il Read tool senza `pages`); le trascrizioni audio sono in `_sistema/trascrizioni/`. Se esistono PDF senza testo non ancora trascritti (vedi `_sistema/fonti_testo/DA_TRASCRIVERE.txt`) leggili e salva la trascrizione in `fonti_testo` per non rileggerli. Lancia `python _sistema/scripts/estrai_fonti.py` per aggiornare la cache.
-   - Se mancano fonti nuove in `_sistema/fonti`, cerca in `C:\Users\admin\Downloads` SOLO per nome pertinente (materia, "lezione", data) e copiale nella cartella, mai altro.
-   - I PDF scansionati si leggono con il Read tool (senza `pages`). Per i PDF con testo usa `pdftotext -layout`.
-3. Rileggi gli ultimi 2 capitoli della materia (dal JSON in `quaderno-privato/contenuti/<materia>.json`, oppure dalle bozze in `_sistema/bozze/`) per imitare struttura, lunghezza e tono.
+1. Da `STATO.md` ricava: materia, prossima numerazione, ultima lezione riassunta, eccezioni (capitoli tolti, lezioni che Emanuele fa da solo).
+2. Raccogli le fonti della lezione:
+   - cache di testo `_sistema/fonti_testo/<materia>/` (leggila SEMPRE prima dei PDF): PDF con testo già estratti, appunti a mano già trascritti `L<n>_appunti_<data>.md`;
+   - fonti originali `_sistema/fonti/<materia>/` e `_sistema/fonti/Appunti/` (appunti a mano mandati da Emanuele, spesso con nomi come «28 Ottobre.pdf» o «Algebra lunedì.pdf»: riconosci materia e lezione dal contenuto e dall'orario `_sistema/orario_lezioni_B.txt`, ma attenzione: nelle ore MDAG l'orario non distingue bene Algebra e Mate discreta);
+   - trascrizioni audio `_sistema/trascrizioni/` (fiducia più bassa: sbagliano termini e formule) e le frasi «da esame» in `_sistema/trascrizioni/da_esame/`.
+   Gli appunti a mano scansionati: leggili con Read (senza `pages`) e salva SUBITO la trascrizione in `_sistema/fonti_testo/<materia>/L<n>_appunti_<data>.md` (prima riga `<!-- fonte: <percorso del PDF> -->`), così non si rileggono. Poi `python _sistema/scripts/estrai_fonti.py`.
+   Se mancano fonti in `_sistema/fonti`, cerca in `C:\Users\admin\Downloads` SOLO per nome pertinente (materia, "lezione", data) e copiale, mai altro. Audio nuovi: `/trascrivi`.
+3. Rileggi gli ultimi 2 capitoli della materia (dal JSON) per imitare struttura, lunghezza e tono.
 
 ## 2. Elenco macro-argomenti (primo e unico checkpoint)
 Presenta SOLO:
-- i macro-argomenti della lezione, incrociando appunti + audio/trascrizione + dispense/libro (nota se il docente ha detto cose non nel libro, o se il libro ha cose non dette a lezione);
-- la proposta di raggruppamento in capitoli con titolo e numero (continuando dall'ultimo capitolo del sito);
-- eventuali contraddizioni tra fonti o punti da verificare.
-Poi ATTENDI l'ok di Emanuele. Non scrivere capitoli prima.
+- i macro-argomenti della lezione, incrociando appunti + audio + dispense/libro (nota se il docente ha detto cose non nel libro, o viceversa);
+- la proposta di capitoli con titolo e numero (continuando dall'ultimo capitolo del sito);
+- contraddizioni tra fonti o punti da verificare.
+Poi ATTENDI l'ok di Emanuele. Non scrivere capitoli prima. (Se Emanuele ha già detto «procedi» o ha chiesto più lezioni insieme, presenta l'elenco e prosegui.)
 
 ## 3. Un capitolo alla volta
-Per ogni capitolo approvato:
-1. Scrivi la bozza in `_sistema/bozze/<materia>_cap<N>.md` (usa il formato di `aggiungi_capitolo_sito.py`: `# N. Titolo`, `## Sottotitolo`, `**grassetto**`, `- elenco`). Rispetta `STILE.md`: via di mezzo tra discorsivo ed elenchi. **Figure**: dove un disegno chiarisce una definizione o un esempio (soprattutto Matematica discreta e Algebra: funzioni con le frecce, Venn, grafici, piano complesso, controimmagini) generalo con `_sistema/scripts/figure_math.py`, aprilo con Read per controllare che sia giusto e leggibile, e inseriscilo nella bozza con `![didascalia](figure/nome.png|larghezza_cm)`; il revisore controlla anche le figure. Se utili, aggiungile anche ai capitoli già nel Word senza chiedere (inserisci_figure.py). Poche figure ma utili: una per concetto che si capisce meglio vedendolo.
-2. Lancia il subagente `revisore-riassunti` passandogli: il percorso della bozza, le fonti usate e `STILE.md`. Non dirgli cosa pensi sia giusto. Applica le correzioni confermate; i dubbi li riporti a Emanuele.
-3. Mostra a Emanuele il capitolo (solo testo, senza ripetere la revisione per intero) con in fondo una riga "Revisione: N correzioni applicate, M punti da verificare".
-4. Dopo il suo ok (o "procedi"), inserisci il capitolo nel sito (nessun Word da chiudere):
-   `python _sistema/scripts/aggiungi_capitolo_sito.py <materia> <bozza>.md`   (materia: algebra | matematica-discreta | fondamenti | programmazione | laboratorio)
-   poi pubblica: `python _sistema/scripts/pubblica_quaderno.py --push` (il sito si aggiorna in circa un minuto). Un capitolo nuovo parte senza evidenziazioni: le fa Emanuele dal sito.
-5. Aggiorna `STATO.md` (capitoli, prossima numerazione, lezione ✅).
+1. Scrivi la bozza in `_sistema/bozze/<materia>_cap<N>.md` **solo con lo strumento Write** (mai con heredoc, `python -c` o stringhe di shell: in questa shell `\\` diventa `\` e i `\n` del C diventano a capo veri).
+   Sintassi: `# N. Titolo` (Programmazione/Laboratorio: `# Capitolo N: Titolo`), `## Sottotitolo`, `- elenco`, `**grassetto**`, `~corsivo~` (tilde attaccata al testo; **mai** `*corsivo*`), `` `codice` `` (dentro non valgono altri marcatori), `^{apice}`, `_{pedice}` (anche annidati: `Σ_{σ ∈ S_{n}}`), `\*` e `\~` letterali, blocchi ``` per il codice, `![didascalia](figure/nome.png|larghezza_cm)`.
+   Rispetta `STILE.md`: via di mezzo tra discorsivo ed elenchi, **dopo ogni definizione il paragrafo «(In parole povere: …)»**, un esempio per concetto, niente «questo Word» / «le fonti dicono», rimandi solo a capitoli che esistono.
+   **Figure**: dove un disegno chiarisce (funzioni con frecce, Venn, grafici, piano complesso, matrici, stack) generale con `_sistema/scripts/figure_math.py` o uno script `figure_<materia>N.py`, aprile con Read per controllarle e inseriscile nella bozza. Poche ma utili.
+2. Controllo automatico: `python _sistema/scripts/lint_bozza.py <materia> _sistema/bozze/<bozza>.md`. Gli ERRORI si correggono sempre; gli AVVISI si valutano.
+3. Revisore: lancia il subagente `revisore-riassunti` passandogli la bozza, le fonti usate, `STILE.md` **e il testo convertito** (`python _sistema/scripts/aggiungi_capitolo_sito.py <materia> <bozza> --anteprima`), così vede anche gli errori di conversione. Non dirgli cosa pensi sia giusto. Applica le correzioni confermate; i dubbi li riporti a Emanuele.
+4. Mostra a Emanuele il capitolo (solo testo) con in fondo una riga "Revisione: N correzioni applicate, M punti da verificare".
+5. Dopo il suo ok (o "procedi"): `python _sistema/scripts/aggiungi_capitolo_sito.py <materia> <bozza>.md` (materia: algebra | matematica-discreta | fondamenti | programmazione | laboratorio). Lo script rifà il controllo e si ferma se ci sono errori (`--forza` solo se sono voluti).
+6. Pubblica: `python _sistema/scripts/pubblica_quaderno.py --push` (commit e push del repo del sito e `vercel deploy --prod` da questo PC: 2-4 minuti). Un capitolo nuovo parte senza evidenziazioni: le fa Emanuele dal sito. Le schede si generano da sole dalle Definizioni/Proposizioni/Teoremi del capitolo (blocchi che iniziano con `**Definizione.**`, `**Proposizione.**`, `**Teorema (nome).**`): scrivile così.
+7. Aggiorna `STATO.md` (tabella: capitoli, prossimo numero, ultima lezione; elenco «Da riassumere»).
 
 ## 4. Chiusura lezione
-Quando tutti i capitoli sono dentro, proponi (senza farli): formulario di una pagina, 5-10 esercizi tipo esame, flashcard Anki per la lezione (`/ripasso`).
+Quando tutti i capitoli sono dentro: aggiungi 5-10 domande tipo esame verificate alla banca della materia (`_sistema/esami/banca_<materia>.md`, formato delle domande già presenti; i calcoli rifatti con Python/SymPy), poi proponi (senza farli) formulario e flashcard con `/ripasso`. Fai commit e push di `uni-appunti` (repo pubblico: niente dati personali).
 
 ## Cose da non fare
-- Non incollare nel testo frasi del tipo "le fonti dicono"/"come detto nell'audio".
 - Non inventare dimostrazioni o esempi non supportati: se li aggiungi per chiarezza, devono essere verificabili (controlla i calcoli).
-- Non toccare i capitoli esistenti, nemmeno per correggere refusi: quelle correzioni si propongono a parte (fase di pulizia). Le evidenziazioni sono di Emanuele (database del sito): mai modificarle.
+- Non toccare i capitoli esistenti per correggere refusi senza dirlo: le correzioni si propongono a parte. Non cambiare mai testo DENTRO o PRIMA di un paragrafo evidenziato (le evidenziazioni sono intervalli di caratteri: si sposterebbero). `python _sistema/scripts/lint_bozza.py --contenuti` elenca i problemi del sito e segna quelli evidenziati.
+- Le evidenziazioni sono di Emanuele (database del sito): mai modificarle.

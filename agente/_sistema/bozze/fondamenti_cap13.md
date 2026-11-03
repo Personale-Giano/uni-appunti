@@ -8,7 +8,7 @@ La **congiunzione** p ∧ q si legge "p e q": è vera quando **entrambe** le pro
 ## La disgiunzione (or) e il caso dell'xor
 La **disgiunzione** p ∨ q si legge "p o q" ed è la disgiunzione **inclusiva**: è vera se è vera p, oppure è vera q, **oppure lo sono entrambe**. È falsa solo quando sono false tutte e due. Esempio del libro: "un millennio è di 100 anni o un millennio è di 1000 anni" è vera, perché basta la seconda parte.
 
-Esiste anche la disgiunzione **esclusiva** (l'*aut* del latino, **xor** in inglese), vera solo quando una delle due è vera e l'altra è falsa; non lo è quando sono vere entrambe. Nel parlato "o" può avere l'uno o l'altro significato, mentre in logica quando si scrive "or" si intende quella inclusiva.
+Esiste anche la disgiunzione **esclusiva** (l'~aut~ del latino, **xor** in inglese), vera solo quando una delle due è vera e l'altra è falsa; non lo è quando sono vere entrambe. Nel parlato "o" può avere l'uno o l'altro significato, mentre in logica quando si scrive "or" si intende quella inclusiva.
 
 Un esempio del docente: "piove e fa freddo". Se oggi non piove ma fa freddo (dove si fissa la soglia, per esempio, a 20 gradi), la **congiunzione è falsa**, perché la prima parte è falsa, mentre la **disgiunzione "piove o fa freddo" è vera**, perché la seconda parte è vera. Le frasi vanno poi sempre interpretate in un contesto.
 
@@ -37,9 +37,9 @@ p | ¬p
 
 ## Notazioni diverse per lo stesso connettivo
 Lo stesso connettivo si scrive in modi diversi a seconda del libro e del linguaggio: sono solo **sinonimi**, non hanno tavole di verità diverse. Se una notazione non è nota conviene chiedere che cosa significa.
-- **Negazione**: "non" (italiano), *not* (inglese), il simbolo ¬, la tilde ~; nei linguaggi di programmazione (C, C++, Java) il punto esclamativo `!`.
-- **Congiunzione**: "e", *et* (latino), *and*, il simbolo ∧, la "e commerciale" &; in Java si scrive con la doppia `&&`.
-- **Disgiunzione**: "o" e "oppure", *vel* (latino), *or*, il simbolo ∨; in Java con la doppia barra verticale `||`.
+- **Negazione**: "non" (italiano), ~not~ (inglese), il simbolo ¬, la tilde \~; nei linguaggi di programmazione (C, C++, Java) il punto esclamativo `!`.
+- **Congiunzione**: "e", ~et~ (latino), ~and~, il simbolo ∧, la "e commerciale" &; in Java si scrive con la doppia `&&`.
+- **Disgiunzione**: "o" e "oppure", ~vel~ (latino), ~or~, il simbolo ∨; in Java con la doppia barra verticale `||`.
 
 Nei linguaggi di programmazione "and", "or" e "not" sono definiti esattamente come in logica (esempi del libro): per esempio `x < 10 && y > 4` è vera quando x è minore di 10 **e** y è maggiore di 4, `x < 10 || y > 4` quando vale almeno una delle due, e `!(x < 10)` quando x è maggiore o uguale a 10.
 

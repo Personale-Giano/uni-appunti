@@ -65,7 +65,7 @@ def main(applica):
         dati[m] = json.loads((CONT / f"{m}.json").read_text(encoding="utf-8"))
     blocchi = {m: {b["b"]: b for cap in d["capitoli"] for b in cap["blocks"] if "b" in b} for m, d in dati.items()}
     # asterischi markdown rimasti nel testo → corsivo, solo dove non spostano evidenziazioni
-    for bid in ["cap12.7", "cap13.10", "cap13.25", "cap13.26", "cap13.27", "cap15.25", "cap16.13", "cap17.3", "cap17.5", "cap18.2"]:
+    for bid in ([] if "fondamenti" not in blocchi else ["cap12.7", "cap13.10", "cap13.25", "cap13.26", "cap13.27", "cap15.25", "cap16.13", "cap17.3", "cap17.5", "cap18.2"]):
         b = blocchi["fondamenti"][bid]
         nuovo = re.sub(r"\*([^*<>]{1,30})\*", r"<em>\1</em>", b["h"])
         t0, t1 = testo(b["h"]), testo(nuovo)

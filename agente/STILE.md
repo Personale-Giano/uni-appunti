@@ -12,11 +12,12 @@
 4. Casi a rischio: sezione "Trabocchetto d'Esame" o nota "Come sottolineato a lezione" quando il docente lo ha detto (compare in Algebra e Mate discreta).
 5. Chiusura con il collegamento al capitolo successivo o la motivazione ("Come sottolineato a lezione… serve l'argomento successivo").
 
-## Formattazione nel Word
-- Titolo capitolo: grassetto, rosso EE0000. Sottotitolo: grassetto, arancione E97132. Testo normale, **grassetto** per i termini chiave, *corsivo* per i termini presentati e le variabili esplicative.
-- Elenchi puntati nativi. Formule scritte in testo con simboli Unicode (ℕ ℤ ℚ ℝ ℂ ∈ ⊆ ∪ ∩ ∀ ∃ ⟹ ⟺), pedici/apici come testo dove possibile.
-- Programmazione: il codice C in font Consolas 8.5pt.
-- Numerazione continuativa del Word: il primo capitolo nuovo riprende dal numero successivo.
+## Formattazione (bozze per il sito)
+- `# N. Titolo` per il capitolo, `## Sottotitolo` per le sezioni. **grassetto** per i termini chiave, ~corsivo~ (tilde) per i termini presentati e le variabili esplicative: mai `*corsivo*` con un asterisco.
+- Definizioni e risultati con l'etichetta in grassetto all'inizio del paragrafo: `**Definizione.**`, `**Proposizione.**`, `**Teorema (Binet).**`: da lì il Quaderno genera le schede di ripasso.
+- Elenchi con `- `. Formule in testo con simboli Unicode (ℕ ℤ ℚ ℝ ℂ ∈ ⊆ ∪ ∩ ∀ ∃ ⟹ ⟺), apici e pedici con `^{}` e `_{}`. Mai un paragrafo che finisce con «=»: la formula va scritta per intero.
+- Programmazione: il codice C in blocchi ``` (e `codice` in linea), con i `\n` scritti come tali.
+- Numerazione continuativa: il primo capitolo nuovo riprende dal numero successivo a quello sul sito. Rimandi solo a capitoli che esistono; mai «questo Word».
 
 ## Cose da evitare
 - Frasi di NotebookLM tipo "come ricordato nell'audio", "Le fonti forniscono": non vanno nel testo. Scrivere "a lezione" solo se il docente l'ha davvero detto.

@@ -141,12 +141,23 @@ def main():
     py = sys.executable
     if not a.no_build:
         # evidenziazioni attuali dal database: servono al Quaderno locale (avanzamento, piano); se non è raggiungibile si va avanti
-        e = subprocess.run(["node", str(repo / "scripts" / "esporta_evid.js")], capture_output=True, text=True, encoding="utf-8", cwd=str(repo))
-        print((e.stdout or e.stderr).strip().splitlines()[0] if (e.stdout or e.stderr).strip() else "esportazione evidenziazioni: nessun output")
-        r = subprocess.run([py, "-X", "utf8", str(SCRIPTS / "costruisci_pagina_studio.py")], capture_output=True, text=True, encoding="utf-8")
+        # e i progressi online di Emanuele (quiz, schede, errori, date d'esame): li leggono il piano serale e /esame
+        for js in ("esporta_evid.js", "esporta_stato.js"):
+            e = subprocess.run(["node", str(repo / "scripts" / js)], capture_output=True, text=True, encoding="utf-8", cwd=str(repo))
+            print((e.stdout or e.stderr).strip().splitlines()[0] if (e.stdout or e.stderr).strip() else f"{js}: nessun output")
+        # --diff: scrive evidenziazioni_oggi.md (sottolineature nuove dall'ultima volta), usato dal piano serale
+        r = subprocess.run([py, "-X", "utf8", str(SCRIPTS / "costruisci_pagina_studio.py"), "--diff"], capture_output=True, text=True, encoding="utf-8")
         if r.returncode:
             print(r.stdout, r.stderr); return 1
         print((r.stdout.strip().splitlines() or ["build ok"])[0])
+        # errori di scrittura rimasti nei riassunti (formule troncate, markdown, \n spezzati): solo avviso
+        sys.path.insert(0, str(SCRIPTS))
+        from lint_bozza import controlla_contenuti
+        avvisi = [x for x in controlla_contenuti(repo) if "[evidenziato" not in x]
+        if avvisi:
+            print(f"AVVISO: {len(avvisi)} possibili errori nei riassunti (python lint_bozza.py --contenuti):")
+            for x in avvisi[:10]:
+                print("  -", x)
     dest = repo / "protected"
     if dest.exists():
         # svuota il contenuto senza dipendere dalla cartella stessa (Windows la blocca se un'altra finestra ci è dentro)
@@ -176,20 +187,29 @@ def main():
     if a.push:
         g = lambda *x: subprocess.run(["git", "-C", str(repo), *x], capture_output=True, text=True, encoding="utf-8")
         g("add", "-A")
-        if not g("status", "--porcelain").stdout.strip() and not a.force:
+        # ultimo commit pubblicato davvero su Vercel: se un deploy è fallito, la sera dopo si ripubblica anche senza modifiche
+        segno = repo / ".git" / "ultimo_deploy"
+        ultimo = segno.read_text(encoding="utf-8").strip() if segno.exists() else ""
+        modifiche = bool(g("status", "--porcelain").stdout.strip())
+        if not modifiche and not a.force and ultimo == g("rev-parse", "HEAD").stdout.strip():
             print("Nessuna modifica da pubblicare."); return 0
-        msg = "Aggiornamento contenuti\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
-        g("commit", "-q", "-m", msg)
-        p = g("push", "-q")
-        print("Salvato su GitHub." if p.returncode == 0 else "Push non riuscito: " + p.stderr.strip())
+        p = None
+        if modifiche:
+            msg = "Aggiornamento contenuti\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+            g("commit", "-q", "-m", msg)
+            p = g("push", "-q")
+            print("Salvato su GitHub." if p.returncode == 0 else "Push non riuscito: " + p.stderr.strip())
+        else:
+            print("Nessuna modifica nuova, ma l'ultimo commit non risulta pubblicato: ripubblico.")
         # Dal 30 ott 2026 il repo e' nell'organizzazione Personale-Giano: sul piano Hobby Vercel non collega
         # repo privati di organizzazione, quindi il sito si pubblica da questo PC con il CLI di Vercel.
         d = subprocess.run("vercel deploy --prod --yes", cwd=str(repo), shell=True, capture_output=True, text=True, encoding="utf-8", errors="replace")
         if d.returncode == 0:
+            segno.write_text(g("rev-parse", "HEAD").stdout.strip(), encoding="utf-8")
             print("Pubblicato su Vercel: https://quaderno-privato.vercel.app")
         else:
             print("Pubblicazione su Vercel non riuscita:", (d.stderr or d.stdout).strip()[-400:])
-        return p.returncode or d.returncode
+        return (p.returncode if p else 0) or d.returncode
     return 0
 
 
