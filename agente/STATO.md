@@ -15,7 +15,8 @@ La colonna «Studiati» la aggiorna il piano serale da `_sistema/evid_export.jso
 
 ## Da riassumere
 - **Fondamenti L13-L16** (26, 29, 30 ott, 2 nov): le fa Emanuele da solo in un'altra chat. Fonti: solo registrazioni 2025 (L13 trascritta, L14 parziale, L15 no); il docente ha nascosto le registrazioni 2026. Bozze tolte dal sito: `_sistema/bozze/fondamenti_cap28-30.md`.
-- **MDAG 30 ott, 2 nov, 3 nov** (Algebra o Mate discreta: l'orario delle ore MDAG non è affidabile): nessuna fonte ancora (né audio né appunti).
+- **Algebra L11 (30 ott), L12 (2 nov), L13 (4 nov)**: sui PC solo dispense (Sistemi lineari I-III, se l'ordine delle dispense è rispettato) e video 2025 su Moodle; niente audio né appunti 2026.
+- **Mate discreta L13 (3 nov)**: nessuna fonte; il giovedì 5 e il venerdì 6 nov non c'è lezione MDAG. Calendario vero: `fonti/Matematica discreta/ProspettoCorsoB.pdf` (su Moodle aggiornato il 29 ott: ripristinata la lezione del 12 nov). L'orario `orario_lezioni_B.txt` sbaglia le ore MDAG.
 - **Programmazione**: i cap. 30-40 e Lab 13-14 sono scritti dalle sole slide. Non usate le registrazioni Webex del 27-28 ott e 3-4 nov (si possono aggiungere con un ok). I 4 quiz del Lab05 su Moodle non sono stati letti: nei capitoli sono citati solo per nome. Su Moodle `03D_decisioni.pdf` è diverso dalla copia locale (169 byte in più, 20 ott): da confrontare.
 - Appunti in `_sistema/fonti/Appunti/` senza trascrizione in `fonti_testo`: «Algebra luendi.pdf», «Discreata martedi.pdf», «28 Ottobre.pdf», «29 Ottobre .pdf» (già usati per i cap. di Algebra 31-37 e Mate 32-36, ma la trascrizione non è salvata).
 
