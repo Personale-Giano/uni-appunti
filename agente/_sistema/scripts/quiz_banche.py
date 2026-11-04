@@ -13,7 +13,7 @@ BASE = Path(__file__).resolve().parent.parent
 ESAMI = BASE / "esami"
 
 TEMI_ALGEBRA = {"campi": "Campi", "numeri-complessi": "Numeri complessi", "coniugato-modulo": "Coniugato e modulo", "forma-polare": "Forma polare",
-                "potenze-radici": "Potenze e radici", "vettori": "Vettori"}
+                "potenze-radici": "Potenze e radici", "vettori": "Vettori", "sistemi-lineari": "Sistemi lineari"}
 TEMI_PROG = {"algoritmi": "Algoritmi", "assembly": "Assembly e macchina", "tipi-e-memoria": "Tipi e memoria", "variabili-assegnamento": "Variabili e assegnamento",
              "operatori": "Operatori", "puntatori": "Puntatori", "scanf-printf": "Input e output", "compilazione-cli": "Compilazione e terminale",
              "controllo-flusso": "Controllo di flusso", "funzioni": "Funzioni e parametri", "array-stringhe": "Array e stringhe",

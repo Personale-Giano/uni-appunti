@@ -82,6 +82,7 @@ COPERTURA_RX = {
     ("Algebra lineare", "Forma polare"): r"polare", ("Algebra lineare", "Potenze e radici"): r"radic[ei] n-esim|moivre|potenz", ("Algebra lineare", "Vettori"): r"vettor",
     ("Algebra lineare", "Matrici"): r"prodotto fra matrici|\btraccia\b|trasposta", ("Algebra lineare", "Rango"): r"\brango\b|rk\(",
     ("Algebra lineare", "Determinante"): r"determinant", ("Algebra lineare", "Matrice inversa"): r"invertibil|matrice inversa|cofattor",
+    ("Algebra lineare", "Sistemi lineari"): r"sistem[ai] lineari?|gauss-jordan|rouché",
     ("Programmazione", "Funzioni e parametri"): r"passaggio per valore|parametr[oi] formal|prototip|stack frame|record di attivazione",
     ("Programmazione", "Array e stringhe"): r"\barray\b|terminatore", ("Programmazione", "Algoritmi su array"): r"ricerca lineare|bubble sort|selezione|ordinat[oa] in senso|dominio vuoto",
     ("Fondamenti Info", "Rappresentazione binaria"): r"binari|complemento a due|esadecimal", ("Fondamenti Info", "Circuiti e memoria"): r"flip-flop|\bram\b|memoria",

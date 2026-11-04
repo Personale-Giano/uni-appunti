@@ -401,3 +401,83 @@ Una mappa lineare è una funzione tra spazi vettoriali che
 5. rispetta solo la somma tra vettori
 RISPOSTA: 1
 SPIEGAZIONE: Una mappa lineare preserva la struttura algebrica di spazio vettoriale, cioè le due operazioni: somma e moltiplicazione per uno scalare.
+
+## [alg-041] argomenti: sistemi-lineari
+Quale delle seguenti operazioni sulle righe di (A | b) può cambiare l'insieme delle soluzioni del sistema?
+1. Scambiare due righe
+2. Moltiplicare una riga per λ = 5
+3. Aggiungere a una riga un'altra riga moltiplicata per -3
+4. Moltiplicare una riga per 0
+5. Sostituire R₂ con R₂ + R₁
+RISPOSTA: 4
+SPIEGAZIONE: Nelle mosse di Gauss la moltiplicazione richiede λ ≠ 0: moltiplicando per 0 l'equazione diventa 0 = 0 e si perde una condizione. Le altre operazioni sono mosse di Gauss e non cambiano le soluzioni.
+
+## [alg-042] argomenti: sistemi-lineari
+Quale di queste matrici è a scalini?
+1. ( 1 2 −1 ; 4 0 6 ; 0 7 0 )
+2. ( 0 8 ; 0 1 ; 0 0 ; 0 0 )
+3. ( 7 −2 9 ; 0 0 1 ; 0 0 0 )
+4. ( 0 0 0 ; 1 2 3 ; 0 0 1 )
+5. ( 1 0 ; 1 1 ; 0 0 )
+RISPOSTA: 3
+SPIEGAZIONE: Righe nulle in fondo e ogni pivot strettamente più a destra del precedente: i pivot di (7 −2 9) e (0 0 1) stanno nelle colonne 1 e 3. Nella matrice 2 i pivot sono nella stessa colonna, nella 4 la riga nulla è in cima.
+
+## [alg-043] argomenti: sistemi-lineari
+Dopo Gauss-Jordan la matrice completa è ( 1 0 2 | 0 ; 0 1 3 | 0 ; 0 0 0 | 1 ). Che cosa si può concludere?
+1. Il sistema non ha soluzioni
+2. Il sistema ha una sola soluzione
+3. Il sistema ha infinite soluzioni con un parametro
+4. La soluzione è (0, 0, 1)
+5. Il sistema ha infinite soluzioni con due parametri
+RISPOSTA: 1
+SPIEGAZIONE: L'ultima riga rappresenta l'equazione 0 = 1, che non ha soluzione: c'è un pivot nella colonna dei termini noti, quindi S = ∅.
+
+## [alg-044] argomenti: sistemi-lineari
+Sia A la matrice dei coefficienti di un sistema in n = 5 incognite, con rk(A) = rk(A | b) = 3. Che cosa dice il teorema di Rouché-Capelli?
+1. Non ci sono soluzioni
+2. C'è una sola soluzione
+3. Le soluzioni sono un sottospazio vettoriale di dimensione 3
+4. Le soluzioni sono un sottospazio affine di dimensione 3
+5. Le soluzioni sono un sottospazio affine di dimensione 2
+RISPOSTA: 5
+SPIEGAZIONE: I due ranghi coincidono, quindi ci sono soluzioni, e formano un sottospazio affine di dimensione n − rk(A) = 5 − 3 = 2.
+
+## [alg-045] argomenti: sistemi-lineari
+Quale affermazione sulle soluzioni S di un sistema non omogeneo e sulle soluzioni S₀ del sistema omogeneo associato è corretta?
+1. S e S₀ sono entrambi sottospazi vettoriali
+2. S₀ è un sottospazio vettoriale; se S ≠ ∅, S si ottiene sommando a una soluzione particolare tutti i vettori di S₀
+3. S₀ può essere vuoto
+4. S contiene sempre il vettore nullo
+5. S = S₀ per ogni sistema
+RISPOSTA: 2
+SPIEGAZIONE: Il vettore 0 sta sempre in S₀, che è un sottospazio. S non contiene l'origine se il sistema non è omogeneo, ed è un sottospazio affine x + S₀.
+
+## [alg-046] argomenti: sistemi-lineari
+Per quali valori di k il sistema x + ky = 4 − k, kx + 4y = 4 non ha soluzioni?
+1. k = 2
+2. k = ±2
+3. k = 0
+4. k = −2
+5. Per nessun valore di k
+RISPOSTA: 4
+SPIEGAZIONE: La riduzione dà ( 1 k | 4 − k ; 0 4 − k² | (k − 2)² ). Per k = −2 la seconda riga è 0 = 16 e non ci sono soluzioni; per k = 2 diventa 0 = 0 e le soluzioni sono infinite.
+
+## [alg-047] argomenti: sistemi-lineari
+I vettori (1, 1, 0), (0, 1, 1), (1, 0, −1) di ℝ³ sono:
+1. linearmente indipendenti, perché nessuno è multiplo di un altro
+2. una base di ℝ³
+3. generatori di ℝ³
+4. linearmente dipendenti, perché la matrice con questi vettori come colonne ha determinante 0
+5. tutti nulli
+RISPOSTA: 4
+SPIEGAZIONE: Il determinante della matrice è −1 + 1 = 0 e il rango è 2. Non essere multipli a due a due non basta per l'indipendenza: infatti v₁ − v₂ = v₃.
+
+## [alg-048] argomenti: sistemi-lineari
+Ricevuta la sequenza {1, −2, 3, 0, −1, 2} come coefficienti di s(x) di grado 5, con le condizioni s(1) = s(2) = 0 e un solo numero sbagliato, quale numero è errato e quanto dovrebbe valere?
+1. Il terzo: dovrebbe valere 0
+2. Il primo: dovrebbe valere −2
+3. Il quarto: dovrebbe valere −3
+4. L'ultimo: dovrebbe valere −1
+5. Il secondo: dovrebbe valere −5
+RISPOSTA: 1
+SPIEGAZIONE: s(1) = 3 e s(2) = 24. Correggendo il coefficiente di x^j di δ servono δ = −3 e δ·2^j = −24, quindi j = 3: è il coefficiente di x³, cioè il terzo numero, che da 3 passa a 0.

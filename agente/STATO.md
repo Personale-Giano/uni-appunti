@@ -5,7 +5,7 @@ I riassunti vivono nel sito (`quaderno-privato/contenuti/<materia>.json`, https:
 ## Situazione
 | Materia | Capitoli sul sito | Prossimo n. | Ultima lezione riassunta | Studiati (≥3 paragrafi evidenziati o segnati a mano) |
 |---|---|---|---|---|
-| Algebra lineare (Buzano/Radeschi) | 37 | **38** | L10 Matrici III, 28 ott (cap. 31-37: determinante, Laplace, Gauss, inversa) | 1-13 |
+| Algebra lineare (Buzano/Radeschi) | 45 | **46** | L13 Sistemi lineari III, 4 nov (cap. 38-45: Gauss-Jordan, Rouché-Capelli, applicazioni) | 1-13 |
 | Matematica discreta (Mori) | 36 | **37** | L12 permutazioni, 29 ott (cap. 32-36: cicli, tipo, periodo) | 1-15 |
 | Fondamenti Info (Berardi) | 27 | **28** | L12 quantificatori annidati, 23 ott | tutti (1-27) |
 | Programmazione I (Amparore) | 40 | **41** | slide 06B chiamata di funzione (cap. 30-34) e 07A algoritmi su array (cap. 35-40), lezioni fino al 4 nov | 1-29 (13 e 27-29 segnati a mano); da studiare 30-40 |
@@ -15,7 +15,8 @@ La colonna «Studiati» la aggiorna il piano serale da `_sistema/evid_export.jso
 
 ## Da riassumere
 - **Fondamenti L13-L16** (26, 29, 30 ott, 2 nov): le fa Emanuele da solo in un'altra chat. Fonti: solo registrazioni 2025 (L13 trascritta, L14 parziale, L15 no); il docente ha nascosto le registrazioni 2026. Bozze tolte dal sito: `_sistema/bozze/fondamenti_cap28-30.md`.
-- **Algebra L11 (30 ott), L12 (2 nov), L13 (4 nov)**: sui PC solo dispense (Sistemi lineari I-III, se l'ordine delle dispense è rispettato) e video 2025 su Moodle; niente audio né appunti 2026.
+- **Algebra L11-L13 (30 ott, 2 e 4 nov)**: cap. 38-45 scritti dalle dispense (Sistemi lineari I-III), supponendo che il docente ne segua l'ordine: da confermare, senza audio né appunti 2026. Le frasi del docente vanno aggiunte dalle registrazioni 2025 (`audio/algebra_L11-13_2025.mp4`, trascrizione in corso). In `fonti/Algebra lineare/` anche `Foglio_1.pdf` ed `esami/` (appelli 2023-26 con soluzioni, 30 PDF: ancora da analizzare per una mappa d'esame).
+- **Registrazioni Fondamenti 2025** L13-L36 in `audio/fondamenti_L*_2025.mp4` (corrispondenza con i nomi Webex in `_sistema/registrazioni_mappa.txt`), trascrizioni in corso: **non fare i riassunti finché Emanuele non manda capitoli e appunti**.
 - **Mate discreta L13 (3 nov)**: nessuna fonte; il giovedì 5 e il venerdì 6 nov non c'è lezione MDAG. Calendario vero: `fonti/Matematica discreta/ProspettoCorsoB.pdf` (su Moodle aggiornato il 29 ott: ripristinata la lezione del 12 nov). L'orario `orario_lezioni_B.txt` sbaglia le ore MDAG.
 - **Programmazione**: i cap. 30-40 e Lab 13-14 sono scritti dalle sole slide. Non usate le registrazioni Webex del 27-28 ott e 3-4 nov (si possono aggiungere con un ok). I 4 quiz del Lab05 su Moodle non sono stati letti: nei capitoli sono citati solo per nome. Su Moodle `03D_decisioni.pdf` è diverso dalla copia locale (169 byte in più, 20 ott): da confrontare.
 - Appunti in `_sistema/fonti/Appunti/` senza trascrizione in `fonti_testo`: «Algebra luendi.pdf», «Discreata martedi.pdf», «28 Ottobre.pdf», «29 Ottobre .pdf» (già usati per i cap. di Algebra 31-37 e Mate 32-36, ma la trascrizione non è salvata).
