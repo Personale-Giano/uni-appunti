@@ -90,7 +90,7 @@ def controlla(src, slug, blocks, dati, repo=REPO):
             err.append(f"riga {i}: «**» spaiato")
         if MD_CORSIVO.search(s.replace("**", "")):
             err.append(f"riga {i}: corsivo con asterischi singoli ({MD_CORSIVO.search(s.replace('**', '')).group(0)}): usa ~parola~")
-        if re.search(r"`[^`]*(\*\*|~\S|\^\{|_\{)[^`]*`", r):
+        if any(re.search(r"\*\*|~\S|\^\{|_\{", span) for span in re.findall(r"`([^`]*)`", r)):
             avv.append(f"riga {i}: marcatori dentro i backtick: restano letterali")
     for b in blocks:
         e, a = controlla_blocco(b, slug)

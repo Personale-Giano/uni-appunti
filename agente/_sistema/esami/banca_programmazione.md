@@ -1,6 +1,6 @@
 # Banca di quiz Programmazione I (linguaggio C)
 
-Nota: domande originali scritte a partire dai riassunti Word di Programmazione (capitoli 1-12) e Laboratorio (capitoli 1-5). Una sola risposta corretta su cinque.
+Nota: domande originali scritte a partire dai riassunti Word di Programmazione (capitoli 1-40) e Laboratorio (capitoli 1-14). Una sola risposta corretta su cinque.
 
 ## [prg-001] argomenti: algoritmi
 Quali sono i due requisiti fondamentali che un algoritmo valido deve soddisfare?
@@ -401,3 +401,123 @@ Nel programma della tabella delle moltiplicazioni (for (int i = 1; i <= 10; ++i)
 5. 4 * 10 = 14
 RISPOSTA: 3
 SPIEGAZIONE: La condizione i <= 10 è vera anche per i = 10 e falsa per i = 11; gli argomenti di printf sono n, i, n * i, quindi l'ultima riga è 4 * 10 = 40.
+
+## [prg-041] argomenti: funzioni
+Nel modello di stack del corso, dove si trovano le variabili locali della funzione attiva rispetto a FP?
+1. A offset positivi da FP
+2. A offset negativi da FP
+3. Esattamente all'indirizzo contenuto in FP, una sola per volta
+4. A offset positivi da SP
+5. Nell'area codice, a indirizzi fissi
+RISPOSTA: 2
+SPIEGAZIONE: Lo stack cresce verso indirizzi decrescenti e le variabili locali sono allocate sotto FP, quindi a offset negativi; parametri e valore di ritorno stanno a offset positivi.
+
+## [prg-042] argomenti: funzioni
+Quale sequenza descrive il prologo di una funzione nel modello del corso?
+1. Copia FP sullo stack, imposta FP = SP, riserva le variabili locali
+2. Imposta SP = FP, ripristina FP dallo stack, ripristina il PC
+3. Scrive il valore di ritorno, rimuove i parametri, salta al chiamante
+4. Riserva le variabili locali, imposta SP = FP, copia PC in FP
+5. Copia SP in PC, imposta FP = 0, azzera le variabili locali
+RISPOSTA: 1
+SPIEGAZIONE: Dopo che il chiamante ha preparato parametri e indirizzo di ritorno, il prologo salva il FP del chiamante, pone FP = SP per iniziare il nuovo frame e riserva le locali. La seconda risposta è invece il percorso del ritorno.
+
+## [prg-043] argomenti: funzioni
+Nel modello del corso, quale istruzione logica rilascia in un colpo solo tutte le variabili locali all'inizio dell'epilogo?
+1. FP = SP
+2. PC = FP
+3. SP = FP
+4. FP = 0
+5. SP = PC
+RISPOSTA: 3
+SPIEGAZIONE: FP è la base del frame e SP il suo limite: ponendo SP = FP tutta l'area delle variabili locali torna libera. Poi si ripristinano FP e PC e si rimuovono i parametri.
+
+## [prg-044] argomenti: funzioni
+Che cosa stampa il programma? void s(int a, int b) { int t = a; a = b; b = t; } e nel main: int x = 10, y = 20; s(x, y); printf("%d %d", x, y);
+1. 20 10
+2. 10 10
+3. 20 20
+4. 10 20
+5. Il comportamento è indefinito
+RISPOSTA: 4
+SPIEGAZIONE: I parametri sono passati per valore: la funzione scambia le copie a e b, mentre x e y restano 10 e 20. Per scambiarli davvero servono i puntatori: s(&x, &y) con parametri int*.
+
+## [prg-045] argomenti: funzioni
+Quale affermazione sul passaggio dei parametri in C è corretta?
+1. Gli array sono passati per riferimento, gli altri tipi per valore
+2. I puntatori sono l'unico tipo passato per riferimento
+3. In C esiste il passaggio per riferimento con l'operatore &
+4. Il passaggio è per valore se la funzione è void, per riferimento altrimenti
+5. Il passaggio è sempre per valore: passando un puntatore, viene copiato l'indirizzo
+RISPOSTA: 5
+SPIEGAZIONE: In C tutto è passato per valore. Il passaggio per riferimento si simula passando un indirizzo: l'indirizzo è copiato, ma con il dereferenziamento la funzione arriva alla variabile del chiamante.
+
+## [prg-046] argomenti: array-stringhe
+Perché a una funzione che riceve un array di int si passa di solito anche la lunghezza, mentre per una stringa non serve?
+1. Perché la funzione riceve solo un puntatore al primo elemento, e la stringa ha il terminatore '\0' che ne segna la fine
+2. Perché gli array di int sono copiati interi, le stringhe no
+3. Perché sizeof funziona sulle stringhe ma non sugli array di int
+4. Perché le stringhe hanno sempre lunghezza massima 20
+5. Perché il compilatore aggiunge la lunghezza solo agli array di char
+RISPOSTA: 1
+SPIEGAZIONE: Il parametro è in pratica un puntatore, che non contiene la dimensione. Una stringa terminata da NUL si può invece scorrere fino a trovare '\0'.
+
+## [prg-047] argomenti: array-stringhe
+Il qualificatore const nel parametro void fn(size_t n, const int dati[]) che cosa comporta?
+1. L'array viene copiato prima della chiamata
+2. L'array deve essere stato dichiarato globale
+3. La funzione può leggere gli elementi ma non modificarli
+4. La funzione non può leggere la lunghezza n
+5. L'array viene azzerato al ritorno dalla funzione
+RISPOSTA: 3
+SPIEGAZIONE: const indica un dato in sola lettura: il compilatore segnala un tentativo di modifica. Serve anche a chiarire il contratto della funzione.
+
+## [prg-048] argomenti: algoritmi-array
+Con int a[] = {6, 12, 4, 9, -1}; e aLen == 5, come termina la ricerca lineare di key == 20 scritta con while (i < aLen && !trovato) e i++ nell'else?
+1. trovato == false e i == 4
+2. trovato == false e i == 5
+3. trovato == true e i == 5
+4. trovato == false e i == 0
+5. Il ciclo non termina
+RISPOSTA: 2
+SPIEGAZIONE: key non è presente: si scorrono tutti gli elementi e i arriva a aLen, il valore sentinella che significa «non c'è».
+
+## [prg-049] argomenti: algoritmi-array
+Che cosa restituiscono, su un array vuoto (aLen == 0), il test «tutti positivi» e il test «esiste un pari»?
+1. Entrambi true
+2. Entrambi false
+3. false il primo, true il secondo
+4. Il risultato è indefinito perché non ci sono elementi
+5. true il primo, false il secondo
+RISPOSTA: 5
+SPIEGAZIONE: Il quantificatore universale sul dominio vuoto è vero per vacuità (nessun controesempio), quello esistenziale è falso per assenza di testimoni. Il ciclo non esegue iterazioni e le sentinelle restano al valore iniziale, true e false.
+
+## [prg-050] argomenti: algoritmi-array
+Perché con size_t aLen non si scrive for (size_t i = 1; i <= aLen - 1; i++) per scorrere le coppie adiacenti?
+1. Perché i <= non è ammesso con size_t
+2. Perché il ciclo salterebbe l'ultima coppia
+3. Perché con aLen == 0 l'espressione aLen - 1 va in wrap-around e dà un valore molto grande
+4. Perché i dovrebbe partire da 0
+5. Perché size_t non si può sottrarre
+RISPOSTA: 3
+SPIEGAZIONE: size_t è senza segno: 0 - 1 produce un valore enorme invece di -1, e il ciclo leggerebbe fuori dall'array. La forma i < aLen funziona anche per aLen == 0.
+
+## [prg-051] argomenti: algoritmi-array
+Quante fasi esegue il Bubble Sort con uscita anticipata (si ripete finché una fase non fa scambi) sull'array {3, 1, 2}?
+1. 1
+2. 2
+3. 3
+4. 4
+5. 6
+RISPOSTA: 2
+SPIEGAZIONE: Prima fase: {3,1,2} diventa {1,3,2} e poi {1,2,3}, con scambi. Seconda fase: nessuno scambio, quindi l'array è ordinato e l'algoritmo termina.
+
+## [prg-052] argomenti: algoritmi-array
+Selezionando da b = {18, 9, 30} gli elementi maggiori o uguali a 18 in un array a con aCap = 3, che cosa si ottiene?
+1. aLen == 3 e a = {18, 9, 30}
+2. aLen == 2, a[0] == 18 e a[2] == 30
+3. aLen == 1 e a[0] == 30
+4. aLen == 2, a[0] == 18 e a[1] == 30
+5. aLen == 2, a[0] == 30 e a[1] == 18
+RISPOSTA: 4
+SPIEGAZIONE: La selezione mantiene l'ordine ma non gli indici: 30 sta in b[2] e finisce in a[1]. aLen è il numero di elementi validi, mentre a[2] resta non inizializzato.

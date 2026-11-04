@@ -1,6 +1,10 @@
 PDF senza testo (scansioni/appunti a mano): trascrivere a mano o con lettura visiva.
 
 Algebra lineare\23 Ottobre.pdf  (3 pagine, ~0 car/pagina)
+Appunti\28 Ottobre.pdf  (3 pagine, ~0 car/pagina)
+Appunti\29 Ottobre .pdf  (1 pagine, ~0 car/pagina)
+Appunti\Algebra luendi.pdf  (2 pagine, ~0 car/pagina)
+Appunti\Discreata martedi.pdf  (2 pagine, ~0 car/pagina)
 Fondamenti Info\L10_parte2_1_5_quantifiers.pdf  (25 pagine, ~0 car/pagina)
 Fondamenti Info\L4_Parte2_1-2_Propositions.pdf  (11 pagine, ~0 car/pagina)
 Fondamenti Info\slide_1-1 Bits And Their storage.pdf  (15 pagine, ~0 car/pagina)

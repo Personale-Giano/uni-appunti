@@ -27,3 +27,4 @@
 - 2026-11-01 11:17 | login scaduto | 0 novita' | file scaricati: nessuno | annunci importanti: no
 - 2026-11-02 08:24 | login scaduto | 0 novita' | file scaricati: nessuno | annunci importanti: no
 - 2026-11-03 08:24 | login scaduto | 0 novita' | file scaricati: nessuno | annunci importanti: no
+- 2026-11-04 14:24 | ok (controllo manuale, solo Programmazione) | 3 PDF nuovi, zip, 4 quiz Lab05, registrazioni Webex 27-28 ott e 3-4 nov | file scaricati: 06B_chiamata_funzioni.pdf, 07A_algoritmi_su_array.pdf, Lab05A - Array e stringhe.pdf | annunci importanti: no

@@ -16,7 +16,8 @@ TEMI_ALGEBRA = {"campi": "Campi", "numeri-complessi": "Numeri complessi", "coniu
                 "potenze-radici": "Potenze e radici", "vettori": "Vettori"}
 TEMI_PROG = {"algoritmi": "Algoritmi", "assembly": "Assembly e macchina", "tipi-e-memoria": "Tipi e memoria", "variabili-assegnamento": "Variabili e assegnamento",
              "operatori": "Operatori", "puntatori": "Puntatori", "scanf-printf": "Input e output", "compilazione-cli": "Compilazione e terminale",
-             "controllo-flusso": "Controllo di flusso"}
+             "controllo-flusso": "Controllo di flusso", "funzioni": "Funzioni e parametri", "array-stringhe": "Array e stringhe",
+             "algoritmi-array": "Algoritmi su array"}
 
 
 TEMI_FND = {"binario": "Rappresentazione binaria", "complemento-eccesso": "Rappresentazione binaria", "virgola-mobile": "Rappresentazione binaria",
