@@ -17,6 +17,16 @@ quindi esistono infinite soluzioni e **i vettori sono linearmente dipendenti**.
 
 In alternativa si usano le mosse di Gauss: con R_{2} → R_{2} − R_{1} e R_{3} → R_{3} − R_{2} si ottiene ( 1 0 1 ; 0 1 −1 ; 0 0 0 ). A ha rango 2, il che dice di nuovo che ci sono infinite soluzioni (λ_{1}, λ_{2}, λ_{3}). Lo si può leggere anche così: rango 2 vuol dire che Span(v_{1}, v_{2}, v_{3}) ha dimensione 2, quindi i vettori sono dipendenti, perché altrimenti genererebbero uno spazio di dimensione 3.
 
+**Il criterio della lavagna (registrazione 2025).** v_{1}, …, v_{k} sono indipendenti se e solo se, riducendo a scalini A = (v_{1} | … | v_{k}), **ogni colonna ha un pivot**. Il docente lo presenta come la risposta definitiva: si scrive subito la matrice con i vettori in colonna, senza riscrivere ogni volta il sistema. A differenza del determinante, questo criterio funziona anche quando A non è quadrata.
+
+**Esempio dalla lavagna (registrazione 2025).** Siano u_{1} = (1, 0, −1), u_{2} = (1, −1, 0), u_{3} = (0, 1, −1) (alla lavagna si chiamano v, come tutti i vettori di questa lezione). Con R_{3} → R_{3} + R_{1} e R_{3} → R_{3} + R_{2}:
+
+( 1 1 0 ; 0 −1 1 ; −1 0 −1 ) → ( 1 1 0 ; 0 −1 1 ; 0 1 −1 ) → ( 1 1 0 ; 0 −1 1 ; 0 0 0 ).
+
+La terza colonna non ha pivot, quindi i vettori **non** sono indipendenti.
+
+Potrebbe venire richiesta anche la **relazione** di dipendenza: basta risolvere il sistema rispetto alle variabili dei pivot. Dalle righe si ha λ_{1} + λ_{2} = 0 e −λ_{2} + λ_{3} = 0, cioè λ_{2} = λ_{3} e λ_{1} = −λ_{3}, quindi le soluzioni sono t(−1, 1, 1). Con t = 1 si ottiene −u_{1} + u_{2} + u_{3} = 0.
+
 ## Spazio generato
 I vettori v_{1}, …, v_{k} sono **generatori** di V, cioè Span(v_{1}, …, v_{k}) = V, se ogni v ∈ V è combinazione lineare di essi: per ogni v esistono λ_{1}, …, λ_{k} ∈ 𝕂 tali che λ_{1}v_{1} + … + λ_{k}v_{k} = v.
 
@@ -30,12 +40,20 @@ Con le mosse di Gauss: R_{2} → R_{2} − R_{1} e R_{3} → R_{3} − R_{2} dan
 
 (In parole povere: se la matrice con i vettori come colonne ha rango massimo, quei vettori raggiungono tutto lo spazio.)
 
+**Esempio dalla lavagna (registrazione 2025), con matrice non quadrata.** Siano g_{1} = (3, 2), g_{2} = (1, 5), g_{3} = (−1, 7) in ℝ²: la matrice è 2 × 3, quindi il determinante non è definito. Dato v = (a, b), che è un vettore fissato (a e b sono numeri dati, non incognite), con R_{2} → 3R_{2} − 2R_{1}, cioè una mossa (II) seguita da una (III):
+
+( 3 1 −1 | a ; 2 5 7 | b ) → ( 3 1 −1 | a ; 0 13 23 | 3b − 2a ).
+
+Tutti i pivot stanno nella parte dei coefficienti, per ogni a e b: il sistema ha sempre soluzione, quindi i tre vettori sono generatori di ℝ². Se invece restasse una riga ( 0 0 0 | d ), con d che dipende da a e b, per qualche vettore quella riga direbbe 0 = d con d ≠ 0, che è impossibile: basta una sola coppia (a, b) senza soluzione perché i vettori non siano generatori.
+
+**Il criterio della lavagna.** v_{1}, …, v_{k} ∈ 𝕂ⁿ sono generatori se e solo se, riducendo a scalini la matrice con i vettori in colonna, **ogni riga ha un pivot**, cioè non ci sono righe nulle. Da ricordare in coppia: ogni **colonna** con un pivot vuol dire indipendenti, ogni **riga** con un pivot vuol dire generatori.
+
 ## Basi
 Una sequenza v_{1}, …, v_{n} ∈ V è una **base** se i vettori sono indipendenti e generano V; se si sa già che V ha dimensione n, basta controllare **una** delle due proprietà, perché l'altra segue automaticamente (cap. 26).
 
 (In parole povere: una base ha esattamente i vettori che servono per raggiungere tutto lo spazio, nessuno di troppo.)
 
-**Esempio.** I vettori v_{1}, v_{2}, v_{3} di sopra **non** formano una base di ℝ³, perché non sono indipendenti. I vettori w_{1}, w_{2}, w_{3} invece la formano: sono generatori e sono tre, ed ℝ³ ha dimensione 3. Devono quindi per forza essere indipendenti, cosa che si verifica anche subito in modo diretto.
+**Esempio.** I vettori v_{1}, v_{2}, v_{3} del primo esempio sull'indipendenza **non** formano una base di ℝ³, perché non sono indipendenti. I vettori w_{1}, w_{2}, w_{3} invece la formano: sono generatori e sono tre, ed ℝ³ ha dimensione 3. Devono quindi per forza essere indipendenti, cosa che si verifica anche subito in modo diretto.
 
 ## Coordinate
 **Proposizione.** Sia v_{1}, …, v_{n} una base di V. Ogni vettore v ∈ V si scrive in modo unico come v = λ_{1}v_{1} + … + λ_{n}v_{n}.
@@ -51,3 +69,9 @@ Una sequenza v_{1}, …, v_{n} ∈ V è una **base** se i vettori sono indipende
 A^{-1}v = ( 2 −1 1 ; −1 1 0 ; −1 1 −1 ) · (3, 4, 5) = (7, 1, −4).
 
 Controllo: 7(1, 1, 0) + 1(0, 1, 1) − 4(1, 1, −1) = (3, 4, 5). In alternativa si può risolvere il sistema con Gauss-Jordan.
+
+**Esempio dalla lavagna (registrazione 2025), con Gauss.** Siano c_{1} = (1, 1, 0), c_{2} = (0, 1, 1), c_{3} = (1, 0, 1) una base di ℝ³ (attenzione: non è la base w di sopra) e v = (1, 2, 3). Con R_{2} → R_{2} − R_{1} e R_{3} → R_{3} − R_{2}:
+
+( 1 0 1 | 1 ; 1 1 0 | 2 ; 0 1 1 | 3 ) → ( 1 0 1 | 1 ; 0 1 −1 | 1 ; 0 0 2 | 2 ).
+
+Risalendo dal basso: λ_{3} = 1, λ_{2} = 2, λ_{1} = 0. Le coordinate sono (0, 2, 1); controllo: 2c_{2} + c_{3} = (0, 2, 2) + (1, 0, 1) = (1, 2, 3). In lezione questa è la strada svolta, mentre x = A^{-1}b resta solo indicata: si può parlare di «la» soluzione perché con una base è unica.

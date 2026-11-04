@@ -4,6 +4,8 @@ L'algebra lineare permette di aggiungere **informazione ridondante** a un messag
 
 (In parole povere: oltre al messaggio si spedisce qualche numero «di controllo», calcolato in modo che chi riceve possa accorgersi se qualcosa è cambiato per strada.)
 
+**L'idea ingenua (lavagna, registrazione 2025).** Si scrive CIAO come 3, 9, 1, 15. Per un disturbo arriva 13, 9, 1, 15 e chi riceve legge MIAO, senza accorgersi di nulla. Mandando il messaggio due volte si vede che c'è un errore, ma non dove. Un buon metodo deve rilevare l'errore, localizzarlo e correggerlo, senza occupare troppa memoria. Da qui in poi il messaggio è una sequenza di numeri qualsiasi, senza una codifica in lettere.
+
 Si vogliono trasmettere i quattro numeri {2, −7, 8, −2}. Si aggiungono due numeri a, b e si interpretano i sei numeri come coefficienti di un polinomio:
 
 s(x) = 2x⁵ − 7x⁴ + 8x³ − 2x² + ax + b.
@@ -22,9 +24,15 @@ che ha l'unica soluzione k = −2. Per le altre posizioni il sistema risulta inc
 
 (In parole povere: si prova a dare la colpa a un numero alla volta; solo per il numero davvero sbagliato le due condizioni si possono soddisfare insieme.)
 
+**Esempio dalla lavagna (registrazione 2025).** Si riceve {3, −7, 8, −2, −7, 6}. Qui s(1) = 1 e s(2) = 32, quindi c'è un errore. Si prova posizione per posizione:
+- nel secondo numero: s(1) = 0 dà k = −8, s(2) = 0 dà k = −9. Non sono compatibili. (Alla lavagna il secondo valore è scritto 12, che è un errore di conto: la conclusione non cambia.)
+- nel primo numero: entrambe le condizioni danno k = 2.
+
+L'esistenza della soluzione dice due cose: l'errore era nel primo numero e il messaggio giusto è {2, −7, 8, −2}. Gli ultimi due numeri sono ausiliari e alla fine si scartano. In lezione si provano solo queste due posizioni; rifacendo il conto per le altre quattro, il sistema è sempre incompatibile.
+
 Aggiungendo più informazione ridondante si possono correggere più errori. Per esempio, aggiungendo quattro coefficienti e imponendo s(1) = s(2) = s(3) = s(4) = 0 si ottiene un sistema lineare di quattro equazioni nei quattro coefficienti aggiunti: le quattro condizioni forniscono abbastanza controlli per cercare e correggere, in questo modello, fino a due coefficienti errati.
 
-I codici di **Reed-Solomon**, usati tra l'altro nei QR code e in molti sistemi di memorizzazione e trasmissione digitale, sfruttano idee algebriche strettamente collegate: si rappresentano i dati mediante polinomi, si aggiunge ridondanza e si usano equazioni algebriche per localizzare e correggere gli errori. I veri codici Reed-Solomon lavorano su campi finiti, ma il semplice esempio mostra già il ruolo concreto di polinomi e sistemi lineari.
+I codici di **Reed-Solomon**, usati tra l'altro nei QR code e in molti sistemi di memorizzazione e trasmissione digitale, sfruttano idee algebriche strettamente collegate: si rappresentano i dati mediante polinomi, si aggiunge ridondanza e si usano equazioni algebriche per localizzare e correggere gli errori. I veri codici Reed-Solomon lavorano su campi finiti, ma il semplice esempio mostra già il ruolo concreto di polinomi e sistemi lineari. Grazie a questa ridondanza, dice il docente, un QR code si legge anche se fino a un quarto non è leggibile.
 
 ## Esercizio
 **Esercizio 13.7.** Si riceve la sequenza {1, −2, 3, 0, −1, 2}. I primi quattro numeri contengono l'informazione, gli ultimi due sono ridondanti, e i sei numeri sono i coefficienti di s(x) = a_{5}x⁵ + a_{4}x⁴ + a_{3}x³ + a_{2}x² + a_{1}x + a_{0}. Se la trasmissione è corretta deve valere s(1) = s(2) = 0. Si sa che esattamente uno dei sei numeri è stato modificato. Determinare quale numero è sbagliato e trovare il suo valore corretto.

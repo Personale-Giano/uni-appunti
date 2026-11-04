@@ -1,14 +1,20 @@
 # 41. Il Sistema Omogeneo Associato e la Struttura delle Soluzioni
 ## Il sistema omogeneo associato
-Dopo aver visto come si risolve un sistema con Gauss-Jordan, la lezione 12 studia il problema in modo più teorico. Si consideri il sistema
+Dopo aver visto come si risolve un sistema con Gauss-Jordan, la lezione 12 studia il problema in modo più teorico: invece di chiedersi come risolvere un dato sistema, ci si chiede come leggere subito dalla matrice se ci sono soluzioni, quante sono e che struttura hanno. Si consideri il sistema
 
 a_{11}x_{1} + … + a_{1n}x_{n} = b_{1}, … , a_{k1}x_{1} + … + a_{kn}x_{n} = b_{k}.
 
-**Definizione.** Il **sistema omogeneo associato** è quello ottenuto mettendo a zero tutti i termini noti b_{i}: a_{11}x_{1} + … + a_{1n}x_{n} = 0, … , a_{k1}x_{1} + … + a_{kn}x_{n} = 0.
+**Dalla lavagna (registrazione 2025): la forma A · x = b.** Scrivendo le incognite come vettore colonna x = (x_{1}, …, x_{n}), il sistema dice che il vettore con componenti a_{i1}x_{1} + … + a_{in}x_{n} è uguale a b. Quel vettore è proprio il prodotto righe per colonne di A e x, quindi il sistema si scrive
+
+A · x = b,   con A ∈ M(k, n), x ∈ M(n, 1), b ∈ M(k, 1).
+
+Le dimensioni tornano: M(k, n) · M(n, 1) dà M(k, 1). Una soluzione è quindi un vettore x ∈ 𝕂ⁿ tale che Ax = b.
+
+**Definizione.** Un sistema è **omogeneo** se b = 0. Il **sistema omogeneo associato** è quello ottenuto mettendo a zero tutti i termini noti b_{i}: a_{11}x_{1} + … + a_{1n}x_{n} = 0, … , a_{k1}x_{1} + … + a_{kn}x_{n} = 0.
 
 (In parole povere: stesse equazioni, stessi coefficienti, ma a destra dell'uguale ci sono solo zeri.)
 
-La matrice C = (A | b) rappresenta il sistema iniziale, mentre (A | 0), o più semplicemente A, rappresenta il sistema omogeneo associato. Si indicano con S ⊂ 𝕂ⁿ le soluzioni del sistema iniziale e con S_{0} ⊂ 𝕂ⁿ quelle del sistema omogeneo associato.
+La matrice C = (A | b) rappresenta il sistema iniziale, mentre (A | 0), o più semplicemente A, rappresenta il sistema omogeneo associato. Si indicano con S ⊂ 𝕂ⁿ le soluzioni del sistema iniziale e con S_{0} ⊂ 𝕂ⁿ quelle del sistema omogeneo associato; alla lavagna della registrazione 2025 S_{0} si chiama S_{h}. Per risolvere (A | 0) le mosse sono le stesse di (A | b), e l'ultima colonna resta sempre zero.
 
 ## Le soluzioni omogenee formano un sottospazio
 **Proposizione.** Le soluzioni S_{0} ⊂ 𝕂ⁿ formano un sottospazio vettoriale di 𝕂ⁿ.
@@ -32,6 +38,20 @@ Il motivo è questo. Se x ∈ S e x′ ∈ S_{0}, allora x + x′ è ancora solu
 **Esempio.** Si consideri in ℝ³ il sistema x − y + z = 1, y − z = 2. Le soluzioni del sistema omogeneo associato x − y + z = 0, y − z = 0 sono i vettori del tipo (0, t, t). Prendendo la soluzione particolare (3, 0, −2), le soluzioni sono
 
 (3, 0, −2) + (0, t, t) = (3, t, t − 2), al variare di t ∈ ℝ.
+
+**Esempio dalla lavagna (registrazione 2025).** Si riprende il sistema con due parametri liberi del cap. 40. Il sistema omogeneo associato si riduce a
+
+( 1 2 −1 1 | 0 ; 0 1 2 5 | 0 ; 1 3 1 6 | 0 ) → ( 1 2 −1 1 | 0 ; 0 1 2 5 | 0 ; 0 0 0 0 | 0 ) → (R_{1} → R_{1} − 2R_{2}) → ( 1 0 −5 −9 | 0 ; 0 1 2 5 | 0 ; 0 0 0 0 | 0 ),
+
+quindi x = 5t_{1} + 9t_{2}, y = −2t_{1} − 5t_{2}, z = t_{1}, w = t_{2}, cioè
+
+S_{0} = Span( (5, −2, 1, 0), (9, −5, 0, 1) ).
+
+La soluzione generale trovata nel cap. 40 si spezza esattamente in una soluzione particolare più un elemento di S_{0}:
+
+(−1 + 5t_{1} + 9t_{2}, 2 − 2t_{1} − 5t_{2}, t_{1}, t_{2}) = (−1, 2, 0, 0) + t_{1}(5, −2, 1, 0) + t_{2}(9, −5, 0, 1).
+
+Questa proposizione è comoda quando una soluzione è già data o è facile da trovare: basta calcolare S_{0} e sommare.
 
 ## I sottospazi affini
 Geometricamente S è una versione spostata di S_{0}.

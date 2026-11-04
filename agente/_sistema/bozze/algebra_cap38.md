@@ -14,7 +14,15 @@ C = ( 1 1 2 | 9 ; 2 4 −3 | 1 ; 3 6 −5 | 0 ).
 
 (In parole povere: la matrice completa è il sistema scritto senza le lettere: ogni riga è un'equazione, ogni colonna una variabile, e l'ultima colonna contiene i termini noti.)
 
-Lo scopo è determinare l'insieme S ⊂ 𝕂ⁿ delle **soluzioni** del sistema.
+**Definizione.** Una **soluzione** del sistema è un'assegnazione di valori alle variabili x_{1}, …, x_{n} che soddisfa **tutte** le equazioni. Lo scopo è determinare l'insieme S ⊂ 𝕂ⁿ delle soluzioni.
+
+(In parole povere: non basta che i numeri vadano bene per una sola equazione: devono andare bene per tutte nello stesso momento.)
+
+**Esempio dalla lavagna (registrazione 2025).** Il sistema x_{1} + x_{2} + x_{3} = 6, x_{1} + x_{2} − x_{3} = 0 ha come soluzione x_{1} = 1, x_{2} = 2, x_{3} = 3, perché 1 + 2 + 3 = 6 e 1 + 2 − 3 = 0. Il docente osserva a voce che non è l'unica e che ce ne sono infinite; facendo il conto, sono tutti i vettori (3 − s, s, 3). Qui
+
+A = ( 1 1 1 ; 1 1 −1 ),   b = ( 6 ; 0 ),   C = ( 1 1 1 | 6 ; 1 1 −1 | 0 ).
+
+La sbarra in (A | b) è solo una comodità grafica per ricordare dove finiscono i coefficienti.
 
 ## Le mosse di Gauss
 Esistono alcune operazioni che cambiano la matrice C senza modificare l'insieme S delle soluzioni.
@@ -31,6 +39,12 @@ Sono le mosse già incontrate per il determinante (cap. 35), con due differenze:
 Un esempio di composizione di mosse dei tre tipi:
 
 ( 1 2 ; 3 0 ; 4 −2 ) → (R_{1} ↔ R_{3}) → ( 4 −2 ; 3 0 ; 1 2 ) → (R_{1} → ½R_{1}) → ( 2 −1 ; 3 0 ; 1 2 ) → (R_{2} → R_{2} + 2R_{3}) → ( 2 −1 ; 5 4 ; 1 2 ).
+
+**Esempio dalla lavagna (registrazione 2025).** Una mossa sulla matrice è la stessa mossa fatta sulle equazioni. Nel sistema di prima, R_{1} → R_{1} + R_{2} somma le due equazioni:
+
+2x_{1} + 2x_{2} = 6, x_{1} + x_{2} − x_{3} = 0   corrisponde a   ( 2 2 0 | 6 ; 1 1 −1 | 0 ).
+
+La strategia è quindi: si passa dal sistema alla matrice, si fanno le mosse sulla matrice, e alla fine si torna al sistema, che ha le stesse soluzioni ma è più semplice.
 
 ## Perché le mosse non cambiano le soluzioni
 **Proposizione.** Le mosse di Gauss su C = (A | b) non cambiano l'insieme S ⊂ 𝕂ⁿ delle soluzioni del sistema lineare.

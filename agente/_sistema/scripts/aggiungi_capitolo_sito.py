@@ -24,6 +24,7 @@ import json
 import re
 import shutil
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -159,6 +160,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--anteprima", action="store_true", help="stampa il testo convertito dei blocchi (da dare al revisore) senza scrivere")
     ap.add_argument("--forza", action="store_true", help="inserisce anche se lint_bozza.py trova errori")
+    ap.add_argument("--sostituisci", action="store_true", help="rimpiazza un capitolo già sul sito, solo se non ha evidenziazioni (export recente, meno di 30 minuti)")
     a = ap.parse_args()
     slug = ALIAS.get(a.materia.lower(), a.materia.lower())
     repo = Path(a.repo)
@@ -177,9 +179,17 @@ def main():
     n = numero(titolo)
     if n is None:
         sys.exit("Il titolo deve avere il numero del capitolo (es. '# 29. Titolo' o '# Capitolo 23: Titolo')")
-    if any(c["num"] == n for c in dati["capitoli"]):
-        sys.exit(f"Esiste già il capitolo {n} in {slug}: scegli il numero successivo (ultimo: {max(c['num'] for c in dati['capitoli'] if c['num'])})")
     cap_id = f"cap{n}"
+    esiste = any(c["num"] == n for c in dati["capitoli"])
+    if esiste and not a.sostituisci:
+        sys.exit(f"Esiste già il capitolo {n} in {slug}: scegli il numero successivo (ultimo: {max(c['num'] for c in dati['capitoli'] if c['num'])})")
+    if esiste:  # le evidenziazioni sono intervalli di caratteri: un capitolo evidenziato non si riscrive
+        fe = BASE / "evid_export.json"
+        if time.time() - fe.stat().st_mtime > 1800:
+            sys.exit("evid_export.json ha più di 30 minuti: prima `node scripts/esporta_evid.js` nel repo del sito")
+        ev = json.loads(fe.read_text(encoding="utf-8"))["evid"].get(slug, {})
+        if any(k.startswith(cap_id + ".") for k in ev):
+            sys.exit(f"Il capitolo {n} ha evidenziazioni: non si può sostituire")
     prova = a.dry_run or a.anteprima
     try:
         _t, blocks = blocchi_da_bozza(src, repo, cap_id, prova)
@@ -208,7 +218,11 @@ def main():
     bk = BASE / "backup"
     bk.mkdir(exist_ok=True)
     shutil.copy2(fj, bk / f"{slug}_contenuti_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
-    dati["capitoli"].append({"id": cap_id, "num": n, "titolo": titolo, "blocks": blocks})
+    nuovo_cap = {"id": cap_id, "num": n, "titolo": titolo, "blocks": blocks}
+    if esiste:
+        dati["capitoli"] = [nuovo_cap if c["num"] == n else c for c in dati["capitoli"]]
+    else:
+        dati["capitoli"].append(nuovo_cap)
     # stesso formato del file originale (fondamenti.json è indentato, gli altri compatti): diff piccoli
     indentato = fj.read_text(encoding="utf-8").startswith("{\n")
     fj.write_text(json.dumps(dati, ensure_ascii=False, indent=2, separators=(",", ": ")) if indentato

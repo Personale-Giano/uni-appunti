@@ -6,6 +6,15 @@ Si può ora descrivere esplicitamente l'insieme S ⊂ 𝕂ⁿ delle soluzioni. I
 
 Si guardano le colonne che contengono i pivot, qui la seconda, la quarta e la quinta: ciascuna ha un 1 al posto del pivot e 0 in tutte le altre caselle. Ci sono due casi.
 
+**La ricetta della lavagna (registrazione 2025):**
+1. Si scrive la matrice completa C = (A | b).
+2. Si applica Gauss: C diventa a scalini.
+3. Da qui ci sono due strade che danno le stesse soluzioni: (a) si continua con Gauss-Jordan e si legge il risultato; (b) ci si ferma a Gauss, si riscrive il sistema e si risolve risalendo dal basso.
+
+**All'esame**, raccomanda il docente, il primo passo è sempre scrivere la matrice completa, senza farsi prendere dal panico e passare a un altro metodo.
+
+I calcoli vanno fatti comunque, ma secondo il docente di solito la strada (b) è un po' più veloce di tutto Gauss-Jordan, e in pratica conviene riscrivere subito il sistema.
+
 ## Primo caso: un pivot nei termini noti
 Se la colonna dei termini noti b contiene un pivot, la matrice è di questo tipo:
 
@@ -14,6 +23,8 @@ Se la colonna dei termini noti b contiene un pivot, la matrice è di questo tipo
 L'ultima riga rappresenta l'equazione **0 = 1**, che chiaramente non può avere soluzione. In questo caso **S = ∅**.
 
 (In parole povere: se a forza di semplificare si arriva a «0 = 1», le equazioni di partenza si contraddicevano: nessun valore le soddisfa tutte.)
+
+**Esempio dalla lavagna (registrazione 2025).** Il sistema y + z = 0, x + y + 2z = −3, −x + 2y + z = 1 ha come matrice completa quella ridotta nel cap. 39. Con la strada (a) si arriva a ( 1 0 1 | 0 ; 0 1 1 | 0 ; 0 0 0 | 1 ), cioè 0 = 1; con la strada (b) ci si ferma a ( 1 1 2 | −3 ; 0 1 1 | 0 ; 0 0 0 | −2 ), cioè 0 = −2. In entrambi i casi **non ci sono soluzioni**.
 
 ## Secondo caso: nessun pivot nei termini noti
 Se l'ultima colonna non contiene pivot, la matrice è di questo tipo:
@@ -38,10 +49,31 @@ Spostando i parametri a destra dell'uguale e aggiungendo le assegnazioni dei par
 - x_{5} = b_{3} − a_{36}t_{3};
 - x_{6} = t_{3}.
 
-Il sistema è risolto: le variabili x_{1}, …, x_{n} dipendono dai parametri liberi come indicato.
+Il sistema è risolto: le variabili x_{1}, …, x_{n} dipendono dai parametri liberi come indicato. Il numero di parametri liberi è il numero di colonne senza pivot, esclusa quella dei termini noti.
 
-## Un esercizio svolto
-Risolvere il sistema x + y + 2z = 9, 2x + 4y − 3z = 1, 3x + 6y − 5z = 0 (esercizio 11.11).
+**Tre esempi dalla lavagna (registrazione 2025)**, tutti con matrice già a scalini:
+- ( 1 2 3 | 4 ; 0 2 4 | 5 ; 0 0 1 | 1 ) non è ridotta, quindi si risale dal basso: z = 1; poi 2y + 4 = 5, cioè y = ½; poi x + 1 + 3 = 4, cioè x = 0. Soluzione unica (0, ½, 1).
+- ( 1 0 0 | 4 ; 0 1 0 | 3 ; 0 0 1 | 5 ) è ridotta e si legge subito: soluzione unica (4, 3, 5).
+- ( 1 0 1 0 | 4 ; 0 1 1 0 | 3 ; 0 0 0 1 | 5 ), con variabili x, y, z, w, ha la colonna di z senza pivot, quindi z è libera: (x, y, z, w) = (4 − t, 3 − t, t, 5). Sono infinite soluzioni che dipendono da un parametro.
+
+## Esempi svolti
+**Dalla lavagna (registrazione 2025): due parametri liberi.** Risolvere x + 2y − z + w = 3, y + 2z + 5w = 2, x + 3y + z + 6w = 5.
+
+Con R_{3} → R_{3} − R_{1} e poi R_{3} → R_{3} − R_{2}:
+
+( 1 2 −1 1 | 3 ; 0 1 2 5 | 2 ; 1 3 1 6 | 5 ) → ( 1 2 −1 1 | 3 ; 0 1 2 5 | 2 ; 0 1 2 5 | 2 ) → ( 1 2 −1 1 | 3 ; 0 1 2 5 | 2 ; 0 0 0 0 | 0 ).
+
+L'ultima riga è 0 = 0 e si può ignorare. Si riscrive il sistema senza passare dalla forma ridotta: y = 2 − 2z − 5w e x = 3 − 2y + z − w = −1 + 5z + 9w. Le colonne di z e w non hanno pivot, quindi con z = t_{1} e w = t_{2}:
+
+x = −1 + 5t_{1} + 9t_{2},   y = 2 − 2t_{1} − 5t_{2},   z = t_{1},   w = t_{2}.
+
+Sono infinite soluzioni che dipendono da 2 parametri liberi.
+
+**Dalla lavagna (registrazione 2025): attenzione a togliere un'equazione.** Risolvere solo y + z = 0, x + y + 2z = −3, cioè le prime due equazioni del sistema impossibile visto sopra. Gauss dà ( 1 1 2 | −3 ; 0 1 1 | 0 ) e R_{1} → R_{1} − R_{2} dà ( 1 0 1 | −3 ; 0 1 1 | 0 ), quindi x = −3 − t, y = −t, z = t.
+
+Il docente comincia a copiare le righe ( 1 0 1 | 0 ; 0 1 1 | 0 ) dalla forma ridotta di prima, si accorge che non va bene e rifà il conto. Il motivo si vede dai conti del cap. 39: lì il −3 era stato azzerato usando la terza riga, che qui non c'è. Togliendo un'equazione, la forma ridotta va ricalcolata e non si ricopia.
+
+**Esercizio 11.11.** Risolvere il sistema x + y + 2z = 9, 2x + 4y − 3z = 1, 3x + 6y − 5z = 0.
 
 Con R_{2} → R_{2} − 2R_{1} e R_{3} → R_{3} − 3R_{1}:
 

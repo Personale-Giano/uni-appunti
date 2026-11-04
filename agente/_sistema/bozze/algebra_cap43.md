@@ -6,6 +6,8 @@ x + ky = 4 − k,   kx + 4y = 4.
 
 Si vuole sapere (a) al variare di k se ci sono soluzioni e, in caso affermativo, di che dimensione; (b) qual è la soluzione per k = 1.
 
+**All'esame**, dice il docente nella registrazione 2025, problemi di questo tipo ci sono: tendono a spaventare ma non devono, perché il parametro si tratta come un numero. C'è solo un'attenzione da avere: sommare a una riga un multiplo di un'altra, anche con coefficiente k, va bene; ma se si divide per k o per un'espressione che contiene k bisogna distinguere due casi, perché quell'espressione può valere zero. Il valore che la annulla va trattato a parte, come sistema senza parametro.
+
 **(a)** Si applica l'algoritmo di Gauss su (A | b). Con R_{2} → R_{2} − kR_{1}:
 
 ( 1 k | 4 − k ; k 4 | 4 ) → ( 1 k | 4 − k ; 0 4 − k² | 4 − 4k + k² ).
@@ -18,6 +20,10 @@ La matrice dei coefficienti è diventata ( 1 k ; 0 4 − k² ), che ha rango 1 p
 - **k ≠ ±2**: rk(A | b) = rk(A) = 2, quindi le soluzioni formano un sottospazio affine di dimensione 2 − 2 = 0, cioè un punto: c'è una soluzione sola.
 
 (In parole povere: si riduce a scalini lasciando k dentro, poi si guarda per quali valori di k un elemento sulla scala si annulla: quelli sono i casi speciali da trattare a parte.)
+
+Alla lavagna (registrazione 2025) il docente distingue prima sul pivot di A: 4 − k² ≠ 0 oppure k = ±2. I due casi speciali si vedono meglio con i numeri:
+- k = 2 dà ( 1 2 | 2 ; 0 0 | 0 ): ranghi 1 e 1, un parametro libero. La colonna senza pivot è quella di y, che passa dall'altra parte dell'uguale e diventa il parametro. In lezione il conto finisce qui; proseguendo, le soluzioni sono x = 2 − 2t, y = t.
+- k = −2 dà ( 1 −2 | 6 ; 0 0 | 16 ): rk(A) = 1 e rk(A | b) = 2, nessuna soluzione.
 
 **(b)** Per k = 1 si ha ( 1 1 | 3 ; 0 3 | 1 ). Dalla seconda riga 3y = 1, cioè y = 1/3; dalla prima x = 3 − y = 3 − 1/3 = 8/3.
 
