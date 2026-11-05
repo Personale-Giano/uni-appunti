@@ -23,7 +23,7 @@ In alternativa si usano le mosse di Gauss: con R_{2} → R_{2} − R_{1} e R_{3}
 
 ( 1 1 0 ; 0 −1 1 ; −1 0 −1 ) → ( 1 1 0 ; 0 −1 1 ; 0 1 −1 ) → ( 1 1 0 ; 0 −1 1 ; 0 0 0 ).
 
-La terza colonna non ha pivot, quindi i vettori **non** sono indipendenti.
+La terza colonna non ha pivot, quindi i vettori **non** sono indipendenti. Il docente aggiunge che, se dei vettori sono già dipendenti, aggiungerne altri non migliora la situazione: restano dipendenti.
 
 Potrebbe venire richiesta anche la **relazione** di dipendenza: basta risolvere il sistema rispetto alle variabili dei pivot. Dalle righe si ha λ_{1} + λ_{2} = 0 e −λ_{2} + λ_{3} = 0, cioè λ_{2} = λ_{3} e λ_{1} = −λ_{3}, quindi le soluzioni sono t(−1, 1, 1). Con t = 1 si ottiene −u_{1} + u_{2} + u_{3} = 0.
 

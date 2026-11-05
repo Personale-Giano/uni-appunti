@@ -6,7 +6,7 @@ x + ky = 4 − k,   kx + 4y = 4.
 
 Si vuole sapere (a) al variare di k se ci sono soluzioni e, in caso affermativo, di che dimensione; (b) qual è la soluzione per k = 1.
 
-**All'esame**, dice il docente nella registrazione 2025, problemi di questo tipo ci sono: tendono a spaventare ma non devono, perché il parametro si tratta come un numero. C'è solo un'attenzione da avere: sommare a una riga un multiplo di un'altra, anche con coefficiente k, va bene; ma se si divide per k o per un'espressione che contiene k bisogna distinguere due casi, perché quell'espressione può valere zero. Il valore che la annulla va trattato a parte, come sistema senza parametro.
+**All'esame**, dice il docente nella registrazione 2025, problemi di questo tipo ci sono: tendono a spaventare, ma il parametro si tratta come un numero. L'attenzione da avere più spesso riguarda le divisioni: sommare a una riga un multiplo di un'altra, anche con coefficiente k, va bene; ma se si divide per k o per un'espressione che contiene k bisogna distinguere due casi, perché quell'espressione può valere zero. Il valore che la annulla va trattato a parte, come sistema senza parametro.
 
 **(a)** Si applica l'algoritmo di Gauss su (A | b). Con R_{2} → R_{2} − kR_{1}:
 

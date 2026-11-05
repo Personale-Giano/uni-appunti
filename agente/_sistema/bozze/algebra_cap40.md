@@ -11,7 +11,7 @@ Si guardano le colonne che contengono i pivot, qui la seconda, la quarta e la qu
 2. Si applica Gauss: C diventa a scalini.
 3. Da qui ci sono due strade che danno le stesse soluzioni: (a) si continua con Gauss-Jordan e si legge il risultato; (b) ci si ferma a Gauss, si riscrive il sistema e si risolve risalendo dal basso.
 
-**All'esame**, raccomanda il docente, il primo passo è sempre scrivere la matrice completa, senza farsi prendere dal panico e passare a un altro metodo.
+**All'esame**, raccomanda il docente, il primo passo è sempre scrivere la matrice completa, senza farsi prendere dal panico.
 
 I calcoli vanno fatti comunque, ma secondo il docente di solito la strada (b) è un po' più veloce di tutto Gauss-Jordan, e in pratica conviene riscrivere subito il sistema.
 
@@ -36,6 +36,8 @@ Ogni colonna corrisponde a una variabile x_{1}, …, x_{n}, eccetto l'ultima. Si
 **Definizione.** I **parametri liberi** t_{1}, t_{2}, … sono i valori assegnati alle variabili che non corrispondono a una colonna con un pivot; possono assumere qualsiasi valore in 𝕂, e le altre variabili dipendono da essi.
 
 (In parole povere: le variabili senza pivot si possono scegliere come si vuole; una volta scelte, quelle con il pivot sono obbligate.)
+
+Il caso più semplice viene da una domanda nella registrazione 2025: se in A c'è una colonna tutta nulla, la variabile corrispondente non compare mai e può assumere qualsiasi valore. Se il sistema ha soluzioni, quindi, ne ha infinite.
 
 Nell'esempio si scrive x_{1} = t_{1}, x_{3} = t_{2}, x_{6} = t_{3}, e il sistema diventa
 
@@ -69,9 +71,9 @@ x = −1 + 5t_{1} + 9t_{2},   y = 2 − 2t_{1} − 5t_{2},   z = t_{1},   w = t_
 
 Sono infinite soluzioni che dipendono da 2 parametri liberi.
 
-**Dalla lavagna (registrazione 2025): attenzione a togliere un'equazione.** Risolvere solo y + z = 0, x + y + 2z = −3, cioè le prime due equazioni del sistema impossibile visto sopra. Gauss dà ( 1 1 2 | −3 ; 0 1 1 | 0 ) e R_{1} → R_{1} − R_{2} dà ( 1 0 1 | −3 ; 0 1 1 | 0 ), quindi x = −3 − t, y = −t, z = t.
+**Dalla lavagna (registrazione 2025): solo le prime due equazioni.** Risolvere solo y + z = 0, x + y + 2z = −3, cioè le prime due equazioni del sistema impossibile visto sopra. Gauss dà ( 1 1 2 | −3 ; 0 1 1 | 0 ) e R_{1} → R_{1} − R_{2} dà ( 1 0 1 | −3 ; 0 1 1 | 0 ), quindi x = −3 − t, y = −t, z = t.
 
-Il docente comincia a copiare le righe ( 1 0 1 | 0 ; 0 1 1 | 0 ) dalla forma ridotta di prima, si accorge che non va bene e rifà il conto. Il motivo si vede dai conti del cap. 39: lì il −3 era stato azzerato usando la terza riga, che qui non c'è. Togliendo un'equazione, la forma ridotta va ricalcolata e non si ricopia.
+Il docente comincia a copiare le righe ( 1 0 1 | 0 ; 0 1 1 | 0 ) dalla forma ridotta di prima, si accorge che non va bene e rifà il conto. Nei tratti leggibili della registrazione non ne dice il motivo, ma si vede dai conti del cap. 39: lì il −3 era stato azzerato usando la terza riga, che qui non c'è. Togliendo un'equazione, la forma ridotta va ricalcolata e non si ricopia.
 
 **Esercizio 11.11.** Risolvere il sistema x + y + 2z = 9, 2x + 4y − 3z = 1, 3x + 6y − 5z = 0.
 

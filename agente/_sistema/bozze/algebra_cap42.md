@@ -26,6 +26,8 @@ Attenzione: valgono le mosse **sulle righe**. La ricetta della lavagna (registra
 
 (In parole povere: se aggiungere la colonna dei termini noti non aumenta il rango, b «non porta niente di nuovo» e il sistema si può risolvere. Le soluzioni hanno poi tanti gradi di libertà quante sono le variabili meno il rango.)
 
+Come osserva il docente nella registrazione 2025, il teorema non dice quali sono le soluzioni: permette di capire abbastanza in fretta se ci sono.
+
 Nella registrazione 2025 il teorema è scritto con i parametri: il numero di parametri liberi è n − numero di pivot = n − rk(A), dove n è il numero di incognite. Nella lezione 13 della stessa serie compare anche una seconda forma: se (A | b) si riduce a scalini in (A′ | c), il sistema ha soluzioni se e solo se **tutti i pivot stanno in A′**, cioè nessun pivot è nell'ultima colonna.
 
 **Dimostrazione.** Il sistema ha soluzioni se e solo se b ∈ Span(A^{1}, …, A^{n}). Questo accade se e solo se Span(A^{1}, …, A^{n}, b) = Span(A^{1}, …, A^{n}). Le dimensioni di questi due spazi sono rk(A | b) e rk(A), e il primo contiene il secondo: sono uguali se e solo se rk(A | b) = rk(A).

@@ -4,7 +4,7 @@ L'algebra lineare permette di aggiungere **informazione ridondante** a un messag
 
 (In parole povere: oltre al messaggio si spedisce qualche numero «di controllo», calcolato in modo che chi riceve possa accorgersi se qualcosa è cambiato per strada.)
 
-**L'idea ingenua (lavagna, registrazione 2025).** Si scrive CIAO come 3, 9, 1, 15. Per un disturbo arriva 13, 9, 1, 15 e chi riceve legge MIAO, senza accorgersi di nulla. Mandando il messaggio due volte si vede che c'è un errore, ma non dove. Un buon metodo deve rilevare l'errore, localizzarlo e correggerlo, senza occupare troppa memoria. Da qui in poi il messaggio è una sequenza di numeri qualsiasi, senza una codifica in lettere.
+**L'idea ingenua (lavagna, registrazione 2025).** Si scrive CIAO come 3, 9, 1, 15. Per un disturbo arriva 13, 9, 1, 15 e chi riceve legge MIAO, senza accorgersi di nulla. Mandando il messaggio due volte si vede che c'è un errore, ma non dove. Mandandolo tre volte si può decidere a maggioranza, supponendo un solo errore, ma il messaggio diventa tre volte più lungo. Un buon metodo deve rilevare l'errore, localizzarlo e correggerlo, senza occupare troppa memoria. Da qui in poi il messaggio è una sequenza di numeri qualsiasi, senza una codifica in lettere.
 
 Si vogliono trasmettere i quattro numeri {2, −7, 8, −2}. Si aggiungono due numeri a, b e si interpretano i sei numeri come coefficienti di un polinomio:
 
