@@ -34,6 +34,8 @@ Esistono alcune operazioni che cambiano la matrice C senza modificare l'insieme 
 
 (In parole povere: sono le stesse cose che si fanno a mano con le equazioni: cambiare l'ordine, moltiplicare tutta un'equazione per un numero, sommare un'equazione a un'altra.)
 
+Ogni mossa vale per **tutta la riga**: nella registrazione 2025 il docente sottolinea che va applicata a tutti i termini, altrimenti si cambia il sistema. Quindi anche al termine noto.
+
 Sono le mosse già incontrate per il determinante (cap. 35), con due differenze: qui nella mossa (II) serve λ ≠ 0, e si usano le **righe**, perché ogni riga è un'equazione mentre ogni colonna corrisponde a una variabile.
 
 Un esempio di composizione di mosse dei tre tipi:

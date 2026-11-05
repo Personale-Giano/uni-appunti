@@ -40,6 +40,8 @@ La prima riga e la prima colonna sono a posto, quindi si lavora sul resto. Poich
 
 La matrice è a scalini e l'algoritmo termina.
 
+**Perché R_{2} e non R_{1}?** Il docente lo spiega nella registrazione 2025. Con R_{3} → R_{3} − 3R_{1} il primo elemento della terza riga diventerebbe 0 − 3 · 1 = −3: si perderebbe lo zero appena ottenuto. Per questo si usa la riga del pivot corrente, che ha già zero nelle colonne precedenti.
+
 ## L'algoritmo di Gauss-Jordan
 Dopo la riduzione a scalini è utile fare altre mosse, per ottenere altre due cose: **zeri sopra i pivot**, con mosse di tipo (III), aggiungendo alle righe precedenti la riga del pivot moltiplicata per una costante opportuna; e **tutti i pivot uguali a 1**, con mosse di tipo (II).
 
