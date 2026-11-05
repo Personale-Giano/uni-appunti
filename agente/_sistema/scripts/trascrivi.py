@@ -20,44 +20,23 @@ AUDIO = BASE / "audio"
 OUT = BASE / "trascrizioni"
 EXT = {".m4a", ".mp3", ".wav", ".mp4", ".ogg", ".flac"}
 
-# Termini del corso: aiutano Whisper a scrivere correttamente il lessico tecnico.
-# Il prompt iniziale vale solo per la prima finestra di 30 s (con condition_on_previous_text=False faster-whisper
-# lo azzera) ed è limitato a ~224 token: per questo i termini della materia vanno anche in `hotwords`,
-# che faster-whisper (>= 1.0) ripete in ogni finestra.
+# NON usare `hotwords`: provato il 5 nov 2026 sugli stessi tratti, sulle pause fa ripetere la stessa frase all'infinito
+# e sul parlato vero può sostituirlo con frasi inventate (trascrizioni del 3-5 nov, tutte rifatte).
 PROMPT = "Lezione universitaria di {materia} in italiano, corso di laurea in Informatica."
-# prefisso del nome del file audio -> (nome della materia, sezione di glossario.txt)
+# prefisso del nome del file audio -> nome della materia
 MATERIE = {
-    "algebra": ("algebra lineare e geometria", "# Algebra e Geometria"),
-    "mate": ("matematica discreta", "# Matematica discreta"),
-    "fondamenti": ("fondamenti dell'informatica", "# Fondamenti dell'informatica"),
-    "prog": ("programmazione in C", "# Programmazione"),
-    "lab": ("programmazione in C, laboratorio", "# Programmazione"),
+    "algebra": "algebra lineare e geometria",
+    "mate": "matematica discreta",
+    "fondamenti": "fondamenti dell'informatica",
+    "prog": "programmazione in C",
+    "lab": "programmazione in C, laboratorio",
 }
-MAX_HOTWORDS = 60
 
 
-def glossario() -> dict:
-    """Sezioni di `glossario.txt` -> elenco dei termini."""
-    g = BASE / "glossario.txt"
-    sez, cur = {}, None
-    if g.exists():
-        for riga in g.read_text(encoding="utf-8").splitlines():
-            if riga.startswith("# "):
-                cur = riga.strip(); sez.setdefault(cur, []); continue
-            if cur and riga.strip():
-                sez[cur] += [t.strip() for t in riga.split(",") if t.strip()]
-    return sez
-
-
-def suggerimenti(src: Path) -> tuple:
-    """(initial_prompt, hotwords) per la materia del file, riconosciuta dal prefisso del nome."""
+def suggerimento(src: Path) -> str:
+    """initial_prompt per la materia del file, riconosciuta dal prefisso del nome."""
     chiave = next((k for k in MATERIE if src.stem.lower().startswith(k)), None)
-    if not chiave:
-        return PROMPT.format(materia="informatica"), None
-    nome, sezione = MATERIE[chiave]
-    termini = glossario().get(sezione, [])
-    # i termini aggiunti per ultimi (lezioni recenti) contano di più: si tengono quelli in coda
-    return PROMPT.format(materia=nome), ", ".join(termini[-MAX_HOTWORDS:]) or None
+    return PROMPT.format(materia=MATERIE[chiave] if chiave else "informatica")
 
 
 def fmt(sec: float) -> str:
@@ -69,16 +48,14 @@ def transcribe(model: WhisperModel, src: Path, fast: bool = False) -> None:
     dst = OUT / (src.stem + ".txt")
     tmp = dst.with_suffix(".part")
     t0 = time.time()
-    prompt, hotwords = suggerimenti(src)
     segments, info = model.transcribe(
         str(src),
         language="it",
         vad_filter=True,
         beam_size=1 if fast else 5,
-        # fast: niente "temperature fallback" (ripetizioni della decodifica sui tratti rumorosi, che possono bloccare per ore)
-        temperature=0.0 if fast else [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
-        initial_prompt=prompt,
-        hotwords=hotwords,
+        # il "temperature fallback" resta anche in fast: è ciò che ferma le frasi ripetute sulle pause
+        temperature=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+        initial_prompt=suggerimento(src),
         condition_on_previous_text=False,
     )
     print(f"{src.name}: durata {fmt(info.duration)}", flush=True)
@@ -104,7 +81,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("files", nargs="*")
     ap.add_argument("--model", default="small", help="tiny|base|small|medium|large-v3 (default small)")
-    ap.add_argument("--fast", action="store_true", help="decodifica semplice (beam 1, senza fallback): 3-5 volte piu' veloce, quasi uguale")
+    ap.add_argument("--fast", action="store_true", help="decodifica semplice (beam 1): piu' veloce, quasi uguale")
+    ap.add_argument("--rifai", action="store_true", help="ritrascrive anche i file gia' fatti (il vecchio testo resta finche' il nuovo non e' pronto)")
     args = ap.parse_args()
 
     OUT.mkdir(exist_ok=True)
@@ -112,7 +90,8 @@ def main() -> None:
         todo = [AUDIO / f if not Path(f).is_absolute() else Path(f) for f in args.files]
     else:
         todo = sorted(p for p in AUDIO.iterdir() if p.suffix.lower() in EXT)
-    todo = [p for p in todo if not (OUT / (p.stem + ".txt")).exists()]
+    if not args.rifai:
+        todo = [p for p in todo if not (OUT / (p.stem + ".txt")).exists()]
     if not todo:
         print("Niente da trascrivere.")
         return
