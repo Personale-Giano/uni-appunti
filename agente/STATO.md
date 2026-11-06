@@ -32,6 +32,7 @@ La colonna «Studiati» la aggiorna il piano serale da `_sistema/evid_export.jso
 - Convenzione permutazioni: composizione da destra a sinistra.
 
 ## Ultimi lavori
+- 6 nov 2026: esponenti sistemati in Mate cap. 36 e Algebra cap. 14. Il cap. 14 sul sito ha paragrafi che la bozza non ha: non usare `--sostituisci` con la bozza vecchia.
 - 6 nov 2026: Mate cap. 37-40 e Fondamenti cap. 28-35 scritti, revisionati e pubblicati.
 - 6 nov 2026: scaricate da Moodle le dispense di Algebra del 30 ott (prima 8 ott) e il prospetto MDAG del 29 ott (ripristinato giovedì 12 nov; una lezione MD in meno nella settimana 30 nov - 4 dic). Nelle dispense: spiegazione di Prop. 6.5 riscritta per componenti, nuova Def. 10.5, quindi slittano i numeri del cap. 10 (esercizi ora 10.10-10.12, aggiornati nel cap. 37; cap. 36 con l'avvertimento sulle due identità). Le dispense dicono che una sola identità «non basta»: per le matrici quadrate in realtà basta, e il cap. 36 lo spiega.
 - 5 nov 2026: tolto `hotwords` da `trascrivi.py` dopo un confronto sugli stessi tratti audio; aggiunta l'opzione `--rifai`; rifatte Algebra L11-13 e Fondamenti L13-L36. Algebra cap. 38-45 ricontrollati sul testo nuovo dal revisore (41 attribuzioni al docente: corrette quelle imprecise) e integrati nei cap. 38, 39, 40, 42, 44 e 45 con sei spiegazioni del docente che mancavano. Le note sull'audio perso in `L11-13_lavagne_video2025.md` si riferiscono alle trascrizioni vecchie. Controllato sulle dispense (p. 67) «fino a due coefficienti errati» del cap. 45: è corretto.
