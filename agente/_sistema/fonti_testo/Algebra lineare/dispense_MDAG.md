@@ -1339,7 +1339,8 @@ Proposizione 6.5
 I sottoinsiemi D(n), T s(n), T i(n), S(n), A(n) sono tutti sottospazi vettoriali di M(n).
 Spiegazione. Per ciascuno dei cinque sottoinsiemi basta veriﬁcare che la matrice nulla appartiene
 al sottoinsieme e che somma e prodotto per scalare preservano la proprietà che lo deﬁnisce. Per
-esempio, se A, B sono simmetriche, allora t(A + B) = A + B e t(λA) = λA.
+esempio, se A, B sono simmetriche, allora (A + B)ij = Aij + Bij = Aji + Bji = (A + B)ji e
+(λA)ij = λAij = λAji = (λA)ji.
 6.C
 Combinazioni lineari e sottospazio generato (Span)
 Sia V uno spazio vettoriale e siano v1, . . . , vk ∈V .
@@ -1378,13 +1379,13 @@ Sia V uno spazio vettoriale e v1, . . . , vk ∈V dei vettori arbitrari. Il sott
 v1, . . . , vk è il sottoinsieme di V formato da tutte le loro combinazioni lineari e viene indicato
 con
 Span(v1, . . . , vk).
-In simboli:
-Span(v1, . . . , vk) = {λ1v1 + · · · + λkvk | λ1, . . . , λk ∈K}.
 28
 
 <!-- pagina 29 -->
 MDAG Parte II: Algebra Lineare e Geometria
 Buzano e Radeschi
+In simboli:
+Span(v1, . . . , vk) = {λ1v1 + · · · + λkvk | λ1, . . . , λk ∈K}.
 Proposizione 6.7
 Il sottoinsieme Span(v1, . . . , vk) è un sottospazio vettoriale di V .
 Dimostrazione. Dobbiamo mostrare che W = Span(v1, . . . , vk) soddisfa i tre assiomi.
@@ -1424,6 +1425,11 @@ a
 
 ,
 a, b ∈R.
+29
+
+<!-- pagina 30 -->
+MDAG Parte II: Algebra Lineare e Geometria
+Buzano e Radeschi
 Dimostrare che W è un sottospazio vettoriale di M(2, R) e veriﬁcare che
 W = Span
  1
@@ -1438,11 +1444,6 @@ W = Span
 0
 
 .
-29
-
-<!-- pagina 30 -->
-MDAG Parte II: Algebra Lineare e Geometria
-Buzano e Radeschi
 Esercizio 6.10
 In R3 siano
 v1 =
@@ -2757,8 +2758,13 @@ Includiamo un’altra proprietà senza dimostrazione.
 Teorema 10.4 (Teorema di Binet)
 Se A e B sono matrici quadrate dello stesso ordine allora
 det(A · B) = det(A) · det(B).
+Deﬁnizione 10.5
+Una matrice quadrata A ∈M(n) è invertibile se esiste una matrice B ∈M(n) tale che
+AB = In = BA.
+Attenzione: solo una delle due identità non basta! Se esiste una tale matrice B, allora è unica
+e si chiama l’inversa di A, denotata B = A−1.
 Una conseguenza del Teorema di Binet è la seguente proprietà.
-Corollario 10.5
+Corollario 10.6
 Sia A una matrice quadrata invertibile. Allora
 det
  A−1
@@ -2768,18 +2774,18 @@ det(A).
 Spiegazione. Dal Teorema di Binet e da AA−1 = In otteniamo
 1 = det(In) = det(A) det(A−1),
 da cui la formula.
-10.B
-Cofattori di una matrice
-Deﬁnizione 10.6
-Consideriamo una matrice quadrata A. I suoi cofattori cofij := (−1)i+j det(Cij) formano una
-matrice quadrata di ordine n
-cof(A) = (cofij)
-detta matrice dei cofattori di A.
 47
 
 <!-- pagina 48 -->
 MDAG Parte II: Algebra Lineare e Geometria
 Buzano e Radeschi
+10.B
+Cofattori di una matrice
+Deﬁnizione 10.7
+Consideriamo una matrice quadrata A. I suoi cofattori cofij := (−1)i+j det(Cij) formano una
+matrice quadrata di ordine n
+cof(A) = (cofij)
+detta matrice dei cofattori di A.
 Possiamo riscrivere lo sviluppo di Laplace lungo la i-esima riga:
 det A =
 n
@@ -2797,7 +2803,7 @@ j=1
 aij cofkj
 ∀i, k ∈{1, . . . , n}, i̸ = k.
 Abbiamo allora
-Proposizione 10.7
+Proposizione 10.8
 A · t(cof(A)) = det(A) · In = t(cof(A)) · A.
 Dimostrazione. Sia K = A · t(cof(A)). La sua entrata (i, j) è
 kij =
@@ -2809,7 +2815,7 @@ della matrice ottenuta sostituendo la riga j con la riga i, quindi è nullo perc
 righe uguali. Dunque K = det(A)In. In modo analogo si dimostra t(cof(A))A = det(A)In.
 10.C
 L’inversa di una matrice
-Proposizione 10.8
+Proposizione 10.9
 Sia A una matrice quadrata di ordine n ≥2. La matrice A è invertibile se e solo se det(A)̸ = 0.
 Se A è invertibile, allora
 A−1 =
@@ -2818,6 +2824,11 @@ det(A) · t(cof(A)).
 Dimostrazione. Se A è invertibile allora esiste una matrice B tale che A · B = In. Per il Teorema
 di Binet
 det(A · B) = det(A) · det(B).
+48
+
+<!-- pagina 49 -->
+MDAG Parte II: Algebra Lineare e Geometria
+Buzano e Radeschi
 D’altra parte, det (In) = 1. Ne deduciamo che det(A) · det(B) = 1 e quindi det(A)̸ = 0.
 Viceversa, sia ora A tale che det(A)̸ = 0. Deﬁniamo B :=
 1
@@ -2827,14 +2838,9 @@ possiamo moltiplicare per
 1
 det(A) ottenendo A · B = In = B · A. Abbiamo così dimostrato che A
 è invertibile e che la sua inversa è B.
-48
-
-<!-- pagina 49 -->
-MDAG Parte II: Algebra Lineare e Geometria
-Buzano e Radeschi
 10.D
 Esercizi
-Esercizio 10.9
+Esercizio 10.10
 Determinare per quali valori del parametro k ∈R la seguente matrice è invertibile.
 A =
  k −5
@@ -2843,7 +2849,7 @@ A =
 k
 
 Per ogni k per cui la matrice risulta invertibile, trovare la matrice inversa.
-Esercizio 10.10
+Esercizio 10.11
 Dimostrare che la matrice
 B =
 
@@ -2860,7 +2866,7 @@ B =
 
 
 è invertibile e calcolarne l’inversa.
-Esercizio 10.11
+Esercizio 10.12
 Si calcoli l’inversa della matrice
 C =
  2 −i

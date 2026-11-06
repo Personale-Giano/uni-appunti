@@ -6,6 +6,8 @@ Se A e B sono matrici n × n, anche il prodotto A · B è una matrice n × n. La
 
 **In parole povere:** l'inversa è la matrice che «annulla» A, come 1/3 annulla il 3 nella moltiplicazione dei numeri: moltiplicando A per la sua inversa si torna all'identità.
 
+**Attenzione:** la definizione chiede entrambe le uguaglianze A · B = I_{n} e B · A = I_{n}, e se una tale B esiste è unica. Per le matrici quadrate, in realtà, una sola delle due garantisce l'altra: se A · B = I_{n}, per il Teorema di Binet det A ≠ 0, quindi per il teorema della formula dell'inversa, più avanti in questo capitolo, esiste C = (1/det A) · ᵗcof(A) con C · A = I_{n}, e allora B = (C · A) · B = C · (A · B) = C.
+
 Il capitolo risponde a due domande: **quando** una matrice è invertibile, e **come** si calcola la sua inversa.
 
 ## Quando è invertibile: il Teorema di Binet

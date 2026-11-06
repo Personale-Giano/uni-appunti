@@ -53,7 +53,7 @@ no lezione
 AG
 MD
 AG
-no lezione
+MD
 AG
 8
 16/11 — 20/11
@@ -73,7 +73,6 @@ MD
 AG
 MD
 AG
-MD
 MD
 11
 7/12 — 11/12
