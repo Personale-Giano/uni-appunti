@@ -1,59 +1,72 @@
-# 30. Il Mondo di Tarski: Quantificatori su un Mondo Finito
-## Che cos'è il mondo di Tarski
-A fine lezione il docente ha mostrato un software sviluppato dall'Università di Stanford per l'insegnamento della logica (non accessibile agli studenti perché a pagamento: gli esempi sono stati ricopiati nelle dispense del docente). Il nome viene da **Alfred Tarski**, un logico del secolo scorso che ha studiato il **valore di verità** delle formule.
+# 30. Il Mondo di Tarski
+## Che cos'è
+Il titolo della lezione di quest'anno non cita questo argomento. Tutto il capitolo viene dalla seconda ora della registrazione 2025, in cui il docente mostra dal vivo un programma dell'Università di Stanford per l'insegnamento della logica. Il programma è a pagamento e gli studenti non vi accedono; gli esempi, dice il docente, sono ricopiati nelle sue dispense. Il nome ricorda **Alfred Tarski**, logico del secolo scorso che ha studiato il valore di verità delle formule.
 
-Un **mondo di Tarski** è un **dominio finito di oggetti** che si costruisce a piacere: nell'applicazione è una **scacchiera 8 × 8** su cui si dispongono dei solidi geometrici: **cubi**, **tetraedri** (le piramidi viola a base triangolare) e **dodecaedri** (solidi a 12 facce), di tre dimensioni (piccolo, medio, grande). Si scrivono poi delle formule che descrivono la situazione, e il programma dice se ciascuna è vera o falsa.
+**Definizione.** Un **mondo di Tarski** è un dominio finito di oggetti costruito a piacere. Nel programma è una scacchiera 8 × 8 su cui si dispongono solidi geometrici: cubi, tetraedri (piramidi a base triangolare) e dodecaedri (12 facce), in tre formati, piccolo, medio e grande. Si scrivono poi formule che descrivono la scena, e il programma dice se sono vere o false.
 
-(In parole povere: è un mondo giocattolo in cui si può controllare, con una macchina, se una descrizione scritta con i quantificatori corrisponde davvero alla scena.)
+(In parole povere: è un mondo giocattolo in cui una macchina controlla se una descrizione scritta con i quantificatori corrisponde davvero a quello che c'è sulla scacchiera.)
 
-Come ha osservato il docente, l'esempio è insignificante di per sé, ma è il «germe» di un problema vero: far vedere a una macchina una situazione, fornirle una descrizione e chiederle di controllarla. Il vero problema, trovare una descrizione significativa, è ancora molto lontano; qui la descrizione la dà l'utente e la macchina la controlla usando la definizione dei quantificatori, cosa facile in un mondo finito e piccolo.
+Il docente ammette che la domanda, così, non ha alcuna importanza, ma la considera il germe di un problema vero: mostrare una scena a una macchina, darle una descrizione e chiederle se è corretta. Il problema davvero difficile sarebbe far trovare alla macchina una descrizione significativa, e lì si è molto indietro. Qui la descrizione la diamo noi, e la macchina la controlla con la sola definizione dei quantificatori, cosa facile in un mondo finito e piccolo.
 
-## Le quattro formule
-Le formule usate nell'esempio usano i predicati Cube (cubo), Tet (tetraedro), LeftOf (a sinistra di), FrontOf (davanti a), Dodec (dodecaedro) e Large (grande). Sono:
-1. ∀x (Cube(x) → ∃y (Tet(y) ∧ LeftOf(x, y)));
-2. ∀x (Cube(x) → ∃y (Tet(y) ∧ LeftOf(x, y) ∧ FrontOf(x, y)));
-3. ∀x (Dodec(x) → Large(x));
-4. ∃x (Dodec(x) ∧ Large(x)).
+## Le formule
+Le formule che seguono sono riportate a parole nella registrazione e qui scritte con predicati italiani, tenendo i nomi LeftOf e FrontOf che il docente legge dallo schermo:
 
-**LeftOf(x, y)** vuol dire che x si trova in una colonna più vicina al bordo sinistro della scacchiera rispetto a y, cioè **x sta a sinistra di y**. **FrontOf(x, y)** vuol dire che x si trova su una riga più vicina al bordo inferiore (cioè «più vicina alla nostra fronte», se si guarda la scacchiera da quel lato) rispetto a y.
+- **Formula 1:** ∀x (Cubo(x) → ∃y (Tet(y) ∧ LeftOf(x, y)));
+- **Formula 2:** ∀x (Cubo(x) → ∃y (Tet(y) ∧ LeftOf(x, y) ∧ FrontOf(x, y)));
+- **Formula 3:** ∀x (Dod(x) → Grande(x));
+- **Formula 4:** ∃x (Dod(x) ∧ Grande(x)).
 
-(In parole povere: LeftOf guarda le colonne da sinistra, FrontOf guarda le righe dal bordo inferiore.)
+**Definizione.** **LeftOf(x, y)** vuol dire che x sta in una colonna più vicina al bordo sinistro rispetto a y. **FrontOf(x, y)** vuol dire che x sta in una riga più vicina al bordo inferiore rispetto a y.
+
+(In parole povere: LeftOf(x, y) dice che y è più a destra di x. FrontOf(x, y) dice che, guardando la scacchiera dal bordo inferiore, si incontra prima x e poi y: y è più indietro. Il docente stesso ammette che il nome «front of» non è chiarissimo.)
+
+**La scacchiera dell'esempio (registrazione 2025).** Le posizioni sono ricostruite da ciò che il docente dice a voce, scritte come (colonna, riga) contando dal bordo sinistro e dal bordo inferiore. Due cubi: A in (2, 3) e B in (4, 2). Due piramidi: P₁ in (3, 4) e P₂ in (5, 3). Ci sono poi due dodecaedri, uno grande e uno piccolo.
 
 ## Formula 1: ogni cubo ha una piramide alla sua destra
-Per controllare la formula 1 si prende **ogni cubo** (quantificazione universale: devono andare bene tutti) e si cerca almeno una piramide (∃) in una colonna più a destra. Nell'esempio, il primo cubo sta nella seconda colonna da sinistra e una piramide sta nella terza; per l'altro cubo, nella quarta colonna, c'è una piramide nella quinta. Quindi la formula è **vera**. Notare che non è richiesto che il cubo stia a sinistra di **tutte** le piramidi: basta che ne esista una per ciascun cubo, e può anche essere la stessa piramide per entrambi i cubi.
+Si legge «per ogni cubo c'è una piramide tale che il cubo stia alla sua sinistra». Si controllano tutti i cubi, perché la quantificazione esterna è universale. Il cubo A sta a sinistra di P₁; il cubo B no, perché P₁ è nella colonna 3 e lui nella 4, ma sta a sinistra di P₂. Quindi la formula è **vera**.
 
-**Se si toglie una piramide** la formula può restare vera: se resta una piramide che sta alla destra di tutti i cubi, vale una proprietà più forte (c'è una piramide che va bene per tutti i cubi). **Se si toglie quella che serviva al secondo cubo**, la formula diventa **falsa**: quel cubo non ha più nessuna piramide alla sua destra.
+Attenzione a che cosa non dice: non chiede che ogni cubo stia a sinistra di tutte le piramidi, cosa falsa qui, e non chiede piramidi diverse per cubi diversi.
 
-## Formula 2: a destra e davanti
-La formula 2 chiede di più: per ogni cubo ci deve essere una piramide che stia alla sua destra **e anche** più indietro (cioè il cubo sta davanti alla piramide). Geometricamente, per ogni cubo la piramide deve cadere nel **rettangolo** formato dalle colonne più a destra e dalle righe più lontane dal bordo inferiore.
-- Nell'esempio iniziale è **vera**: per ogni cubo c'è una piramide in quel rettangolo.
-- Togliendo la piramide di sinistra, la formula 1 resta vera, ma la formula 2 diventa **falsa**: uno dei due cubi resta «spaiato», perché non c'è più una piramide nel suo rettangolo, e non esiste una sola piramide che vada bene per tutti e due i cubi.
-- **Spostando** la piramide rimasta in un punto che cada nel rettangolo di entrambi i cubi, la formula 2 torna **vera**: ora esiste un y che va bene per tutti gli x. Rimettendola dov'era, torna falsa.
+- **Togliendo P₁** la formula resta vera: P₂ va bene per entrambi i cubi. Vale anzi una proprietà più forte: esiste una piramide che sta a destra di tutti i cubi, scelta senza sapere quale cubo verrà preso.
+- **Togliendo P₂** (e rimettendo P₁) la formula diventa **falsa**: B non ha più nessuna piramide alla sua destra.
 
-Come ha ricordato il docente, è il problema già incontrato: trovare un y che vada bene per **tutti** gli x a volte è possibile, a volte no.
+## Formula 2: a destra e più indietro
+La formula 2 chiede di più: per ogni cubo una piramide che stia sia a destra sia più indietro. Geometricamente, ogni cubo ha il suo rettangolo, fatto dalle colonne più a destra e dalle righe più lontane dal bordo inferiore, e lì deve cadere una piramide.
 
-Un'osservazione ulteriore: una formula più forte (formula 2) richiede più della più debole (formula 1). Se già la formula 1 è falsa (per esempio perché un cubo non ha piramidi a destra), anche la 2 lo è.
+- **All'inizio è vera:** P₁ è nel rettangolo di A, P₂ in quello di B.
+- **Togliendo P₁ diventa falsa,** mentre la formula 1 resta vera. P₂ è a destra di A ma sulla sua stessa riga, quindi A non è di fronte a P₂: il cubo A resta spaiato.
+- **Spostando P₂** in un punto che cade nel rettangolo di entrambi, per esempio (5, 4), la formula torna **vera**. Rimettendola dov'era, torna falsa.
 
-## Formule 3 e 4: i dodecaedri, e che cosa succede con pochi oggetti
-- La formula 3 dice che **tutti i dodecaedri sono grandi**. Se c'è un dodecaedro non grande (piccolo o medio) è **falsa**; aggiungere un nuovo dodecaedro grande non la rende vera (la percentuale di grandi aumenta, ma la formula chiede proprio tutti).
-- La formula 4 dice che **c'è un dodecaedro grande**. È molto più facile da rendere vera: basta uno.
+È, dice il docente, il problema dell'ora precedente: trovare un y che vada bene per tutti gli x a volte è possibile, a volte no (cap. 29).
 
-Si possono fare tre esperimenti.
-1. **Un solo dodecaedro** (grande): le formule 3 e 4 sono **entrambe vere**. Quando c'è un solo dodecaedro non c'è differenza tra ∀ e ∃ riferiti ai dodecaedri: dire che c'è un oggetto con la proprietà o che tutti ce l'hanno vuol dire sempre la stessa cosa riferita a quell'unico oggetto. In generale, quando ci sono oggetti, il ∀ è una richiesta molto più forte dell'∃, ma con un solo oggetto coincidono.
-2. **Due o più dodecaedri, di cui almeno uno grande e almeno uno non grande**: la 3 è falsa e la 4 vera, perché per la 4 basta che ce ne sia uno grande. Se invece nessuno è grande, anche la 4 è falsa.
-3. **Nessun dodecaedro**: la 3 è **vera** (paradossalmente) e la 4 è **falsa**. Perché la 3 sia falsa servirebbe un dodecaedro non grande, ma se non ci sono dodecaedri non ce n'è nessuno che possa smentire l'affermazione universale; l'esistenziale invece è falso perché non c'è nulla. La logica assegna comunque un valore di verità a ogni affermazione, anche quelle che nel linguaggio quotidiano diremmo «prive di senso», e questo valore, qui, è **vero**. Quindi ∀x(Dodec(x) → Large(x)) è vera mentre ∃x(Dodec(x) ∧ Large(x)) è falsa: **il ∀ non implica l'∃** quando l'insieme è vuoto.
+La formula 2 è più forte della 1: una piramide a destra e più indietro è in particolare a destra. Quindi se la formula 1 è falsa, a maggior ragione lo è la 2. Il docente lo mostra su un'altra disposizione, in cui un cubo non ha piramidi a destra.
 
-(In parole povere: se non c'è niente, «tutto ciò che c'è soddisfa la proprietà» è vero per vuoto, mentre «esiste qualcosa che la soddisfa» è falso.)
+## Formule 3 e 4: i dodecaedri
+La formula 3 dice che **tutti i dodecaedri sono grandi**, la formula 4 che **c'è un dodecaedro grande**. Nella scena di partenza la 3 è falsa, per colpa di quello piccolo, e la 4 è vera. Da qui il docente fa alcuni esperimenti.
 
-Notare anche che le formule 1 e 2 parlano solo di cubi e tetraedri: eliminare o spostare dodecaedri non le influenza.
+- **Aggiungere un dodecaedro grande** non rende vera la formula 3: aumenta la percentuale dei grandi, ma la formula li chiede proprio tutti, e quello piccolo resta piccolo.
+- **Togliere quello piccolo**, lasciando un solo dodecaedro, grande: le formule 3 e 4 sono entrambe vere. Con un solo oggetto ∀ ed ∃ dicono la stessa cosa: quell'unico oggetto ha la proprietà. Di solito il ∀ è una richiesta molto più forte dell'∃, ma con un oggetto solo coincidono.
+- **Togliere anche l'ultimo:** la formula 4 è **falsa**, e la formula 3 è **vera**.
 
-## L'implicazione si può riscrivere
-Un'ultima osservazione, a chiusura della lezione: l'implicazione A → B si può vedere in due modi equivalenti (per De Morgan):
-- come la **negazione di una congiunzione**: ¬(A ∧ ¬B), cioè «non è vero che l'ipotesi è vera e la tesi è falsa» (esclude l'unico caso che smentisce l'implicazione; in parole povere: l'implicazione fallisce solo quando A è vera e B è falsa);
-- come una **disgiunzione**: ¬A ∨ B, cioè «l'ipotesi è falsa oppure la tesi è vera», che elenca i tre casi in cui l'implicazione è vera (ipotesi falsa e tesi falsa; ipotesi falsa e tesi vera; ipotesi vera e tesi vera).
+Le formule 1 e 2 non parlano di dodecaedri, quindi nessuno di questi cambiamenti le tocca.
 
-Le due scritture sono equivalenti, e il docente preferisce presentarla come negazione di una congiunzione (questione di stile).
+## Il caso paradossale: nessun dodecaedro
+Perché la formula 3 è vera se non ci sono dodecaedri? Conviene chiedersi che cosa vorrebbe dire che è falsa: dovrebbe esistere un dodecaedro non grande. Ma se non ci sono dodecaedri non ce n'è neanche uno che possa smentirla. È l'implicazione vera per difetto del cap. 16: per ogni oggetto x l'ipotesi Dod(x) è falsa, quindi l'implicazione è vera.
 
-(In parole povere: «se A allora B» vuol dire «non può succedere che A sia vero e B falso», oppure «A è falso, oppure B è vero».)
+**Proposizione.** Una quantificazione universale su un insieme vuoto, qui quello dei dodecaedri, è sempre vera, una esistenziale è sempre falsa. Il dominio, cioè la scacchiera, resta non vuoto. In particolare, su un insieme vuoto il ∀ non implica l'∃.
 
-Con questo si chiude il capitolo 1 della Parte 2.
+(In parole povere: se in classe non c'è nessuno, «tutti i presenti hanno il libro» è vero, perché nessuno lo smentisce, mentre «c'è un presente con il libro» è falso. Nella vita di tutti i giorni diremmo che la prima frase non ha senso.)
+
+Il docente insiste sul punto: nel nostro linguaggio diremmo che l'affermazione non ha senso, ma nella logica ogni affermazione ha un valore di verità, a volte banale. La definizione dei quantificatori è rigida e non si sovrappone alla perfezione con il nostro modo di parlare. È un caso estremo: già con due o più oggetti il rapporto si rovescia, e l'∃ torna a essere la richiesta più facile da soddisfare.
+
+## L'implicazione vista in due modi
+A chiusura, rispondendo a una domanda, il docente riprende le due riscritture dell'implicazione già viste nel cap. 18. **A → B** si può scrivere:
+
+- come **negazione di una congiunzione**, ¬(A ∧ ¬B): non è vero che l'ipotesi è vera e la tesi è falsa, cioè si esclude l'unico caso che la smentisce;
+- come **disgiunzione**, ¬A ∨ B: l'ipotesi è falsa oppure la tesi è vera, che copre i tre casi in cui è vera.
+
+Si passa dall'una all'altra con De Morgan e la doppia negazione; scegliere quale usare, dice, è una questione di stile.
+
+(In parole povere: «se A allora B» vuol dire «non può succedere che A sia vero e B falso».)
+
+Con questo si chiude il capitolo 1 della seconda parte del corso; il prossimo passo sono le dimostrazioni.

@@ -1,57 +1,74 @@
-# 28. De Morgan con Più Quantificatori e Perché un Quantificatore è un Lavoro Infinito
-## Nota sulla fonte
-La Lezione 13 del 2026 (lunedì 26 ottobre) è una lezione di chiusura del capitolo 1 della Parte 2: esercizi sulle lezioni 07-12 (connettivi, quantificatori, regole logiche). La registrazione 2026 non è disponibile; i capitoli 28-30 si basano sulla registrazione della stessa lezione dell'anno precedente (16 ottobre 2025, stesso docente e stesso programma) e sulle pagine del testo del docente che compaiono nel video.
+# 28. Le Quattro Forme dei Quantificatori Annidati
+## Il quadro completo
+I capitoli 25-27 hanno mostrato i quantificatori annidati su molti esempi: la somma di due positivi e x + y = 0 nel cap. 25, il programma che li decide nel cap. 26, minimo, massimo, numeri composti e primi nel cap. 27. Qui si mette ordine: con due variabili le forme sono quattro, e per ciascuna serve sapere esattamente quando è vera e quando è falsa. Gli esempi già svolti non si ripetono: basta ritrovarli al capitolo indicato.
 
-## Portare le negazioni all'interno
-Davanti a una formula con più quantificatori si può usare la legge di De Morgan, esattamente come si fa davanti a una formula con congiunzioni e disgiunzioni: si porta la negazione sempre più all'interno. Regole, ricordate a lezione:
-- ogni volta che la negazione **scavalca una disgiunzione**, questa diventa una congiunzione, e viceversa;
-- quando due negazioni si toccano, si cancellano (doppia negazione);
-- quando si arriva a una **formula atomica** (una formula le cui parti non sono più formule, per esempio x·y < 1; in parole povere: una formula che non si può più spezzare in formule più semplici), si può usare la negazione «opposta» del confronto;
-- ogni volta che la negazione **scavalca un quantificatore**, il quantificatore cambia: ∀ diventa ∃ e ∃ diventa ∀.
+**Definizione.** Una funzione proposizionale a due variabili P(x, y) ha come **dominio del discorso** un prodotto cartesiano X × Y: la x prende valori in X e la y in Y.
 
-(In parole povere: la negazione «attraversa» i quantificatori e li capovolge, e a ogni passo la formula resta equivalente, cioè non cambia il suo valore di verità.)
+(In parole povere: il dominio è l'elenco di tutte le coppie che si possono provare. Se X e Y sono i reali, una coppia è un punto del piano; in un foglio di calcolo è una casella, riga x e colonna y.)
 
-Il motivo per cui conviene eliminare le negazioni è che per noi è difficile capire il significato di un «non»: è già faticoso immaginare quando succede qualcosa, e ancora di più quando non succede.
+## Le quattro definizioni
+**Definizione.** L'enunciato ∀x ∀y P(x, y) è **vero** se P(x, y) è vera per ogni coppia (x, y) del dominio. È **falso** se esiste almeno una coppia per cui P(x, y) è falsa.
 
-Le leggi di De Morgan per i quantificatori annidati sono:
-- ¬(∀x∃y P(x, y)) ≡ ∃x¬(∃y P(x, y)) ≡ ∃x∀y ¬P(x, y);
-- ¬(∃x∀y P(x, y)) ≡ ∀x¬(∀y P(x, y)) ≡ ∀x∃y ¬P(x, y).
+(In parole povere: tutte le caselle devono andare bene; ne basta una sbagliata per smentirlo. Esempi: «la somma di due positivi è positiva» è vero; «x > 0 e y < 0 implicano x + y ≠ 0» è falso, come mostra la coppia x = 1, y = −1. Il cap. 25 lo fa con i segni di x e y scambiati.)
 
-## Un esempio completo
-Si parte da **∃x∀y (xy < 1)**, con x e y numeri reali. È **vera**: basta scegliere x = 0, perché allora 0 · y = 0 < 1 per ogni y.
+**Definizione.** L'enunciato ∀x ∃y P(x, y) è **vero** se per ogni x del dominio esiste almeno una y per cui P(x, y) è vera. È **falso** se esiste una x per cui P(x, y) è falsa con tutte le y.
 
-Si nega: ¬(∃x∀y(xy < 1)). Passo per passo:
-1. la negazione scavalca ∃x e diventa ∀x¬(∀y(xy < 1));
-2. scavalca ∀y e diventa ∀x∃y¬(xy < 1);
-3. si arriva alla formula atomica: ¬(xy < 1) si scrive **xy ≥ 1**.
+(In parole povere: ogni riga deve contenere almeno una casella buona, e la casella può cambiare da riga a riga. Esempi nel cap. 25: x + y = 0 sui reali è vero, con y = −x; x > y sugli interi positivi è falso, per colpa di x = 1.)
 
-Si ottiene **∀x∃y(xy ≥ 1)**, che è **falsa**, perché equivalente alla negazione di una formula vera. Ed è facile vederlo anche direttamente: se la formula fosse vera per tutti gli x lo sarebbe anche per x = 0, ma in quel caso bisognerebbe trovare un y con 0 · y ≥ 1, cioè 0 ≥ 1, che è falso. Quindi x = 0 è un **controesempio** per la quantificazione universale: è lo stesso valore di x che rende vera la formula di partenza.
+**Definizione.** L'enunciato ∃x ∀y P(x, y) è **vero** se esiste una x per cui P(x, y) è vera con tutte le y. È **falso** se per ogni x esiste almeno una y per cui P(x, y) è falsa.
 
-## La negazione di un confronto
-Attenzione a come si nega un confronto. Dati due numeri a e b, i casi possibili sono tre: a < b, a = b, a > b. Se si nega a < b, restano gli altri due: a = b oppure a > b, cioè **a ≥ b**. Quindi **la negazione di «minore» è «maggiore o uguale»**, non «maggiore». Analogamente:
-- ¬(a < b) è a ≥ b;
-- ¬(a > b) è a ≤ b;
-- ¬(a ≤ b) è a > b;
-- ¬(a ≥ b) è a < b.
+(In parole povere: deve esserci una riga fatta solo di caselle buone. Esempi nel cap. 27: x ≤ y sugli interi positivi è vero, con x = 1, il minimo; x ≥ y è falso, perché x + 1 smentisce qualunque x.)
 
-Questa operazione ha la proprietà che, applicata due volte, riporta alla formula di partenza (si dice **involutiva**: «involvere» vuol dire tornare indietro). Come aveva osservato il docente, la negazione fa comparire l'uguale oppure lo toglie; è un'osservazione semplice ma utile anche in programmazione, quando si deve scrivere il test opposto di uno dei sei test di base (uguale, diverso, minore, maggiore, minore o uguale, maggiore o uguale).
+**Definizione.** L'enunciato ∃x ∃y P(x, y) è **vero** se esiste almeno una coppia (x, y) per cui P(x, y) è vera. È **falso** se P(x, y) è falsa per ogni coppia.
 
-(In parole povere: negare un confronto vuol dire prendere tutti i casi in cui il confronto è falso, uguaglianza compresa.)
+(In parole povere: basta una casella buona in tutta la griglia. Esempi nel cap. 27: «xy = 6 con x, y > 1» è vero con 2 e 3; con 7 al posto di 6 è falso, perché 7 è primo.)
 
-## Perché un quantificatore è un lavoro infinito
-Il corso non dimostra risultati importanti per l'algebra lineare o per l'intelligenza artificiale: si occupa di esempi molto semplici per capire che difficoltà incontra una macchina nello stabilire la verità di un'affermazione, specialmente con i quantificatori, che **non si possono verificare direttamente quando il dominio è infinito**.
+Conviene leggere le quattro definizioni in coppia. Nelle forme con i due quantificatori uguali conta solo se nella griglia ci sono caselle buone o cattive, non dove stanno. Le forme miste sono quelle delicate: ∀x ∃y permette di scegliere y dopo aver visto x, ∃x ∀y no, e per questo la seconda chiede molto di più (cap. 25).
 
-Per esempio, un controesempio basta per rendere falsa un'affermazione universale, ma se fosse vera bisognerebbe controllare infiniti casi. Altro esempio: per controllare che **non** esistano x e y maggiori di 1 con prodotto 7 (cioè che 7 sia primo) bisognerebbe, in linea di principio, provare tutti i numeri naturali. Con un ragionamento semplice si riduce il lavoro a un lavoro finito: basta guardare i numeri minori di 7, perché una scomposizione è fatta da due numeri entrambi più piccoli del numero dato. Ma ci vuole comunque **un ragionamento**: finché non si sa qualcosa di più sull'affermazione, un quantificatore richiede un lavoro infinito.
+## La negazione scambia le forme a coppie
+Le leggi di De Morgan si applicano un quantificatore per volta, dall'esterno verso l'interno: i passaggi sono nel cap. 27. Il risultato per le quattro forme è questo:
 
-(In parole povere: una macchina non può provare tutti i numeri a uno a uno, e per questo servono dei ragionamenti che dimostrino la verità in tutti i casi insieme.)
+- ¬(∀x ∀y P(x, y)) ≡ ∃x ∃y ¬P(x, y);
+- ¬(∀x ∃y P(x, y)) ≡ ∃x ∀y ¬P(x, y);
+- ¬(∃x ∀y P(x, y)) ≡ ∀x ∃y ¬P(x, y);
+- ¬(∃x ∃y P(x, y)) ≡ ∀x ∀y ¬P(x, y).
 
-## Le macchine possono ragionare con rigore?
-A lezione il docente ha fatto qualche cenno di curiosità, senza dimostrazioni. Il ragionamento logico rigoroso, senza errori, è molto più difficile da far fare a una macchina dei ragionamenti informali con una certa percentuale di errori, che oggi si sanno far fare con una certa facilità.
+Non c'è niente da imparare a memoria in più: ogni riga è la frase «è falso se…» della definizione corrispondente, scritta in simboli. La forma ∀∀ si scambia con ∃∃, la forma ∀∃ con ∃∀.
 
-Una prova che usa esplicitamente le regole logiche si chiama **prova formale** (in parole povere: una prova scritta con tutti i passaggi, senza saltare nulla); le prove della matematica di tutti i giorni non lo sono, e le prove formali sono molto più lunghe. Il rapporto fra la lunghezza della versione formale e quella della prova informale originaria si chiama **De Bruijn loss factor**. Circa 45 anni fa, quando si è cominciato a far fare queste prove a una macchina, era di circa 10-20; per le immagini, invece, il rapporto fra la rappresentazione completa e ciò di cui siamo consapevoli è enorme: un'immagine di circa un milione di punti, con tre byte per punto (rosso, verde e blu), occupa circa 24 milioni di cifre binarie, mentre noi la riassumiamo in una frase. Nel libro del docente si riporta che negli anni recenti (circa cinque anni fa, secondo il docente) il fattore è sceso a circa 4: con un fattore così piccolo le prove diventano quasi trattabili.
+Spesso dentro i quantificatori c'è un'implicazione. In quel caso, arrivati al predicato, si usa ¬(p → q) ≡ p ∧ ¬q (cap. 18). Per esempio, la negazione di ∀x ∀y ((x > 0 ∧ y > 0) → x + y > 0) è ∃x ∃y (x > 0 ∧ y > 0 ∧ x + y ≤ 0): «esistono due positivi con somma non positiva». Poiché l'enunciato di partenza è vero, questa negazione è falsa.
 
-Per l'informatica interessano soprattutto le prove di **correttezza di programmi** (per esempio di un ciclo), che sono prove piccole. I **proof assistant** sono programmi che aiutano a controllare queste prove (in parole povere: assistenti che verificano che ogni passaggio della prova sia valido). Gli esempi citati sono **Frama-C**, che serve a controllare che un programma C non abbia errori a tempo di esecuzione né deviazioni dalla specifica, e **Dafny**, accennato nel corso di Programmazione I e usato davvero nel corso di Metodi Formali dell'Informatica; il docente ha detto di non averli usati personalmente.
+## Il gioco logico
+C'è un modo divertente di decidere un enunciato con più quantificatori: immaginarlo come una partita a due, tu contro un avversario (nel libro si chiama Farley; l'idea è attribuita ad André Berthiaume). Tu vuoi rendere vera P, lui vuole renderla falsa. Le regole sono poche:
 
-Perché si fanno queste prove? Provare un programma su molti esempi, anche miliardi di esempi casuali, non basta: alcuni errori si manifestano in situazioni che nessuno ha ancora immaginato. L'unico modo per essere sicuri che il programma funzioni in tutti i casi è un ragionamento che valga per tutti gli infiniti casi, cioè un ragionamento con quantificatori, e si vorrebbe delegarlo il più possibile a una macchina. Gli errori nei programmi non si possono tollerare, perché possono costare molto (il docente ha ricordato il blocco del canale di Suez causato dalla guida automatica di una nave).
+- i quantificatori si leggono da sinistra a destra, uno per volta;
+- su un ∀ sceglie il valore l'avversario, su un ∃ lo scegli tu;
+- come mostra l'esempio, ciascuno vede le scelte già fatte;
+- alla fine si valuta P: se è vera vinci tu, se è falsa vince lui.
 
-Nei capitoli seguenti si fanno esercizi di ripasso: quiz con domini diversi e un esempio costruito con il «mondo di Tarski».
+**Proposizione.** Se tu hai un modo di vincere qualunque cosa faccia l'avversario, l'enunciato è vero; se è l'avversario ad avere un modo di vincere sempre, l'enunciato è falso.
+
+(In parole povere: il ∀ è una sfida che subisci, perché il valore lo decide chi vuole farti perdere; l'∃ è una mossa tua, perché il valore lo scegli tu.)
+
+**Esempio: ∀x ∃y (x + y = 0) sui reali.** L'avversario sceglie x; tu, che lo vedi, rispondi y = −x, e la somma fa 0. Vinci sempre, quindi l'enunciato è vero.
+
+**Esempio: ∃x ∀y (x + y = 0) sui reali.** Ora scegli prima tu la x, e l'avversario risponde. Se hai scelto x = 0, lui prende y = 1 e la somma vale 1; se hai scelto x ≠ 0, lui prende y = 0 e la somma vale x, che non è 0. Vince sempre lui, quindi l'enunciato è falso. La formula è la stessa di prima: è cambiato solo chi muove per primo.
+
+Perché il gioco funziona? Nel caso ∀x ∀y l'avversario sceglie entrambi i valori, quindi può vincere solo se esiste una coppia che rende P falsa, cioè un controesempio. Nel caso ∀x ∃y vinci se a ogni x sai opporre una y adatta, e perdi se esiste una x che rende P falsa con tutte le y: è proprio la definizione. Per le altre forme e per più variabili il libro afferma che il criterio resta valido, con le stesse regole, senza svolgere i dettagli.
+
+## Come dimostrare o confutare
+Da definizioni e gioco si ricava cosa fare in ciascuno degli otto casi:
+
+- **∀x ∀y vero:** si ragiona con x e y arbitrari e si mostra che P vale.
+- **∀x ∀y falso:** si trova una coppia con P falsa: bastano due valori.
+- **∀x ∃y vero:** si fissa x arbitrario e si trova una y, che può dipendere da x, con P vera.
+- **∀x ∃y falso:** si trova una sola x e poi, con y arbitraria, si mostra che P è sempre falsa.
+- **∃x ∀y vero:** si trova una sola x e poi, con y arbitraria, si mostra che P è sempre vera.
+- **∃x ∀y falso:** si fissa x arbitrario e si trova una y, che può dipendere da x, con P falsa.
+- **∃x ∃y vero:** si trova una coppia con P vera: bastano due valori.
+- **∃x ∃y falso:** si ragiona con x e y arbitrari e si mostra che P è falsa.
+
+Solo due casi su otto si chiudono esibendo due valori; negli altri c'è sempre una parte «arbitraria», e lì serve un ragionamento, non una prova su esempi. Si riconosce anche la simmetria con la negazione: confutare ∀x ∃y è la stessa ricetta che dimostrare ∃x ∀y, con ¬P al posto di P.
+
+Il secondo esempio del gioco si scrive così, seguendo la ricetta «∃x ∀y falso»: sia x un reale arbitrario; se x = 0 si sceglie y = 1, se x ≠ 0 si sceglie y = 0; in entrambi i casi x + y ≠ 0. Si noti che la y scelta dipende da x, ed è permesso.
+
+Il capitolo seguente passa agli esercizi di ripasso su De Morgan, domini e ordine dei quantificatori.
