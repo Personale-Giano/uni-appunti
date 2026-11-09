@@ -1,21 +1,22 @@
-# Stato dei riassunti (aggiornato il 4 nov 2026)
+# Stato dei riassunti (aggiornato il 9 nov 2026)
 
 I riassunti vivono nel sito (`quaderno-privato/contenuti/<materia>.json`, https://quaderno-privato.vercel.app). Questa pagina dice solo **dove siamo** e **cosa manca**; la storia completa fino al 3 nov 2026 è in `_sistema/archivio/STATO_storico_fino_3nov2026.md` (fonti usate per ogni capitolo, decisioni, correzioni).
 
 ## Situazione
 | Materia | Capitoli sul sito | Prossimo n. | Ultima lezione riassunta | Studiati (≥3 paragrafi evidenziati o segnati a mano) |
 |---|---|---|---|---|
-| Algebra lineare (Buzano/Radeschi) | 45 | **46** | L13 Sistemi lineari III, 4 nov (cap. 38-45: Gauss-Jordan, Rouché-Capelli, applicazioni) | 1-13 |
+| Algebra lineare (Buzano/Radeschi) | 48 | **49** | L14 Applicazioni lineari I, 9 nov (cap. 46-48: definizione, nucleo e immagine, teorema della dimensione) | 1-13 |
 | Matematica discreta (Mori) | 40 | **41** | L13 permutazioni, 3 nov (cap. 37-40: periodo come mcm, scambi, parità; il teorema della parità è solo enunciato) | 1-15 |
-| Fondamenti Info (Berardi) | 35 | **36** | L17 prove per contraddizione, 5 nov (cap. 28-35) | 1-27 |
+| Fondamenti Info (Berardi) | 36 | **37** | L18 fine §2.2, 9 nov (cap. 36: contrapposizione, casi, equivalenze) | 1-27 |
 | Programmazione I (Amparore) | 40 | **41** | slide 06B chiamata di funzione (cap. 30-34) e 07A algoritmi su array (cap. 35-40), lezioni fino al 4 nov | 1-29 (13 e 27-29 segnati a mano); da studiare 30-40 |
 | Laboratorio di Programmazione | 14 | **15** | Lab05A array e stringhe (cap. 13-14) | nessuno |
 
 La colonna «Studiati» la aggiorna il piano serale da `_sistema/evid_export.json` (le evidenziazioni le fa solo Emanuele, dal sito).
 
 ## Da riassumere
-- **Fondamenti L13-L17** (26, 29, 30 ott, 2 e 5 nov): cap. 28-35 scritti il 6 nov da titoli Moodle 2026, libro (§1.6, 2.1, 2.2, note riformulate in `fonti_testo/Fondamenti Info/libro_parte2_*_note.md`, non pubblicate) e registrazioni 2025, senza appunti né registrazioni 2026. Il materiale solo 2025 è segnato nei capitoli. Se arrivano appunti 2026, confrontare. Prossima: L18 (2025: fine §2.2).
+- **Fondamenti L13-L17** (26, 29, 30 ott, 2 e 5 nov): cap. 28-35 scritti il 6 nov da titoli Moodle 2026, libro (§1.6, 2.1, 2.2, note riformulate in `fonti_testo/Fondamenti Info/libro_parte2_*_note.md`, non pubblicate) e registrazioni 2025, senza appunti né registrazioni 2026. Il materiale solo 2025 è segnato nei capitoli. Se arrivano appunti 2026, confrontare. L18 (9 nov) = cap. 36, stesse fonti. Il docente ha già scritto su Moodle i resoconti di L19 (gio 12: §2.4 induzione, esempio 2.4.8) e L20 (ven 13: invariante della potenza, §2.5 induzione forte, esempi 2.5.1 e 2.5.4, esercizio 39 p. 98): servono i capitoli 2.4 e 2.5 del libro. Su Moodle c'è anche `esercizi_riassuntivi_conn_quant.pdf` (Cardone, 5 pagine, in `fonti/Fondamenti Info/`), non ancora usato.
 - **Algebra L11-L13 (30 ott, 2 e 4 nov)**: cap. 38-45 scritti dalle dispense (Sistemi lineari I-III) e integrati il 4 nov con lavagne e audio delle registrazioni 2025 (`fonti_testo/Algebra lineare/L11-13_lavagne_video2025.md`, 17, 20 e 27 ott 2025); le aggiunte sono segnate «registrazione 2025» nei capitoli. Da confermare, senza audio né appunti 2026, che quest'anno il docente abbia seguito lo stesso ordine. In `fonti/Algebra lineare/` anche `Foglio_1.pdf` ed `esami/` (appelli 2023-26 con soluzioni, 30 PDF: ancora da analizzare per una mappa d'esame).
+- **Algebra L14 (9 nov)**: cap. 46-48 scritti dalle dispense e integrati con tutte le lavagne e l'audio della registrazione del **30 ott 2024** (quella linkata su Moodle per L14: `audio/algebra_L14_2024.mp4`, `fonti_testo/Algebra lineare/L14_lavagne_video2024.md`); aggiunte segnate «registrazione 2024». Regola di Emanuele: per Algebra si leggono sempre tutte le lavagne.
 - **Registrazioni Fondamenti 2025** L13-L36 tutte in `audio/fondamenti_L*_2025.mp4` (corrispondenza con i nomi Webex in `_sistema/registrazioni_mappa.txt`). Prima di riassumere le lezioni successive servono i capitoli del libro. L13-L36 tutte trascritte con il trascrittore corretto il 5 nov (quelle del 3-5 nov erano rovinate da `hotwords`). **L23: dal minuto 70 l'audio è silenzio assoluto**, quindi la seconda parte della lezione non ha trascrizione.
 - **Trascrizioni più vecchie con almeno il 5% di frasi ripetute** (mai rifatte; i capitoli relativi esistono già): Algebra L2A, L2B (19%), L4B, L6A (11%), L6B, L8B; Fondamenti L8 (11%), L10, L12; Mate L5_B (16%), L7_B, L10 (12%). Si possono rifare con `trascrivi.py <file> --fast --rifai`.
 - **Mate discreta**: L13 (3 nov) fatta dalla sola registrazione di Emanuele (`trascrizioni/mate_L13.txt`, con chiacchiere vicine al microfono: non pubblicarla); manca la dimostrazione del teorema della parità, rimandata. Non c'è lezione MDAG giovedì 5 e venerdì 6 nov. Calendario vero: `fonti/Matematica discreta/ProspettoCorsoB.pdf` (su Moodle aggiornato il 29 ott: ripristinata la lezione del 12 nov). L'orario `orario_lezioni_B.txt` sbaglia le ore MDAG.
