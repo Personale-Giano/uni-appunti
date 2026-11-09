@@ -217,6 +217,9 @@ mark.ev{background:var(--mark);color:inherit;border-radius:3px;padding:.02em .08
 #evbar[hidden]{display:none}
 #evbar button{appearance:none;display:inline-flex;align-items:center;gap:.45rem;min-height:40px;padding:0 .9rem;border:0;border-radius:10px;background:var(--cod);color:var(--fg);cursor:pointer;font:inherit}
 #evbar button:hover{background:var(--mark)}#evbar button[hidden]{display:none}
+#evbar #evask{background:var(--mc);color:#fff}#evbar #evask:hover{filter:brightness(1.08);background:var(--mc)}
+:root[data-theme=dark] #evbar #evask{color:#10131a}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #evbar #evask{color:#10131a}}
 #evbar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .mkman{appearance:none;border:1px solid var(--lin);background:var(--card);color:var(--fg);border-radius:99px;padding:.2rem .7rem;font:600 12px system-ui,sans-serif;cursor:pointer}.mkman:hover{border-color:var(--ok);color:var(--ok)}
 @media (pointer:coarse) and (min-width:721px){#evbar{left:50%!important;top:auto!important;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%)}#evbar button{min-height:48px;padding:0 1.2rem;font-size:15px}}
@@ -383,10 +386,12 @@ function selInfo(){
   return items.length?{items:items,rect:rg.getBoundingClientRect()}:null;
 }
 function mostraBarra(){
-  var si=EV.admin?selInfo():null;if(!si){evbar.hidden=true;return}
+  var si=selInfo();if(!si){evbar.hidden=true;return}
   window.__si=si;
-  var tutto=si.items.every(function(it){return coperto(EV.b[it.id]||[],it.r,btext(it.b))});
-  $('#evadd').hidden=tutto;$('#evdel').hidden=!si.items.some(function(it){return tocca(EV.b[it.id]||[],it.r)});
+  if(EV.admin){
+    var tutto=si.items.every(function(it){return coperto(EV.b[it.id]||[],it.r,btext(it.b))});
+    $('#evadd').hidden=tutto;$('#evdel').hidden=!si.items.some(function(it){return tocca(EV.b[it.id]||[],it.r)});
+  }else{$('#evadd').hidden=true;$('#evdel').hidden=true}
   var r=si.rect;evbar.hidden=false;
   if(window.innerWidth>720&&!window.matchMedia('(pointer:coarse)').matches){var w=evbar.offsetWidth||150,top=r.top-52;if(top<70)top=r.bottom+10;evbar.style.top=Math.round(top)+'px';evbar.style.left=Math.round(Math.max(8,Math.min(window.innerWidth-w-8,r.left+r.width/2-w/2)))+'px'}
 }
@@ -409,12 +414,40 @@ function initAdmin(){
   refreshUI();
   main.addEventListener('click',function(e){var b=e.target.closest('.mkman');if(!b)return;var sec=b.closest('section.cap'),num=parseInt(sec.dataset.num,10);if(isNaN(num))return;var on=b.dataset.on!=='1';
     post({m:SLUG,cap:num,man:on}).then(function(j){EV.man=j.man||[];refreshUI();say(on?'Capitolo segnato come studiato':'Segno tolto',2200)}).catch(function(){say('Non riesco a salvare: riprova',3000)})});
-  document.addEventListener('selectionchange',function(){clearTimeout(selT);selT=setTimeout(mostraBarra,160)});
-  window.addEventListener('scroll',function(){if(!evbar.hidden){clearTimeout(selT);selT=setTimeout(mostraBarra,120)}},{passive:true});
-  evbar.addEventListener('pointerdown',function(e){e.preventDefault()});
   $('#evadd').addEventListener('click',function(){cambia('add')});$('#evdel').addEventListener('click',function(){cambia('del')});
   if(ls('riass-hint-admin')!=='1'){ls('riass-hint-admin','1');say('Sei amministratore: seleziona del testo per evidenziarlo. Le evidenziazioni si sincronizzano su tutti i dispositivi.',7000)}
 }
+/* ===== «Non ho capito»: apre Claude (sito o app, con l'account di chi legge) con una domanda già pronta ===== */
+function copia(t){
+  function vecchio(){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:-1000px;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a)}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(vecchio);else vecchio();
+}
+function domanda(si){
+  var sel=String(window.getSelection()).replace(/[ \t]+/g,' ').trim();if(sel.length>1500)sel=sel.slice(0,1500)+'…';
+  var b0=si.items[0].b,sec=b0.closest('section.cap'),h=sec&&sec.querySelector('h2'),tit=h?h.textContent.replace(/\s+/g,' ').trim():'';
+  var pz=[],pr=b0.previousElementSibling;
+  while(pr&&!(pr.dataset&&pr.dataset.b))pr=pr.previousElementSibling;
+  if(pr&&pr.tagName!=='H3')pz.push(btext(pr));
+  si.items.forEach(function(it){pz.push(btext(it.b))});
+  var ctx=pz.join('\n\n');if(ctx.length>2500)ctx=ctx.slice(0,2500)+'…';
+  return 'Sto studiando '+(body.dataset.nome||'')+' (corso di laurea in Informatica, Università di Torino, primo anno). '
+    +'Nel mio riassunto'+(tit?', nel capitolo «'+tit+'»,':'')+' non ho capito questa parte:\n\n«'+sel+'»\n\n'
+    +'Ecco il testo in cui si trova:\n\n'+ctx+'\n\n'
+    +'Spiegamela meglio, in modo semplice e passo per passo, con un esempio concreto, usando la stessa notazione del testo. '
+    +'Alla fine chiedimi se è chiaro o se vuoi che approfondisca qualcosa.';
+}
+function chiediClaude(){
+  var si=window.__si||selInfo();if(!si)return;
+  var q=domanda(si),url='https://claude.ai/new?q='+encodeURIComponent(q);
+  var w=window.open(url,'_blank');if(w){try{w.opener=null}catch(e){}}
+  copia(q);window.getSelection().removeAllRanges();evbar.hidden=true;
+  if(w)say('Ho aperto Claude con la domanda. Se non la vedi già scritta, è anche copiata: incollala nella chat.',7000);
+  else{say('La domanda è copiata. <a class="tb" id="evapri" href="'+url.replace(/"/g,'&quot;')+'" target="_blank" rel="noopener">Apri Claude</a> e incollala.',12000)}
+}
+document.addEventListener('selectionchange',function(){clearTimeout(selT);selT=setTimeout(mostraBarra,160)});
+window.addEventListener('scroll',function(){if(!evbar.hidden){clearTimeout(selT);selT=setTimeout(mostraBarra,120)}},{passive:true});
+evbar.addEventListener('pointerdown',function(e){e.preventDefault()});
+$('#evask').addEventListener('click',chiediClaude);
 fetch('/api/evid?m='+encodeURIComponent(SLUG),{credentials:'same-origin'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(j){
   EV.b=j.b||{};EV.man=j.man||[];EV.admin=!!j.admin;
   blocchi().forEach(function(b){var r=EV.b[b.dataset.b];if(r&&r.length)mark(b,r)});
@@ -479,6 +512,8 @@ IC_TEMA = ('<svg class="t-auto" viewBox="0 0 24 24" aria-hidden="true"><circle c
            '<svg class="t-light" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>'
            '<svg class="t-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>')
 IC_PENNA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19zM14 7l3 3"/></svg>'
+IC_CHIEDI = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.1A8 8 0 1 1 20 12z"/>'
+             '<path d="M9.7 9.6a2.4 2.4 0 0 1 4.6.9c0 1.6-2.3 2-2.3 3.3M12 16.6v.1"/></svg>')
 IC_GOMMA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 19h11M5.5 14.5l7-7a2 2 0 0 1 2.8 0l1.7 1.7a2 2 0 0 1 0 2.8L11 18H8l-2.5-2.5a1 1 0 0 1 0-1z"/></svg>'
 IC_SU = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></svg>'
 ETICHETTE = ["Da studiare", "Iniziato", "Studiato"]
@@ -629,8 +664,9 @@ def main(argv):
         corpo = (f'<body data-slug="{slug}" data-nome="{html.escape(nome, quote=True)}" style="--mcl:{cl};--mcd:{cd}"><a class="skip" href="#main">Vai al contenuto</a>{top}'
                  f'<div class="wrap"><nav class="toc"><h4>Capitoli</h4>{"".join(voci)}</nav>'
                  f'<main id="main">{hero}{render_blocchi(dati.get("preambolo", []))}{"".join(sezioni)}</main><aside class="rail"></aside></div>'
-                 '<div id="evbar" hidden role="toolbar" aria-label="Evidenziazione"><button id="evadd" type="button">' + IC_PENNA + 'Evidenzia</button>'
-                 '<button id="evdel" type="button">' + IC_GOMMA + 'Togli</button></div>'
+                 '<div id="evbar" hidden role="toolbar" aria-label="Testo selezionato"><button id="evadd" type="button" hidden>' + IC_PENNA + 'Evidenzia</button>'
+                 '<button id="evdel" type="button" hidden>' + IC_GOMMA + 'Togli</button>'
+                 '<button id="evask" type="button" title="Apre Claude con una domanda già pronta su questa parte">' + IC_CHIEDI + 'Non ho capito</button></div>'
                  '<button id="totop" type="button" aria-label="Torna in cima">' + IC_SU + '</button>'
                  '<div id="scrim"></div><div id="mbar"><button id="mprev" type="button" aria-label="Capitolo precedente">&lsaquo;</button>'
                  '<button id="mcap" type="button" aria-label="Elenco dei capitoli">Capitoli</button>'
