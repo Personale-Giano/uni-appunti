@@ -592,7 +592,7 @@ def main(argv):
     cont = Path(argv[2]) if len(argv) > 2 else dest.parent / "contenuti"
     base = dest / "riassunti"
     (base / "img").mkdir(parents=True, exist_ok=True)
-    # Spazio separato (es. il Quaderno di Leonardo): la cartella dei contenuti ha uno spazio.json con titolo e materie.
+    # Spazio separato (il Quaderno di chi fa un altro corso): la cartella dei contenuti ha uno spazio.json con titolo e materie.
     # Senza spazio.json è il Quaderno principale, con le materie e i colori di sempre.
     conf_f = cont / "spazio.json"
     spazio = json.loads(conf_f.read_text(encoding="utf-8")) if conf_f.exists() else None
