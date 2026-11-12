@@ -177,6 +177,19 @@ def main():
         print(r.stderr); return 1
     tot = sum(f.stat().st_size for f in dest.rglob("*") if f.is_file()) / 1048576
     print(f"protected/ pronta: {tot:.1f} MB")
+    # Spazi separati (Quaderni di chi fa un altro corso): contenuti in spazi_contenuti/<nome>/ con spazio.json,
+    # pagine generate in protected/_spazi/<nome>/. Chi li vede lo decide il campo "spazio" dell'utente (scripts/utenti.js spazio).
+    spazi_cont = repo / "spazi_contenuti"
+    if spazi_cont.exists():
+        for sc in sorted(x for x in spazi_cont.iterdir() if x.is_dir() and (x / "spazio.json").exists()):
+            sd = dest / "_spazi" / sc.name   # dentro protected/: vedi lib/spazi.js del sito
+            if sd.exists():
+                shutil.rmtree(sd, ignore_errors=True)
+            sd.mkdir(parents=True, exist_ok=True)
+            r = subprocess.run([py, "-X", "utf8", "-W", "ignore", str(SCRIPTS / "riassunti_html.py"), str(sd), str(sc)], capture_output=True, text=True, encoding="utf-8")
+            if r.returncode:
+                print(f"spazio {sc.name}: errore\n{r.stderr}"); return 1
+            print(f"spazio {sc.name}: " + (r.stdout.strip().replace("\n", "; ") or "nessuna materia per ora"))
     problemi = controlli(repo, dest)
     if problemi and not a.force:
         print("\nCONTROLLI NON SUPERATI (non pubblico):")

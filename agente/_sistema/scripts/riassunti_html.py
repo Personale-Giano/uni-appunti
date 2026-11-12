@@ -592,9 +592,25 @@ def main(argv):
     cont = Path(argv[2]) if len(argv) > 2 else dest.parent / "contenuti"
     base = dest / "riassunti"
     (base / "img").mkdir(parents=True, exist_ok=True)
-    opzioni = "".join(f'<option value="{s}.html">{html.escape(n)}</option>' for s, n, _f, _k in MATERIE)
+    # Spazio separato (es. il Quaderno di Leonardo): la cartella dei contenuti ha uno spazio.json con titolo e materie.
+    # Senza spazio.json è il Quaderno principale, con le materie e i colori di sempre.
+    conf_f = cont / "spazio.json"
+    spazio = json.loads(conf_f.read_text(encoding="utf-8")) if conf_f.exists() else None
+    if spazio:
+        chiari = ["#2744a8", "#b8302c", "#16703f", "#b25a0a", "#7a4fb5", "#0e7490"]
+        scuri = ["#8fadff", "#ff9188", "#70dca2", "#ffb866", "#c3a6ff", "#67e8f9"]
+        materie = [(m["slug"], m["nome"], "", "") for m in spazio.get("materie", [])]
+        colori = {m["slug"]: tuple(m.get("colori") or (chiari[i % 6], scuri[i % 6])) for i, m in enumerate(spazio.get("materie", []))}
+        indietro = '<a class="back" href="./" aria-label="Torna all&rsquo;elenco delle materie">&larr; Materie</a>'
+        # la radice dello spazio non ha il Quaderno dei quiz: porta direttamente all'elenco delle materie
+        (dest / "index.html").write_text('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=riassunti/">'
+                                         '<title>Quaderno</title><a href="riassunti/">Apri il Quaderno</a>', encoding="utf-8")
+    else:
+        materie, colori = MATERIE, COLORI
+        indietro = '<a class="back" href="../" aria-label="Torna al Quaderno">&larr; Quaderno</a>'
+    opzioni = "".join(f'<option value="{s}.html">{html.escape(n)}</option>' for s, n, _f, _k in materie)
     meta, schede = {}, []
-    for slug, nome, _f, _k in MATERIE:
+    for slug, nome, _f, _k in materie:
         fj = cont / f"{slug}.json"
         if not fj.exists():
             print("manca", fj); continue
@@ -647,7 +663,7 @@ def main(argv):
             sezioni.append(f'<section class="cap" id="{cp["id"]}" data-num="{cp["num"] if cp["num"] is not None else ""}">'
                            f'{titolo}{meta_cap}{render_blocchi(cp["blocks"])}{nav}</section>')
         top = ('<header class="top"><div class="top-in">'
-               '<a class="back" href="../" aria-label="Torna al Quaderno">&larr; Quaderno</a>'
+               + indietro +
                f'<span class="mat">{html.escape(nome)}</span><span class="cur" id="cur"></span>'
                '<div class="search">' + IC_CERCA + '<input id="q" type="search" placeholder="Cerca nel testo   ( / )" aria-label="Cerca nel testo" autocomplete="off">'
                '<span class="n" id="cnt"></span><button id="sp" type="button" title="Precedente (Maiusc+Invio)">&uarr;</button><button id="sn" type="button" title="Successivo (Invio)">&darr;</button></div>'
@@ -660,7 +676,7 @@ def main(argv):
                '<button class="sw-btn" id="hl" type="button" role="switch" aria-checked="true" title="Mostra o nascondi le evidenziazioni (h)"><span class="sw"></span><span>Evidenziazioni</span></button>'
                '<button class="ibtn" id="theme" type="button" data-t="auto">' + IC_TEMA + '<span class="lbl">Tema</span></button></div>'
                '</div><div id="prog"></div></header>')
-        cl, cd = COLORI[slug]
+        cl, cd = colori[slug]
         corpo = (f'<body data-slug="{slug}" data-nome="{html.escape(nome, quote=True)}" style="--mcl:{cl};--mcd:{cd}"><a class="skip" href="#main">Vai al contenuto</a>{top}'
                  f'<div class="wrap"><nav class="toc"><h4>Capitoli</h4>{"".join(voci)}</nav>'
                  f'<main id="main">{hero}{render_blocchi(dati.get("preambolo", []))}{"".join(sezioni)}</main><aside class="rail"></aside></div>'
@@ -679,21 +695,32 @@ def main(argv):
     (dest / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     cards = ""
     for s, n, k, _m, tmin in schede:
-        cl, cd = COLORI[s]
+        cl, cd = colori[s]
         cards += (f'<a class="mcard" href="{s}.html" data-slug="{s}" data-lett="{durata(tmin)}" style="--mcl:{cl};--mcd:{cd}">'
                   f'<div class="mc-top"><span class="mc-nm">{html.escape(n)}</span><span class="mc-pct">&nbsp;</span></div>'
                   f'<div class="bar"><i style="width:0%"></i></div>'
                   f'<div class="mc-sub">{k} capitoli &middot; circa {durata(tmin)} di lettura</div>'
                   f'<div class="mc-next">&nbsp;</div><span class="mc-go">Apri &rarr;</span></a>')
     ora = datetime.now().strftime("%d/%m/%Y alle %H:%M")
+    if spazio:
+        titolo_idx = html.escape(spazio.get("titolo", "Il tuo Quaderno"))
+        testa = ('<span class="mat">' + titolo_idx + '</span><span class="grow"></span>'
+                 '<button class="ibtn" id="esci" type="button" aria-label="Esci">Esci</button>')
+        uscita = ("<script>document.getElementById('esci').onclick=function(){fetch('/api/logout',{method:'POST',credentials:'same-origin'})"
+                  ".finally(function(){location.href='/login.html'})}</script>")
+        vuoto = '' if cards else ('<p class="lead">Le materie del tuo corso sono in preparazione: compariranno qui appena pronti i primi riassunti.</p>')
+    else:
+        titolo_idx = "Riassunti"
+        testa = '<a class="back" href="../" aria-label="Torna al Quaderno">&larr; Quaderno</a><span class="mat">Riassunti</span><span class="grow"></span>'
+        uscita = vuoto = ""
     idx = ('<body><a class="skip" href="#main">Vai al contenuto</a>'
-           '<header class="top idx-top"><div class="top-in"><a class="back" href="../" aria-label="Torna al Quaderno">&larr; Quaderno</a><span class="mat">Riassunti</span><span class="grow"></span>'
+           '<header class="top idx-top"><div class="top-in">' + testa +
            '<button class="ibtn" id="theme" type="button" data-t="auto" aria-label="Cambia tema">' + IC_TEMA + '</button></div></header>'
-           '<div class="idx" id="main"><h1>Riassunti</h1><p class="lead">Scegli una materia: il pulsante ti porta al primo capitolo che non hai ancora studiato.</p>'
+           f'<div class="idx" id="main"><h1>{titolo_idx}</h1><p class="lead">Scegli una materia: il pulsante ti porta al primo capitolo che non hai ancora studiato.</p>{vuoto}'
            f'<div id="resume"></div><div class="grid">{cards}</div>'
            f'<p class="foot">Aggiornato il {ora}. Nella pagina di lettura: <kbd>/</kbd> cerca, <kbd>j</kbd> e <kbd>k</kbd> cambiano capitolo, <kbd>h</kbd> mostra o nasconde le evidenziazioni.</p></div>'
-           f'<script>{JS_INDICE}</script></body>')
-    (base / "index.html").write_text(pagina("Riassunti", "", idx), encoding="utf-8")
+           f'<script>{JS_INDICE}</script>{uscita}</body>')
+    (base / "index.html").write_text(pagina(spazio.get("titolo", "Il tuo Quaderno") if spazio else "Riassunti", "", idx), encoding="utf-8")
     return 0
 
 
