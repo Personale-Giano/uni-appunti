@@ -76,6 +76,9 @@ def parti_da_testo(riga):
     return parts
 
 
+CONT = "contenuti"  # cartella dei contenuti nel repo; con --spazio diventa spazi_contenuti/<nome>
+
+
 def figura(percorso, larg_cm, repo, prova=False):
     img = Path(percorso)
     if not img.is_absolute():
@@ -85,7 +88,7 @@ def figura(percorso, larg_cm, repo, prova=False):
     blob = img.read_bytes()
     nome = hashlib.sha1(blob).hexdigest()[:14] + img.suffix.lower()
     if not prova:  # con --dry-run/--anteprima non si copia niente nel repo del sito
-        dest = repo / "contenuti" / "img"
+        dest = repo / CONT / "img"
         dest.mkdir(parents=True, exist_ok=True)
         (dest / nome).write_bytes(blob)
     from PIL import Image
@@ -160,17 +163,33 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--anteprima", action="store_true", help="stampa il testo convertito dei blocchi (da dare al revisore) senza scrivere")
     ap.add_argument("--forza", action="store_true", help="inserisce anche se lint_bozza.py trova errori")
+    ap.add_argument("--spazio", help="spazio separato (es. nome dello spazio): contenuti in spazi_contenuti/<spazio>/; la materia deve essere in spazio.json")
     ap.add_argument("--sostituisci", action="store_true", help="rimpiazza un capitolo già sul sito, solo se non ha evidenziazioni (export recente, meno di 30 minuti)")
     a = ap.parse_args()
     slug = ALIAS.get(a.materia.lower(), a.materia.lower())
     repo = Path(a.repo)
-    fj = repo / "contenuti" / f"{slug}.json"
-    if not fj.exists():
+    global CONT
+    if a.spazio:
+        CONT = f"spazi_contenuti/{a.spazio}"
+        conf = json.loads((repo / CONT / "spazio.json").read_text(encoding="utf-8"))
+        mat = next((m for m in conf.get("materie", []) if m["slug"] == slug), None)
+        if not mat:
+            sys.exit(f"La materia {slug} non è in {CONT}/spazio.json")
+        if a.sostituisci:  # le evidenziazioni degli spazi non sono nell'export: niente sostituzioni automatiche
+            sys.exit("--sostituisci non è disponibile negli spazi: le evidenziazioni non sarebbero controllate")
+    fj = repo / CONT / f"{slug}.json"
+    if a.spazio and not fj.exists() and not (a.dry_run or a.anteprima):
+        fj.write_text(json.dumps({"slug": slug, "nome": mat["nome"], "chiave": mat["nome"], "preambolo": [], "capitoli": []},
+                                 ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"creato {fj}")
+    if not fj.exists() and a.spazio:
+        dati_vuoti = {"capitoli": []}
+    elif not fj.exists():
         sys.exit(f"Materia sconosciuta o contenuti mancanti: {fj}")
     src = Path(a.bozza)
     if not src.exists():
         sys.exit(f"Bozza non trovata: {src}")
-    dati = json.loads(fj.read_text(encoding="utf-8"))
+    dati = json.loads(fj.read_text(encoding="utf-8")) if fj.exists() else dati_vuoti
     # titolo e numero dalla prima riga "# "
     prima = next((r for r in src.read_text(encoding="utf-8").splitlines() if r.startswith("# ")), None)
     if not prima:
@@ -217,12 +236,14 @@ def main():
         sys.exit(f"{len(errori)} errori nella bozza: correggili (o rilancia con --forza se sono voluti)")
     bk = BASE / "backup"
     bk.mkdir(exist_ok=True)
-    shutil.copy2(fj, bk / f"{slug}_contenuti_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
+    shutil.copy2(fj, bk / f"{(a.spazio + '_') if a.spazio else ''}{slug}_contenuti_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
     nuovo_cap = {"id": cap_id, "num": n, "titolo": titolo, "blocks": blocks}
     if esiste:
         dati["capitoli"] = [nuovo_cap if c["num"] == n else c for c in dati["capitoli"]]
     else:
         dati["capitoli"].append(nuovo_cap)
+        if a.spazio:  # negli spazi i capitoli seguono il libro e possono arrivare in ordine sparso
+            dati["capitoli"].sort(key=lambda c: c["num"] or 0)
     # stesso formato del file originale (fondamenti.json è indentato, gli altri compatti): diff piccoli
     indentato = fj.read_text(encoding="utf-8").startswith("{\n")
     fj.write_text(json.dumps(dati, ensure_ascii=False, indent=2, separators=(",", ": ")) if indentato
