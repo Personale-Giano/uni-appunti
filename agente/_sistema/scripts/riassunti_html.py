@@ -605,7 +605,7 @@ def main(argv):
         materie = [(m["slug"], m["nome"], "", "") for m in spazio.get("materie", [])]
         colori = {m["slug"]: tuple(m.get("colori") or (chiari[i % 6], scuri[i % 6])) for i, m in enumerate(spazio.get("materie", []))}
         indietro = '<a class="back" href="./" aria-label="Torna all&rsquo;elenco delle materie">&larr; Materie</a>'
-        # la radice dello spazio non ha il Quaderno dei quiz: porta direttamente all'elenco delle materie
+        # segnaposto: pubblica_quaderno.py lo sostituisce con la homepage dello spazio (quiz, schede, domande)
         (dest / "index.html").write_text('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=riassunti/">'
                                          '<title>Quaderno</title><a href="riassunti/">Apri il Quaderno</a>', encoding="utf-8")
     else:
@@ -707,7 +707,7 @@ def main(argv):
     ora = datetime.now().strftime("%d/%m/%Y alle %H:%M")
     if spazio:
         titolo_idx = html.escape(spazio.get("titolo", "Il tuo Quaderno"))
-        testa = ('<span class="mat">' + titolo_idx + '</span><span class="grow"></span>'
+        testa = ('<a class="back" href="../" aria-label="Torna al Quaderno">&larr; Quaderno</a><span class="mat">' + titolo_idx + '</span><span class="grow"></span>'
                  '<button class="ibtn" id="esci" type="button" aria-label="Esci">Esci</button>')
         uscita = ("<script>document.getElementById('esci').onclick=function(){fetch('/api/logout',{method:'POST',credentials:'same-origin'})"
                   ".finally(function(){location.href='/login.html'})}</script>")
