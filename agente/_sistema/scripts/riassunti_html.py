@@ -604,7 +604,7 @@ def main(argv):
         scuri = ["#8fadff", "#ff9188", "#70dca2", "#ffb866", "#c3a6ff", "#67e8f9"]
         materie = [(m["slug"], m["nome"], "", "") for m in spazio.get("materie", [])]
         colori = {m["slug"]: tuple(m.get("colori") or (chiari[i % 6], scuri[i % 6])) for i, m in enumerate(spazio.get("materie", []))}
-        indietro = '<a class="back" href="./" aria-label="Torna all&rsquo;elenco delle materie">&larr; Materie</a>'
+        indietro = '<a class="back" href="../" aria-label="Torna al Quaderno">&larr; Quaderno</a>'   # come nel Quaderno principale: alla homepage dello spazio
         # segnaposto: pubblica_quaderno.py lo sostituisce con la homepage dello spazio (quiz, schede, domande)
         (dest / "index.html").write_text('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=riassunti/">'
                                          '<title>Quaderno</title><a href="riassunti/">Apri il Quaderno</a>', encoding="utf-8")
