@@ -72,6 +72,8 @@ main{min-width:0;padding-bottom:6rem}
 main h2{color:var(--tit);font-size:1.7rem;line-height:1.25;margin:3.2rem 0 .8rem;padding-top:1.2rem;border-top:2px solid var(--lin);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:750;letter-spacing:-.01em}
 main section.cap:first-child h2{margin-top:.8rem;border-top:0;padding-top:0}
 main h3{color:var(--sub);font-size:1.12rem;margin:2rem 0 .3rem;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700}
+main h4{color:var(--fg);font-size:1rem;margin:1.5rem 0 .25rem;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:650;padding-left:.6rem;border-left:3px solid var(--lin)}
+aside.rail a.sub{padding-left:1.4rem;font-size:.93em}
 p{margin:.7rem 0;hyphens:auto;-webkit-hyphens:auto}ul,ol{margin:.6rem 0;padding-left:1.5rem}li{margin:.28rem 0}
 mark{background:var(--mark);color:inherit;border-radius:3px;padding:.02em .08em}body.nomark mark{background:none}
 code,pre{font:.8em/1.5 "Cascadia Mono",Consolas,"SFMono-Regular",Menlo,monospace}code{background:var(--cod);padding:.05em .3em;border-radius:4px}
@@ -198,9 +200,9 @@ select.tb.mats{height:36px;max-width:13rem;border-radius:10px;font-weight:700;co
 /* ---- riquadro "In parole povere", link alle sezioni, torna su ---- */
 main p.pp{margin:1.1rem 0;padding:.85rem 1rem .9rem;border-radius:12px;background:var(--cod);background:color-mix(in srgb,var(--ok) 10%,var(--card));border:1px solid color-mix(in srgb,var(--ok) 30%,var(--lin));border-left:4px solid var(--ok)}
 main p.pp::before{content:"In parole povere";display:block;font:700 11px/1 system-ui,-apple-system,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--ok);margin-bottom:.45rem}
-main h2,main h3{position:relative}
+main h2,main h3,main h4{position:relative}
 .ha{position:absolute;left:-1.7rem;top:0;opacity:0;font:600 .9rem system-ui,sans-serif;text-decoration:none;color:var(--mut);padding:.1rem .35rem;border-radius:6px}.ha::before{content:"#"}
-main h2:hover .ha,main h3:hover .ha,.ha:focus{opacity:1}.ha:hover{color:var(--mc);background:var(--cod)}
+main h2:hover .ha,main h3:hover .ha,main h4:hover .ha,.ha:focus{opacity:1}.ha:hover{color:var(--mc);background:var(--cod)}
 #totop{position:fixed;right:1.3rem;bottom:1.4rem;z-index:25;width:46px;height:46px;border-radius:50%;border:1px solid var(--lin);background:var(--card);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 20px #0004;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s,transform .2s}
 #totop.on{opacity:1;pointer-events:auto;transform:none}#totop svg{width:22px;height:22px;stroke-width:2.2}
 @media (max-width:900px){.ha{display:none}#totop{bottom:calc(84px + env(safe-area-inset-bottom));right:.9rem}}
@@ -260,8 +262,8 @@ $('#mats').addEventListener('change',function(e){if(e.target.value&&e.target.val
 /* capitolo attivo, indice, barra di avanzamento */
 var q=$('#q'),links=$$('a[data-cap]',toc),active=-1,hs=[],railLinks=[],ticking=false,cur=$('#cur'),prog=$('#prog'),mc=$('#mcap'),mp=$('#mprev'),mn=$('#mnext'),ctrls=$('#ctrls'),scrim=$('#scrim');
 function buildRail(i){
-  rail.innerHTML='<h4>In questo capitolo</h4>';hs=$$('h3',caps[i]);railLinks=[];
-  hs.forEach(function(h){var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;rail.appendChild(a);railLinks.push(a)});
+  rail.innerHTML='<h4>In questo capitolo</h4>';hs=$$('h3,h4',caps[i]);railLinks=[];
+  hs.forEach(function(h){var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;if(h.tagName==='H4')a.className='sub';rail.appendChild(a);railLinks.push(a)});
   if(!hs.length)rail.innerHTML='';
 }
 function update(){
@@ -572,9 +574,9 @@ def render_blocchi(blocchi):
         if t == "p":
             cls = f' class="{b["c"]}"' if b.get("c") else ""
             out.append(f'<p{cls} data-b="{b["b"]}">{b["h"]}</p>')
-        elif t == "h3":
+        elif t in ("h3", "h4"):
             hid = b["b"].replace(".", "-")
-            out.append(f'<h3 id="{hid}">{b["h"]}<a class="ha" href="#{hid}" aria-label="Copia il link a questa sezione"></a></h3>')
+            out.append(f'<{t} id="{hid}">{b["h"]}<a class="ha" href="#{hid}" aria-label="Copia il link a questa sezione"></a></{t}>')
         elif t == "pre":
             out.append(f'<pre data-b="{b["b"]}"><code>{b["h"]}</code></pre>')
         elif t == "fig":
@@ -625,7 +627,7 @@ def main(argv):
                         shutil.copy2(srcf, base / "img" / b["src"])
         nfig = sum(1 for c in caps for b in c["blocks"] if b.get("t") == "fig")
         for cp in caps:
-            testi = [testo_semplice(b["h"]) for b in cp["blocks"] if b["t"] in ("p", "li", "pre", "h3")]
+            testi = [testo_semplice(b["h"]) for b in cp["blocks"] if b["t"] in ("p", "li", "pre", "h3", "h4")]
             cp["min"] = max(1, round(sum(len(x.split()) for x in testi) / 190))
             cp["tot"] = sum(1 for b in cp["blocks"] if b["t"] in ("p", "li", "pre"))
         tot_min = sum(cp["min"] for cp in caps)
