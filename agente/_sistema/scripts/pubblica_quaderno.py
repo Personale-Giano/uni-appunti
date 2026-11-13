@@ -5,6 +5,7 @@ Vercel pubblica da solo ogni volta che il repo riceve un nuovo commit.
 Uso:  python pubblica_quaderno.py [--repo CARTELLA] [--push] [--no-build]
 """
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -106,6 +107,53 @@ def adatta(html):
     return html + chr(10) + LOGOUT_JS + chr(10)
 
 
+# Homepage di uno spazio separato: la stessa app del Quaderno principale con i dati dello spazio
+# (costruisci_quaderno_spazio.py) e qualche ritocco: materie dello spazio, «Domande» aperte al posto dei problemi,
+# niente esercizi generati né statistiche d'esame di Matematica discreta.
+CSS_SPAZIO = "<style>#freq-card,#pr-gen{display:none!important}</style>"
+TESTI_SPAZIO = [
+    (" Le soluzioni ufficiali in PDF hanno qualche errore: dove l'ho trovato lo segnalo.", " Ogni domanda ha la spiegazione subito dopo la risposta e il link al capitolo da rivedere."),
+    (": 'Tutti gli argomenti presenti nel Word sono coperti.';", ": '';"),
+    ('<span class="kbd">1</span>–<span class="kbd">5</span> rispondi', '<span class="kbd">1</span>–<span class="kbd">4</span> rispondi'),
+    ('aria-controls="tab-problemi" tabindex="-1">Problemi</button>', 'aria-controls="tab-problemi" tabindex="-1">Domande</button>'),
+    ('<span>Problemi</span>', '<span>Domande</span>'),
+    ('aria-label="Problemi" aria-labelledby="t-problemi"', 'aria-label="Domande aperte" aria-labelledby="t-problemi"'),
+    ("<h1>Problemi d'esame</h1><p class=\"muted\">I 30 problemi delle prove 2024-2026, con soluzione. Prima provi tu, poi guardi e dici com'è andata: i temi dove sbagli tornano più spesso.</p>",
+     "<h1>Domande aperte</h1><p class=\"muted\">Le domande di ripasso di ogni capitolo, come all'esame orale. Prima rispondi tu, a voce o per iscritto, poi guardi la risposta e dici com'è andata: i capitoli dove sbagli tornano più spesso.</p>"),
+    ('>Dammi un problema<', '>Dammi una domanda<'),
+    ('Prova a svolgerlo su carta, poi guarda la soluzione.', 'Prova a rispondere a voce o per iscritto, poi guarda la risposta.'),
+    ('<p>La soluzione compare qui, quando sei pronto.</p>', '<p>La risposta compare qui, quando sei pronto.</p>'),
+    (' Mostra la soluzione</button>', ' Mostra la risposta</button>'),
+    ('<div class="sol-h">Soluzione</div>', '<div class="sol-h">Risposta</div>'),
+    ('<b>Non sono riuscito</b>', '<b>Non la sapevo</b>'),
+    ('<b>Con dubbi o errori</b>', '<b>La sapevo in parte</b>'),
+    ('<b>Svolto bene</b>', '<b>La sapevo bene</b>'),
+    ("la sessione ti propone domande nuove ed esercizi generati.", "la sessione ti propone domande nuove."),
+    ("poi domande scelte tra i tuoi punti deboli e il peso all\\'esame, poi qualche esercizio nuovo.", "poi domande scelte tra i tuoi punti deboli."),
+    ("Nessun errore registrato: ottimo inizio. Fai un quiz o un problema e qui compaiono i temi da rivedere.",
+     "Nessun errore registrato: ottimo inizio. Fai un quiz o rispondi a qualche domanda e qui compaiono i capitoli da rivedere."),
+]
+
+
+def homepage_spazio(sc, sd, py):
+    r = subprocess.run([py, "-X", "utf8", str(SCRIPTS / "costruisci_quaderno_spazio.py"), str(sc), str(sd)], capture_output=True, text=True, encoding="utf-8")
+    if r.returncode:
+        raise RuntimeError(r.stderr)
+    info = json.loads(r.stdout.strip().splitlines()[-1])
+    html = adatta((PAG / "index.html").read_text(encoding="utf-8"))
+    mats = info["mats"]
+    html = sostituisci(html, r"const MATS = \[[^\]]*\];", lambda m: "const MATS = " + json.dumps(mats, ensure_ascii=False) + ";", "materie dei quiz", regex=True)
+    html = sostituisci(html, r"const SIM = \{.*?\};\n", lambda m: "const SIM = " + json.dumps({x: {"n": 20, "min": 30} for x in mats}, ensure_ascii=False) + ";\n", "simulazione", regex=True)
+    html = sostituisci(html, RSLUG, "const RSLUG = " + json.dumps(info["rslug"], ensure_ascii=False) + ";", "RSLUG dello spazio")
+    html = sostituisci(html, r"const inv = \{[^}]*\};", lambda m: "const inv = " + json.dumps(info["rslug"], ensure_ascii=False) + ";", "materie dell'avanzamento", regex=True)
+    for a, b in TESTI_SPAZIO:
+        html = sostituisci(html, a, b, "testo: " + a[:40])
+    html = sostituisci(html, "</style>", "</style>" + CSS_SPAZIO, "stile dello spazio")
+    (sd / "index.html").write_text(html, encoding="utf-8")
+    c = info["conti"]
+    return f"homepage con {c['quiz']} quiz, {c['schede']} schede, {c['domande']} domande aperte"
+
+
 def controlli(repo, dest):
     """Prima di pubblicare: pagine non vuote e nessun capitolo in meno rispetto all'ultima versione pubblicata
     (protegge da un Word aperto a metà o danneggiato)."""
@@ -190,6 +238,10 @@ def main():
             if r.returncode:
                 print(f"spazio {sc.name}: errore\n{r.stderr}"); return 1
             print(f"spazio {sc.name}: " + (r.stdout.strip().replace("\n", "; ") or "nessuna materia per ora"))
+            try:
+                print(f"spazio {sc.name}: " + homepage_spazio(sc, sd, py))
+            except Exception as e:
+                print(f"spazio {sc.name}: homepage non costruita ({e})"); return 1
     problemi = controlli(repo, dest)
     if problemi and not a.force:
         print("\nCONTROLLI NON SUPERATI (non pubblico):")

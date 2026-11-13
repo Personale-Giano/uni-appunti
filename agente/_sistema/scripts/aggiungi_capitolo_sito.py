@@ -130,8 +130,8 @@ def blocchi_da_bozza(src, repo, cap_id, prova=False):
                 f["cap"] = didascalia
             out.append(f)
             continue
-        if riga.startswith("## ") or riga.startswith("### "):
-            liv = "h4" if riga.startswith("### ") else "h3"   # ### = sottoparagrafo
+        if riga.startswith(("## ", "### ", "#### ")):
+            liv = "h5" if riga.startswith("#### ") else ("h4" if riga.startswith("### ") else "h3")   # ### e #### = sottolivelli
             parts = parti_da_testo(riga.lstrip("#").strip())
             neutri = [{**p, "b": False, "i": False, "code": False} for p in parts]
             out.append({"t": liv, "b": nuovo(), "h": html_parti(neutri)})

@@ -164,7 +164,7 @@ def schede_dai_riassunti():
             titolo = re.sub(r"^\s*(?:Capitolo\s+)?\d+\s*[.:]?\s*", "", c["titolo"])
             sezione, blocchi = titolo, c["blocks"]
             for i, b in enumerate(blocchi):
-                if b["t"] in ("h3", "h4"):
+                if b["t"] in ("h3", "h4", "h5"):
                     sezione = _testo_scheda(b["h"]).replace("**", "")
                     continue
                 m = _ETICHETTA.match(b.get("h", "")) if b["t"] in ("p", "li") else None
@@ -174,7 +174,7 @@ def schede_dai_riassunti():
                 # la risposta è il blocco più i seguiti (formula, elenco delle condizioni, «In parole povere»), fino alla prossima sezione
                 risposta = [_testo_scheda(b["h"][m.end():])]
                 for nb in blocchi[i + 1:i + 6]:
-                    if nb["t"] in ("h3", "h4") or (nb["t"] in ("p", "li") and _ETICHETTA.match(nb.get("h", ""))) or "h" not in nb:
+                    if nb["t"] in ("h3", "h4", "h5") or (nb["t"] in ("p", "li") and _ETICHETTA.match(nb.get("h", ""))) or "h" not in nb:
                         break
                     t = _testo_scheda(nb["h"])
                     risposta.append(("In parole povere: " + t) if nb.get("c") == "pp" else (("- " + t) if nb["t"] == "li" else t))
@@ -326,7 +326,7 @@ def capitoli_sito(slug, evid, man):
         blocchi = [b for b in c["blocks"] if b["t"] in ("p", "li", "pre")]
         testi.append(c["titolo"])
         for b in c["blocks"]:
-            if b["t"] in ("p", "li", "pre", "h3", "h4"):
+            if b["t"] in ("p", "li", "pre", "h3", "h4", "h5"):
                 testi.append(re.sub(r"<[^>]+>", "", b["h"]))
         hl = sum(1 for b in blocchi if ev.get(b["b"]))
         n = c["num"] if c["num"] is not None else len(res) + 1

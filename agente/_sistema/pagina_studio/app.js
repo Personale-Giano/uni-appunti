@@ -590,7 +590,7 @@ function renderProb() {
       <div>${subs.length ? subs.map(subHtml).join('') : ''}</div>
       <p class="hint">Prova a svolgerlo su carta, poi guarda la soluzione. <span class="muted">${esc(p.id)}</span></p></article>
     <article class="card p-card sol-card" id="p-solcard" aria-live="polite"><div class="sol-ph" id="p-ph">${IC.book}<p>La soluzione compare qui, quando sei pronto.</p><button class="btn xl" id="p-show">${IC.eye.replace('<svg', '<svg class="eye"')} Mostra la soluzione</button></div>
-      <div id="p-sol" hidden><div class="sol-h">Soluzione</div><div class="sol">${solHtml}</div>${p.concetti ? `<div class="note" style="margin-top:12px"><strong>Concetti:</strong> ${esc(p.concetti)}</div>` : ''}${chapterHint(p.theme)}</div></article>
+      <div id="p-sol" hidden><div class="sol-h">Soluzione</div><div class="sol">${solHtml}</div>${p.concetti ? `<div class="note" style="margin-top:12px"><strong>Concetti:</strong> ${esc(p.concetti)}</div>` : ''}${chapterHint(p.theme, p.m)}</div></article>
     <div class="p-grades" id="p-grades" hidden><button class="grade g-bad" data-r="0"><b>Non sono riuscito</b><small>tornerà presto</small></button><button class="grade g-mid" data-r="1"><b>Con dubbi o errori</b><small>da riprovare</small></button><button class="grade g-good" data-r="2"><b>Svolto bene</b><small>per ora basta</small></button></div></div>
     <div class="row end" style="margin-top:12px"><button class="btn ghost small" id="p-exit">Torna all'elenco</button></div>`;
   $('#p-sw').addEventListener('click', () => {
