@@ -1,15 +1,15 @@
-# Stato dei riassunti (aggiornato il 9 nov 2026)
+# Stato dei riassunti (aggiornato il 17 nov 2026)
 
 I riassunti vivono nel sito (`quaderno-privato/contenuti/<materia>.json`, https://quaderno-privato.vercel.app). Questa pagina dice solo **dove siamo** e **cosa manca**; la storia completa fino al 3 nov 2026 è in `_sistema/archivio/STATO_storico_fino_3nov2026.md` (fonti usate per ogni capitolo, decisioni, correzioni).
 
 ## Situazione
 | Materia | Capitoli sul sito | Prossimo n. | Ultima lezione riassunta | Studiati (≥3 paragrafi evidenziati o segnati a mano) |
 |---|---|---|---|---|
-| Algebra lineare (Buzano/Radeschi) | 48 | **49** | L14 Applicazioni lineari I, 9 nov (cap. 46-48: definizione, nucleo e immagine, teorema della dimensione) | 1-13 |
-| Matematica discreta (Mori) | 40 | **41** | L13 permutazioni, 3 nov (cap. 37-40: periodo come mcm, scambi, parità; il teorema della parità è solo enunciato) | 1-15 |
-| Fondamenti Info (Berardi) | 36 | **37** | L18 fine §2.2, 9 nov (cap. 36: contrapposizione, casi, equivalenze) | 1-27 |
+| Algebra lineare (Buzano/Radeschi) | 51 | **52** | L15 Applicazioni lineari II, 10 nov (cap. 49-51: isomorfismi e coordinate, matrice associata, Hom(V, W)) | 1-13 |
+| Matematica discreta (Mori) | 44 | **45** | L14, 10 nov (cap. 41-44: dimostrazione del teorema della parità, permutazioni pari e dispari, interi, divisibilità e primi) | 1-15 |
+| Fondamenti Info (Berardi) | 42 | **43** | L19-L20, 12-13 nov (cap. 37-42: induzione §2.4, invarianti di ciclo, invariante della potenza, induzione forte §2.5, esercizio 39) | 1-27 |
 | Programmazione I (Amparore) | 40 | **41** | slide 06B chiamata di funzione (cap. 30-34) e 07A algoritmi su array (cap. 35-40), lezioni fino al 4 nov | 1-29 (13 e 27-29 segnati a mano); da studiare 30-40 |
-| Laboratorio di Programmazione | 14 | **15** | Lab05A array e stringhe (cap. 13-14) | nessuno |
+| Laboratorio di Programmazione | 16 | **17** | Lab06 Funzioni (cap. 15-16) | nessuno |
 
 La colonna «Studiati» la aggiorna il piano serale da `_sistema/evid_export.json` (le evidenziazioni le fa solo Emanuele, dal sito).
 
@@ -33,6 +33,8 @@ La colonna «Studiati» la aggiorna il piano serale da `_sistema/evid_export.jso
 - Convenzione permutazioni: composizione da destra a sinistra.
 
 ## Ultimi lavori
+- 17 nov 2026: Algebra cap. 49-51 (L15: dispense §15.A-C + tutte le lavagne della registrazione 2025, `fonti_testo/Algebra lineare/L15_lavagne_video2025.md`; nessun audio 2026), Mate cap. 41-44 (L14 del 10 nov dalla registrazione di Emanuele + libro pp. 95-101 e 67-69; il libro a p. 99 sbaglia la regola sui tre fattori), Fondamenti cap. 37-42 (libro §2.4 e §2.5 arrivati il 17 nov, note in `fonti_testo/Fondamenti Info/libro_parte2_2_4_note.md` e `_2_5_note.md`, registrazioni 2025 L19-L21; il testo dell'esercizio 39 è ricostruito), Lab cap. 15-16 (Lab06; i testi Moodle di Lab06-Es1..4 non letti). Tutti revisionati e pubblicati. Arrivato anche `fonti/Matematica discreta/TUTORATO_1_MATEMATICA_DISCRETA.pdf` (11 nov, 9 pagine: non ancora usato). **Moodle non controllato dal 9 nov** (serve il login): mancano le lezioni dal 11 nov in poi di Mate (12, 13, 16 nov), Algebra L16+ (12, 17 nov), Fondamenti L21 (16 nov), Programmazione dal 10 nov.
+- 17 nov 2026: sistema video su richiesta (`_sistema/video/`: `REGOLE_VIDEO.md`, `videolib.py`; skill `/video`; Manim 0.22 + Typst + edge-tts, niente LaTeX; massimo 8 minuti).
 - 6 nov 2026: esponenti sistemati in Mate cap. 36 e Algebra cap. 14. Il cap. 14 sul sito ha paragrafi che la bozza non ha: non usare `--sostituisci` con la bozza vecchia.
 - 6 nov 2026: Mate cap. 37-40 e Fondamenti cap. 28-35 scritti, revisionati e pubblicati.
 - 6 nov 2026: scaricate da Moodle le dispense di Algebra del 30 ott (prima 8 ott) e il prospetto MDAG del 29 ott (ripristinato giovedì 12 nov; una lezione MD in meno nella settimana 30 nov - 4 dic). Nelle dispense: spiegazione di Prop. 6.5 riscritta per componenti, nuova Def. 10.5, quindi slittano i numeri del cap. 10 (esercizi ora 10.10-10.12, aggiornati nel cap. 37; cap. 36 con l'avvertimento sulle due identità). Le dispense dicono che una sola identità «non basta»: per le matrici quadrate in realtà basta, e il cap. 36 lo spiega.
