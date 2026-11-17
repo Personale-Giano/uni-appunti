@@ -26,6 +26,6 @@ Per invertire una composizione di scambi basta quindi scrivere gli stessi scambi
 
 (In parole povere: il numero di mosse può cambiare, ma solo di un numero pari. Se una permutazione si ottiene con un numero dispari di scambi, non si riuscirà mai a ottenerla con un numero pari.)
 
-Lo si vede nell'esempio di partenza. Uno scambio si può scrivere con 3, 5, 7, … scambi, aggiungendo coppie di scambi uguali, che si annullano. Il teorema dice che non si potrà mai scriverlo con 2, 4 o 6. L'esempio non è una dimostrazione: è solo un caso in cui il fenomeno si vede.
+Lo si vede nell'esempio di partenza. Uno scambio si può scrivere con 3, 5, 7, … scambi, per esempio aggiungendo coppie di scambi uguali, che si annullano; non è l'unico modo, perché la scrittura (2 3) = (1 3) ∘ (1 2) ∘ (1 3) non nasce così. Il teorema dice che non si potrà mai scriverlo con 2, 4 o 6. L'esempio non è una dimostrazione: è solo un caso in cui il fenomeno si vede.
 
-A lezione il teorema è soltanto enunciato: il tempo è finito prima della dimostrazione, che il docente rimanda.
+Qui il teorema è soltanto enunciato. La dimostrazione occupa il cap. 41; il cap. 42 lo usa poi per definire le permutazioni pari e dispari.

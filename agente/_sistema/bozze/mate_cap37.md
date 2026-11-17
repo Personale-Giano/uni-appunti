@@ -2,6 +2,8 @@
 ## Il problema: trovare il periodo senza calcolare tutte le potenze
 Nel cap. 36 si è visto che la successione delle potenze di una permutazione π è periodica: id, π, π², …, π^{p−1} sono tutte diverse e π^{p} = id, dove p è il periodo. Questo è già utile. Se per esempio π ha periodo 7 e serve π^{1000}, non occorre comporre mille volte: basta il resto della divisione di 1000 per 7, che è 6, perché 1000 = 7 · 142 + 6 e quindi π^{1000} = π⁶. Il legame con il resto della divisione sarà ripreso con l'aritmetica modulare.
 
+**Notazione.** Negli appunti del docente il periodo di una permutazione σ si indica con **per(σ)**, e l'identità si scrive (1). Per esempio per((1)) = 1 e per((1 2)) = 2; la regola appena vista diventa: σ^{k} = σ^{r}, dove r è il resto della divisione di k per per(σ). Il docente scrive inoltre la composizione come un prodotto, senza il simbolo ∘: (1 2 3)(4 5) sta per (1 2 3) ∘ (4 5). In questo capitolo si continua a scrivere p per il periodo e ∘ per la composizione; per(σ) compare nell'esercizio svolto alla fine.
+
 Resta aperta la domanda: **data π, come si calcola il periodo senza mettersi a calcolare π², π³, … fino a trovare l'identità?** La risposta usa in modo essenziale la scomposizione in cicli disgiunti, e arriva in due passi: prima il periodo di un ciclo, poi quello di una permutazione qualsiasi.
 
 ## Il periodo di un ciclo
@@ -47,3 +49,19 @@ In pratica il calcolo è meccanico, purché il primo passo sia sempre lo stesso:
 **Esempio.** Sia π = (1 6 3 7 4) ∘ (3 2 5 1). Sarebbe sbagliato dire che il periodo è 5 · 4 = 20: l'1 e il 3 stanno in entrambi i cicli. Si estraggono i cicli disgiunti: 1 va in 7, 7 va in 4, 4 torna in 1. Poi 2 va in 5, 5 va in 6, 6 va in 3, 3 torna in 2. Dunque π = (1 7 4) ∘ (2 5 6 3), di tipo (4, 3), e il periodo è mcm(4, 3) = **12**. Con questo metodo non serve calcolare le prime dodici potenze.
 
 Per esercitarsi, il consiglio del docente è di scrivere una permutazione a caso e calcolarne il periodo, una decina di volte: una volta capito che cosa fare, è un esercizio meccanico.
+
+## Un esercizio svolto
+**Esercizio.** Calcolare per(σ), dove σ = (1 2)(1 4)(5 6 7)(1 3 2), cioè σ = (1 2) ∘ (1 4) ∘ (5 6 7) ∘ (1 3 2).
+
+È un esercizio lasciato dal docente, scritto con la sua notazione. I fattori sono quattro e hanno lunghezze 2, 2, 3 e 3, ma **non sono disgiunti**: l'1 compare in tre di essi e il 2 in due. Non si può quindi prendere il minimo comune multiplo di queste lunghezze. Prima si estraggono i cicli disgiunti, seguendo ogni numero attraverso i quattro fattori da destra a sinistra: prima (1 3 2), poi (5 6 7), poi (1 4), poi (1 2).
+- 1 va in 3 con (1 3 2), e 3 non compare negli altri fattori: σ(1) = 3.
+- 3 va in 2 con (1 3 2), resta 2 con (5 6 7) e con (1 4), e va in 1 con (1 2): σ(3) = 1. Il primo ciclo si chiude: (1 3).
+- 2 va in 1 con (1 3 2), resta 1 con (5 6 7), va in 4 con (1 4), e 4 resta fermo con (1 2): σ(2) = 4.
+- 4 resta fermo con (1 3 2) e con (5 6 7), va in 1 con (1 4), e 1 va in 2 con (1 2): σ(4) = 2. Secondo ciclo: (2 4).
+- 5, 6 e 7 compaiono solo in (5 6 7): σ(5) = 6, σ(6) = 7, σ(7) = 5. Terzo ciclo: (5 6 7).
+
+Dunque σ = (1 3) ∘ (2 4) ∘ (5 6 7), con cicli a due a due disgiunti: il tipo è (3, 2, 2) e per(σ) = mcm(3, 2, 2) = **6**.
+
+**Controllo.** Per il teorema la potenza si distribuisce sui cicli disgiunti. I due scambi hanno periodo 2 e il ciclo (5 6 7) ha periodo 3, quindi σ² = (5 6 7)² = (5 7 6) e σ³ = (1 3) ∘ (2 4): nessuna delle due è l'identità. Lo stesso vale per σ, σ⁴ e σ⁵, perché 1, 4 e 5 non sono multipli comuni di 2 e 3. La prima potenza uguale all'identità è σ⁶. 
+
+**Attenzione.** Qui anche il minimo comune multiplo delle lunghezze dei quattro fattori di partenza, mcm(2, 2, 3, 3), fa 6: è una **coincidenza**, non un metodo. Con fattori non disgiunti quel calcolo in generale dà un numero sbagliato. Per esempio (1 2) ∘ (1 3) è fatta di due fattori di lunghezza 2, ma da destra a sinistra 1 va in 3, 3 va in 1 e poi in 2, 2 va in 1: è il ciclo (1 3 2), che ha periodo 3 e non mcm(2, 2) = 2. Il periodo si legge soltanto dai cicli disgiunti.

@@ -16,9 +16,32 @@ Si sceglie a piacere un elemento di T e lo si chiama t₁. Si segue il suo perco
 
 **Passo 3: il procedimento finisce.** Si toglie anche C₂ e si riprende: se l'insieme resta non vuoto, si trova un terzo ciclo C₃, e così via. Perché si arriva alla fine? Si ponga T₁ = T \ {t₁, …, t_ℓ}, poi T₂ = T₁ \ {s₁, s₂, …}, e così via. Il numero di elementi dell'insieme ancora da considerare **diminuisce davvero a ogni passo**: |T| > |T₁| > |T₂| > …, e un numero naturale non può decrescere per sempre. Dopo un numero finito di passi l'insieme diventa vuoto, e a quel punto ogni elemento di T sta in uno e un solo ciclo costruito, e i cicli sono a due a due disgiunti. Quindi la loro composizione manda ogni x ∈ T in π(x) e lascia fermi gli altri numeri, cioè coincide con π. ∎
 
-Questa dimostrazione costruisce la scrittura, cioè prova l'**esistenza**; l'unicità a lezione è stata solo enunciata.
+Questa dimostrazione costruisce la scrittura, cioè prova l'**esistenza**; l'unicità è dimostrata subito sotto.
 
 (In parole povere: si prende un numero spostato e si segue il suo giro fino a chiuderlo; poi se ne prende uno fuori da quel giro e si fa lo stesso, e così via finché non restano più numeri spostati.)
+
+## L'unicità
+Resta da dimostrare che la scrittura è «essenzialmente unica» (cap. 34): i cicli che compaiono sono sempre gli stessi, e può cambiare soltanto l'ordine in cui sono scritti. Negli appunti del docente il teorema è enunciato proprio così: ogni permutazione si scrive **in modo unico, a meno dell'ordine**, come **prodotto di cicli disgiunti** (il docente dice «prodotto» per la composizione e «decomposizione» per la scomposizione). Negli appunti la dimostrazione dell'unicità è data solo per cenni: l'idea è quella del passo 4 qui sotto, e gli altri passaggi sono stati completati per renderla leggibile.
+
+Nel cap. 34 la scomposizione è scritta C_{k} ∘ … ∘ C₁, qui C₁ ∘ … ∘ C_{k}: è la stessa cosa, perché i cicli disgiunti commutano e l'ordine in cui si scrivono non conta.
+
+**Un'osservazione che serve.** Sia π = C₁ ∘ … ∘ C_{k} una scrittura in cicli a due a due disgiunti e sia a un elemento del ciclo C₁. Allora **π(a) = C₁(a)**: l'immagine di a secondo π è l'elemento che segue a dentro il suo ciclo. Infatti gli altri cicli non contengono a, quindi lo lasciano fermo; e non contengono nemmeno C₁(a), che è un altro elemento di C₁, quindi lasciano fermo anche quello. L'unico ciclo che agisce davvero su a è C₁. Lo stesso ragionamento vale per un elemento di qualunque altro ciclo della scrittura.
+
+**Dimostrazione.** Si ragiona per assurdo. Si supponga che π abbia due scritture diverse in cicli disgiunti,
+
+π = C₁ ∘ … ∘ C_{k} = C'₁ ∘ … ∘ C'_{h},
+
+dove diverse vuol dire che non contengono gli stessi cicli. «Stesso ciclo» va inteso come stessa permutazione, a prescindere dal punto di partenza della scrittura: (3 11 10) e (11 10 3) sono lo stesso ciclo (cap. 34).
+1. Gli elementi che compaiono nei cicli sono gli stessi nelle due scritture: sono esattamente i numeri spostati da π. Infatti un ciclo ha lunghezza almeno 2 (cap. 34), quindi manda ogni suo elemento in un elemento diverso, e per l'osservazione π fa lo stesso; i numeri che non stanno in nessun ciclo, invece, restano fermi. Quindi ogni elemento di un ciclo della prima scrittura sta anche in un ciclo della seconda, e viceversa.
+2. Poiché le due scritture non contengono gli stessi cicli, in una delle due c'è un ciclo che nell'altra manca. Riordinando i cicli e, se serve, scambiando i nomi delle due scritture, si può supporre che sia C₁. Si prende un suo elemento e si chiama C'₁ il ciclo della seconda scrittura che lo contiene: C₁ e C'₁ sono **cicli diversi con un elemento in comune**.
+3. Si percorrono i due cicli partendo dall'elemento comune. Se a ogni passo il successivo fosse lo stesso in entrambi, i due giri sarebbero identici e i due cicli coinciderebbero. Quindi c'è un elemento comune a dopo il quale i due cicli si separano: C₁ = (… a b …) e C'₁ = (… a b' …), con b ≠ b'.
+4. Per l'osservazione, applicata alla prima scrittura, π(a) = C₁(a) = b. Applicata alla seconda, π(a) = C'₁(a) = b'. Ma π è una funzione e a ha una sola immagine: b = b', contro b ≠ b'.
+
+L'assurdo mostra che due scritture diverse non possono esistere. ∎
+
+(In parole povere: il ciclo in cui si trova un numero a non si può scegliere, perché è il percorso a, π(a), π(π(a)), … ed è deciso da π. Due scritture in cicli disgiunti devono quindi contenere gli stessi giri.)
+
+**Esempio.** Nella permutazione di 12 elementi del prossimo paragrafo si ha π(3) = 11, π(11) = 10 e π(10) = 3. In qualunque scrittura in cicli disgiunti, il ciclo che contiene 3 deve mandare 3 in 11, 11 in 10 e 10 in 3: è per forza (3 11 10), comunque si sia arrivati alla scrittura.
 
 ## Un esempio con 12 elementi
 Sia π la permutazione di {1, …, 12} (scritta a caso) definita da: π(1) = 7, π(2) = 9, π(3) = 11, π(4) = 1, π(5) = 6, π(6) = 2, π(7) = 5, π(8) = 4, π(9) = 12, π(10) = 3, π(11) = 10, π(12) = 8.

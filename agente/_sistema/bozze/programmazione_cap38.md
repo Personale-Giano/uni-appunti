@@ -7,9 +7,9 @@
 Per esempio, con `bLen = 3`, `b = { 18, 9, 30 }` e la condizione «maggiore o uguale a 18», in `a` finiscono 18 e 30. Gli elementi copiati **non conservano gli stessi indici**: 30 sta in `b[2]` ma finisce in `a[1]`. Servono quindi **due indici**: `i ∈ [0, bLen)` per la scansione di `b`, e `j` per inserire in `a` (nel codice qui sotto `j` è la variabile `aLen`). La dimensione finale di `a` è il numero di elementi di `b` che soddisfano Cond.
 
 ## Dimensione e capacità
-Nell'esempio `a` è stato allocato per contenere fino a `bLen` elementi, ma dopo la selezione solo una parte è valida. Bisogna quindi separare due concetti.
+Nell'esempio `a` è stato allocato per contenere fino a `bLen` elementi, ma dopo la selezione solo una parte contiene elementi inizializzati. Bisogna quindi separare due concetti.
 
-**Definizione.** La **capacità** di un array è il numero massimo di elementi che può contenere; la **dimensione effettiva** è quanti elementi validi contiene in quel momento.
+**Definizione.** La **capacità** di un array è il numero massimo di elementi che può contenere; la **dimensione effettiva** è quanti elementi **inizializzati** contiene in quel momento.
 
 (In parole povere: la capacità è quanti posti ha la sala, la dimensione è quante persone sono sedute adesso.)
 

@@ -7,11 +7,15 @@ Il docente lo introduce con il **gioco del 15**, un antenato del cubo di Rubik: 
 Muovere le tessere vuol dire permutare i numeri, quindi l'impossibilità viene da una proprietà delle permutazioni che non è ancora stata vista. Per arrivarci servono gli scambi.
 
 ## Gli scambi
-**Definizione.** Uno **scambio** è un ciclo di lunghezza 2, cioè una permutazione (a b) che manda a in b, b in a e lascia fermo tutto il resto.
+**Definizione.** Uno **scambio**, detto anche **trasposizione**, è un ciclo di lunghezza 2, cioè una permutazione (a b) che manda a in b, b in a e lascia fermo tutto il resto.
 
 (In parole povere: si prendono due elementi e si fa cambiare loro di posto. È la mossa più semplice che si possa fare su un mazzo di carte.)
 
 Se s è uno scambio, allora **s² = id**: scambiando due volte gli stessi elementi tutto torna a posto. Inoltre (a b) e (b a) sono lo stesso scambio.
+
+I due nomi indicano lo stesso oggetto. Negli appunti del docente si trova quasi sempre **trasposizione**, e la composizione di più trasposizioni è chiamata **prodotto di trasposizioni**, scritto spesso senza il simbolo ∘: (1 3)(1 2) vuol dire (1 3) ∘ (1 2), sempre da leggere da destra a sinistra. In questi capitoli si continua a dire «scambio» e a scrivere ∘.
+
+**Quante sono le trasposizioni.** Uno scambio è individuato dai due elementi che scambia, e l'ordine in cui li si scrive non conta, perché (a b) = (b a). Le trasposizioni di S_{n} sono quindi tante quanti i sottoinsiemi di 2 elementi di {1, …, n}, cioè il coefficiente binomiale (n su 2) = n!/(2! · (n − 2)!) = n(n − 1)/2 (cap. 26). Per esempio in S₄ sono (4 · 3)/2 = 6 e in S₅ sono (5 · 4)/2 = 10. È lo stesso numero che dà la formula del cap. 34 per i cicli di lunghezza 2: (1/2) · n!/(n − 2)! = n(n − 1)/2. Il confronto con il totale è istruttivo: le permutazioni di S_{n} sono n!, un numero che cresce rapidissimamente, mentre le trasposizioni crescono solo come un polinomio di secondo grado in n. In S₅ sono 10 su 120, eppure, come si vedrà fra poco, bastano per ottenere tutte le altre.
 
 ## Ogni ciclo si scrive con gli scambi
 **Proposizione.** Ogni ciclo di lunghezza ℓ si scrive come composizione di ℓ − 1 scambi:
@@ -31,6 +35,23 @@ Per ℓ = 2 il ciclo è già uno scambio; sia quindi ℓ ≥ 3.
 È proprio il ciclo di partenza. Il numero di scambi è ℓ − 1, perché ci sono 1, 2, …, ℓ − 1 accoppiati con ℓ.
 
 **Esempio.** (1 2 3) = (2 3) ∘ (1 3): 1 va in 3 e poi in 2; 2 va in 3; 3 va in 1. I due scambi sono ℓ − 1 = 2.
+
+## Un'altra scomposizione, con gli scambi sul primo elemento
+Negli appunti del docente il ciclo è scomposto in un altro modo: l'elemento che compare in tutti gli scambi è il **primo** del ciclo, non l'ultimo. Per un ciclo qualsiasi (s₁ s₂ … s_{ℓ}) la formula è
+
+(s₁ s₂ … s_{ℓ}) = (s₁ s_{ℓ}) ∘ … ∘ (s₁ s₄) ∘ (s₁ s₃) ∘ (s₁ s₂).
+
+Si legge sempre da destra a sinistra: prima si scambia s₁ con s₂, poi s₁ con s₃, poi s₁ con s₄, e così via fino a s₁ con s_{ℓ}. Gli scambi sono ancora ℓ − 1, uno per ciascuno degli elementi s₂, …, s_{ℓ}.
+
+Il controllo è lo stesso di prima, elemento per elemento. Il primo scambio manda s₁ in s₂, e s₂ non compare più: quindi s₁ va in s₂. Un elemento s_{i} con 1 < i < ℓ viene toccato per la prima volta da (s₁ s_{i}), che lo manda in s₁; subito dopo (s₁ s_{i+1}) manda s₁ in s_{i+1}, che non compare più: quindi s_{i} va in s_{i+1}. Infine s_{ℓ} compare solo nell'ultimo scambio, che lo manda in s₁. È il ciclo di partenza.
+
+Questa formula e quella della proposizione **non sono due risultati diversi**: sono due scritture diverse dello stesso ciclo, con lo stesso numero di scambi. Nella prima l'elemento comune a tutti gli scambi è l'ultimo, nella seconda è il primo, e gli scambi che compaiono sono diversi.
+
+**Esempio.** Per il ciclo (1 2 3 4) la proposizione dà (3 4) ∘ (2 4) ∘ (1 4), la formula del docente dà (1 4) ∘ (1 3) ∘ (1 2). Si controllano entrambe, da destra a sinistra.
+- (3 4) ∘ (2 4) ∘ (1 4): 1 va in 4, poi 4 va in 2, e 2 resta fermo: 1 va in 2. Il 2 resta fermo, poi va in 4, poi 4 va in 3: 2 va in 3. Il 3 resta fermo due volte e poi va in 4: 3 va in 4. Il 4 va in 1 e poi resta fermo: 4 va in 1.
+- (1 4) ∘ (1 3) ∘ (1 2): 1 va in 2 e poi resta fermo: 1 va in 2. Il 2 va in 1, poi 1 va in 3, e 3 resta fermo: 2 va in 3. Il 3 resta fermo, poi va in 1, poi 1 va in 4: 3 va in 4. Il 4 resta fermo due volte e poi va in 1: 4 va in 1.
+
+In tutti e due i casi si ottiene 1 → 2 → 3 → 4 → 1, cioè (1 2 3 4), con tre scambi. Allo stesso modo, per il ciclo dell'esempio precedente, (1 2 3) = (2 3) ∘ (1 3) = (1 3) ∘ (1 2). Si vede già qui che uno stesso ciclo si scrive con gli scambi in più di un modo: è il secondo dei due problemi discussi più avanti.
 
 ## Ogni permutazione si scrive con gli scambi
 Mettendo insieme i pezzi: ogni permutazione è composizione di cicli (cap. 34) e ogni ciclo è composizione di scambi. Quindi:

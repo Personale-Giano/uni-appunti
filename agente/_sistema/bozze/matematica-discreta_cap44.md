@@ -6,6 +6,8 @@
 
 **Esempio.** 3 | 12, perché 12 = 4 · 3. Invece 2 non divide −7: non esiste nessun intero k con 2k = −7, perché 2 · (−3) = −6 e 2 · (−4) = −8. Il libro aggiunge −4 | 20, perché 20 = (−5) · (−4): i divisori possono anche essere negativi.
 
+**Notazione.** Negli appunti del docente la stessa definizione è scritta con altre lettere: a | b se esiste c ∈ ℤ tale che a · c = b. Oltre a «a è un divisore di b» si dice che b è un **multiplo** di a, e «non divide» si abbrevia con il simbolo ∤: per esempio 2 ∤ −7 e 12 ∤ 3.
+
 Due conseguenze immediate della definizione, segnalate dal libro: ogni intero divide 0 (perché 0 = 0 · n), mentre 0 divide soltanto 0; e 1 e −1 dividono qualsiasi n, perché n = n · 1 = (−n) · (−1).
 
 ## Non è una relazione di equivalenza
@@ -49,4 +51,4 @@ Un intero si può sempre scrivere come prodotto usando un invertibile: 10 = 10 �
 
 **Esempio.** 6 non è primo: 6 divide 36 = 4 · 9, ma non divide né 4 né 9. Allo stesso modo, nel libro, 6 | 30 = 3 · 10 ma 6 non divide né 3 né 10.
 
-La definizione di primo è stata data proprio a fine lezione, e il confronto tra le due nozioni è rimandato alla lezione successiva. Per ora conviene notare soltanto che le due definizioni sono diverse: irriducibile parla di come n si scrive come prodotto, primo parla di come n divide i prodotti. Che cosa le leghi, e perché questa terminologia sembri in contrasto con quella di scuola, è proprio quello che resta da capire.
+La definizione di primo chiude questo capitolo; il confronto con la nozione di irriducibile è nel cap. 47. Per ora conviene notare soltanto che le due definizioni sono diverse: irriducibile parla di come n si scrive come prodotto, primo parla di come n divide i prodotti. Che cosa le leghi, e perché questa terminologia sembri in contrasto con quella di scuola, si vede nel cap. 47: lì si dimostra che ogni numero primo è irriducibile e si spiega il confronto con la definizione scolastica, mentre l'implicazione opposta (ogni irriducibile è primo) è enunciata ma non ancora dimostrata. Nel mezzo ci sono le altre proprietà della divisibilità con il massimo comun divisore (cap. 45) e la divisione euclidea (cap. 46).

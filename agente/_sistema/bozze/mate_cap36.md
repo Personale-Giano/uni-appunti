@@ -32,6 +32,6 @@ Se N è il primo esponente per cui c'è una ripetizione, e fosse π^{N} = π^{m}
 Dopo π^{p} = id, la successione ricomincia: π^{p+1} = π^{p} ∘ π = π (si compone con l'identità, che non cambia niente), poi π^{p+2} = π², e così via fino a π^{2p} = π^{p} ∘ π^{p} = id. La successione delle potenze **è periodica**: ripete sempre lo stesso blocco di permutazioni, id, π, …, π^{p−1}. Anche verso sinistra: π^{−1} = π^{p−1} (perché π^{p−1} ∘ π = π^{p} = id), e la successione con esponenti negativi ripete lo stesso blocco. Il nome viene da questa idea di qualcosa che si ripete.
 
 ## Una domanda aperta
-La lezione si chiude con una domanda lasciata per dopo: **come si calcola il periodo** di una permutazione? Probabilmente gli strumenti da usare sono il tipo e la scomposizione in cicli disgiunti, ma la risposta è rimandata alla lezione successiva.
+La lezione si chiude con una domanda lasciata per dopo: **come si calcola il periodo** di una permutazione? Probabilmente gli strumenti da usare sono il tipo e la scomposizione in cicli disgiunti, e in effetti è così: la risposta è nel cap. 37.
 
 Un'osservazione: per una permutazione che è un solo ciclo di lunghezza ℓ, il periodo è esattamente ℓ.

@@ -14,7 +14,7 @@ Lo si può leggere in due modi equivalenti: una proprietà universale è falsa s
 Riprendendo il ciclo `tuttiPositivi` del capitolo 36, con `aLen == 0` non si esegue alcuna iterazione: `tuttiPositivi` parte vero e resta vero, che è la risposta corretta. Il caso vuoto **non richiede una regola speciale**.
 
 ## Il quantificatore esistenziale sul dominio vuoto
-Per ∃i ∈ [0, aLen) : Cond(a[i]) serve trovare almeno un **testimone** che soddisfi Cond. Se aLen == 0 il dominio è vuoto, non viene esaminato alcun elemento e non può esistere un testimone.
+Per ∃i ∈ [0, aLen) : Cond(a[i]), che si può scrivere anche con l'OR aggregativo del capitolo 35 come ⋁_{i∈[0, aLen)} Cond(a[i]), serve trovare almeno un **testimone** che soddisfi Cond. Se aLen == 0 il dominio è vuoto, non viene esaminato alcun elemento e non può esistere un testimone.
 
 **Definizione.** Un enunciato esistenziale su un dominio vuoto è **falso per assenza di testimoni**, perché non esiste alcun elemento che possa soddisfare la proprietà.
 
