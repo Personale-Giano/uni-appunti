@@ -1,0 +1,6 @@
+# Video-spiegazione (videolib): file pesanti o rigenerabili
+/video/
+/_sistema/video/media/
+/_sistema/video/cache_audio/
+/_sistema/video/qa/
+__pycache__/
