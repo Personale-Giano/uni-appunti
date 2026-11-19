@@ -5,7 +5,7 @@ all'id del blocco (capN.K) e a intervalli di caratteri dentro il blocco, quindi 
 id nuovi (dopo l'ultimo usato nel capitolo) non le sposta. Nessun blocco esistente viene modificato.
 
 Uso:
-    python inserisci_blocchi_sito.py <materia> <file.md> [--anteprima]
+    python inserisci_blocchi_sito.py <materia> <file.md> [--anteprima] [--spazio <nome>]
 
 Formato del file: una o più sezioni, ciascuna introdotta da una riga
     @@ dopo capN.K
@@ -30,10 +30,13 @@ def main():
     ap.add_argument("materia")
     ap.add_argument("file")
     ap.add_argument("--anteprima", action="store_true")
+    ap.add_argument("--spazio", help="spazio separato: contenuti in spazi_contenuti/<spazio>/")
     a = ap.parse_args()
     slug = m.ALIAS.get(a.materia.lower(), a.materia.lower())
     repo = Path(m.REPO)
-    fj = repo / "contenuti" / f"{slug}.json"
+    if a.spazio:
+        m.CONT = f"spazi_contenuti/{a.spazio}"  # anche le figure vanno nella cartella img dello spazio
+    fj = repo / m.CONT / f"{slug}.json"
     raw = fj.read_text(encoding="utf-8")
     dati = json.loads(raw)
     sezioni, cur = [], None
@@ -78,7 +81,7 @@ def main():
         return
     bk = m.BASE / "backup"
     bk.mkdir(exist_ok=True)
-    shutil.copy2(fj, bk / f"{slug}_contenuti_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
+    shutil.copy2(fj, bk / f"{(a.spazio + '_') if a.spazio else ''}{slug}_contenuti_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
     indentato = raw.startswith("{\n")
     fj.write_text(json.dumps(dati, ensure_ascii=False, indent=2, separators=(",", ": ")) if indentato
                   else json.dumps(dati, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
