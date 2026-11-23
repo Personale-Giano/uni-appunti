@@ -1,0 +1,77 @@
+# Frasi del docente da tenere d'occhio: mate_L15
+
+Estratte automaticamente dalla trascrizione (possibili errori di riconoscimento). Il timestamp serve per riascoltare il punto.
+
+## da ricordare (8)
+- **[01:37]** posso sempre scrivere in modo unico a come un certo multiplo di p più un resto, e la condizione importante è che questo resto sia non negativo e non maggiore, è il minore del valore assoluto del divisore, allora abbiamo visto questa insomma è una cosa, abbiamo formalizzato questa cosa ma non c'è nulla di sostanzialmente nuova rispetto
+  - contesto: da quando siamo in scuola e precisamente da tipo i numeri a e p, dove p deve essere diverso da zero, a quello che conoscerate e quello che abbiamo visto però è che un'applicazione iterata di questa divisione, fornisce un algoritmo per il calcolo del massimo co
+- **[41:58]** Teorema, questo teorema è un nome, si chiama teorema fondamentale dell'arichimetrica e dice la cosa seguente, sia n un numero intero, n né zero né uno né meno.
+  - contesto: Allora una volta che adesso vi scrivo questo teorema è annunciato, poi vi dico perché è una convenzione utile dire che uno non è più lì. allora n si scrive in modo unico come prodotto n uguale più o meno più uno pr dove i piconi sono numeri primi positivi.
+- **[46:13]** Va bene, allora dimostramo il torema fondamentale da arithmetica, di nuovo la dimostrazione in due passi, bisogna dimostrare l'esistenza e bisogna dimostrare l'unicità.
+  - contesto: Quindi questo è il motivo alla fine. Allora adesso però noi sappiamo che i numeri primi e i riccipili sono le stesse numeri, l'abbiamo appena dimostrato.
+- **[01:05:29]** e questo viene fuori, grazie, vedete che qui sto usando la proprietà di essere primo, secondo la definizione di essere primo, non di essere lucidio, perché uso in modo essenziale il fatto di questo più, dovendo dividere un pò d'orso, deve dividere uno e questo è il motivo per cui uno fa questa doppia caratterizzazione, poi non usa entrambe
+  - contesto: nel frattempo ho dimostrato che più 1 è uguale a q1, che più 2 è uguale a q2, eccetera, eccetera, che più è uguale a q1 e quindi c'è unicità della scrittura, i fattori sono esattamente di stessa ok?
+- **[01:06:08]** questo è il teorema fondamentale della vita medica che l'ho annunciato sicuramente lo
+  - contesto: eh... conoscevate ma forse non avrate mai visto la dimostrazione Allora, adesso rimane una cosa.
+- **[01:09:58]** fatto si dimostra in qualche modo usando, seppure parzialmente, il torrenma fondamentale.
+  - contesto: Ok, allora come si dimostra questo fatto? Allora, facciamo così, c a s un insieme finito nei numeri primi e ci facciamo insieme
+- **[01:14:05]** Il Torema fondamentale dell'Architmetica mi dice che, osservate che N è maggiore di 1, n è un numero maggiore di 1 perché questi sono i numeri più grandi di 1, facendo il prodotto di numeri più grandi di 1, aggiungo 1 e quindi sicuramente il risultato è il maggiore di 1.
+  - contesto: Questo fatto qui è un fatto della coincidenza, allora, adesso faccio questa osservazione qui. Il torremma fondamentale della retmetica mi dice che esiste un primo che divide N, perché N è un numero maggiore di 1 e quindi per il torremma fondamentale della retm
+- **[01:14:05]** Il torremma fondamentale della retmetica mi dice che esiste un primo che divide N, perché N è un numero maggiore di 1 e quindi per il torremma fondamentale della retmetica sarà scrivibile come prodotto di primi.
+  - contesto: Il Torema fondamentale dell'Architmetica mi dice che, osservate che N è maggiore di 1, n è un numero maggiore di 1 perché questi sono i numeri più grandi di 1, facendo il prodotto di numeri più grandi di 1, aggiungo 1 e quindi sicuramente il risultato è il mag
+
+## dimostrazione (27)
+- **[23:00]** Va bene, ma adesso abbiamo questo teorema che risolve un attimo risolve per modo di dire la questione, cioè chiarisceomba la differenza fra questi due concetti e lo chiarisce За dicendo che non c'è nessuna differenza.
+  - contesto: efficace mettersi in via a controllare se tutti i numeri più piccoli di N Dividono o noi. Stiamo definendo esattamente lo stesso insieme di
+- **[23:33]** di teorema, n è irreducibile se e soltanto se è primo, allora adesso la dimostrazione la vediamo, però dato questo edunciato uno può chiedersi il teorema perché allora
+  - contesto: Stiamo definendo esattamente lo stesso insieme di dare due definizioni diverse dello stesso concetto, perché vedremo poi in un teorema successivo come per arrivare a fare un certo discorso dobbiamo usarlo entrambe, cioè questa caratterizzazione di primo e come
+- **[24:06]** dare due definizioni diverse dello stesso concetto, perché vedremo poi in un teorema successivo come per arrivare a fare un certo discorso dobbiamo usarlo entrambe, cioè questa caratterizzazione di primo e come il reducibile entra in gioco per arrivare a dire qualcosa.
+  - contesto: di teorema, n è irreducibile se e soltanto se è primo, allora adesso la dimostrazione la vediamo, però dato questo edunciato uno può chiedersi il teorema perché allora Passerà il tempo, il teorema successivo.
+- **[24:06]** Passerà il tempo, il teorema successivo.
+  - contesto: dare due definizioni diverse dello stesso concetto, perché vedremo poi in un teorema successivo come per arrivare a fare un certo discorso dobbiamo usarlo entrambe, cioè questa caratterizzazione di primo e come il reducibile entra in gioco per arrivare a dire 
+- **[24:06]** Adesso cominciamo a dimostrare questo, allora devo dimostrare
+  - contesto: Passerà il tempo, il teorema successivo. devo dimostrare che sono numero irreducibile allora è primo, il primo passo della dimostrazione, il secondo passo della dimostrazione è che sono numero primo, allora è irreducibile e così ho dimostrato l'equivalenza dei
+- **[24:38]** devo dimostrare che sono numero irreducibile allora è primo, il primo passo della dimostrazione, il secondo passo della dimostrazione è che sono numero primo, allora è irreducibile e così ho dimostrato l'equivalenza dei due concetti.
+  - contesto: Adesso cominciamo a dimostrare questo, allora devo dimostrare Quindi cominciamo passo 1, cominciamo a supponiamo che N sia primo.
+- **[25:15]** Allora vorrei dimostrare che n è riducibile, allora cosa devo fare?
+  - contesto: Ok? Voglio applicare la definizione di essere riducibile, quindi n lo devo scrivere come prodotto e devo far vedere che se lo scrivo come prodotto uno dei due fattori deve essere quella forza o uno meno.
+- **[31:42]** dimostrazione, ora supponiamo n il riducibile, ok?
+  - contesto: Adesso, quindi parte 2 della Allora voglio dimostrare che n è primo, voglio dimostrare che n è primo, quindi cosa devo fare?
+- **[31:42]** Allora voglio dimostrare che n è primo, voglio dimostrare che n è primo, quindi cosa devo fare?
+  - contesto: dimostrazione, ora supponiamo n il riducibile, ok? Devo prendere un prodotto, quindi
+- **[32:23]** quindi supponiamo di avere N che divide A per B e voglio dimostrare che N deve dividere per forca 1,2 Allora dico, supponiamo n che non divide a è che n non divide se n divide a, n divide uno dei due fattori.
+  - contesto: Devo prendere un prodotto, quindi Quindi se io voglio dimostrare che per forza deve dividere uno dei due fattori, se vi metto nella situazione in cui n divide a oggi ho già finito.
+- **[33:07]** Quindi se io voglio dimostrare che per forza deve dividere uno dei due fattori, se vi metto nella situazione in cui n divide a oggi ho già finito.
+  - contesto: quindi supponiamo di avere N che divide A per B e voglio dimostrare che N deve dividere per forca 1,2 Allora dico, supponiamo n che non divide a è che n non divide se n divide a, n divide uno dei due fattori. N non divide a questo punto devo convincermi io e v
+- **[40:18]** Adesso dimostrò un teorema, anche questo lo conoscete benissimo, però non so se avete mai visto la vera dimostrazione e vedremo che nella dimostrazione usero entrambe le caratterizzazioni.
+  - contesto: e usare quella delle due caratterizzazioni che più ci viene comodo data la situazione. è morto non ha morto letteralmente
+- **[41:58]** Allora una volta che adesso vi scrivo questo teorema è annunciato, poi vi dico perché è una convenzione utile dire che uno non è più lì.
+  - contesto: guarda proprio voi fai dell'unito in base alla nostra classificazione uno non è quei, uno è intertibile e faccia postogria a sé, però è anche vero, è anche vero che 1 è reducibile, l'unico modo di scriverlo è 1 per 1, meno 1 per meno 1 e quindi uno dei due fat
+- **[41:58]** Teorema, questo teorema è un nome, si chiama teorema fondamentale dell'arichimetrica e dice la cosa seguente, sia n un numero intero, n né zero né uno né meno.
+  - contesto: Allora una volta che adesso vi scrivo questo teorema è annunciato, poi vi dico perché è una convenzione utile dire che uno non è più lì. allora n si scrive in modo unico come prodotto n uguale più o meno più uno pr dove i piconi sono numeri primi positivi.
+- **[44:00]** questo teorema ci sono due affermazioni la prima affermazione è che, dato, ogni enne può essere scritto in questo modo dove i piccoli sono e questo è una affermazione, la seconda affermazione è che questa scrittura è...
+  - contesto: che potrebbero anche essere ripetuti, non ho scritto da nessuna parte, infatti non è vero che questi più uno pierre siano diversi come l'altro potrebbe essere sempre lo stesso qui, se prendiamo 27, allora 27 è 3 per 3 per 3, ok? non avete due modi diversi di s
+- **[46:13]** Va bene, allora dimostramo il torema fondamentale da arithmetica, di nuovo la dimostrazione in due passi, bisogna dimostrare l'esistenza e bisogna dimostrare l'unicità.
+  - contesto: Quindi questo è il motivo alla fine. Allora adesso però noi sappiamo che i numeri primi e i riccipili sono le stesse numeri, l'abbiamo appena dimostrato.
+- **[46:52]** Quindi quello che io farò adesso non è di dimostrare l'esistenza della scrittura come prodotto in primi, ma usare l'esistenza della scrittura come prodotto di i reducibili, per tanto la stessa cosa, ok?
+  - contesto: Quindi in questo edunciato io qui al posto di primi potrei anche leggere i reducibili, ok? allora dimostrazione, esistenza.
+- **[46:52]** allora dimostrazione, esistenza.
+  - contesto: Quindi quello che io farò adesso non è di dimostrare l'esistenza della scrittura come prodotto in primi, ma usare l'esistenza della scrittura come prodotto di i reducibili, per tanto la stessa cosa, ok? Allora inizia con l'asservare che esistono numeri riducib
+- **[48:49]** L'induzione bisogna avere una base dell'induzione e poi bisogna far vedere se io assumo poi che quello che io voglio dimostrare si avevo fino a un certo punto poi devo dimostrare che è vero per i numeri più grandi.
+  - contesto: l'induzione? Allora, la parte c'è la parte fatta dai numeri irregucibili che a quelli stavano è vero.
+- **[49:39]** Cioè, c'è un numero n, c'è un positivo, così la cosa del color rassoluto è rilavante, e dico, allora, suppongo che il teorema sia vero, cioè il teorema che esiste.
+  - contesto: piccoli del color rassoluto di n. La scrittura come prodotto esista per tutti i numeri più piccoli di n, ma a questo punto n non è più irreducibile,
+- **[52:06]** Queste dimostrazioni, spesso le dimostrazioni...
+  - contesto: Quindi tipo mi sono scritto un po' di domande e gli voglio fatelo. L'esistenza è molto semplice...
+- **[52:42]** Tutto il punto sociale adesso di dimostrazione è di far vedere che questa spettura è unica.
+  - contesto: Per cui l'esistenza è molto semplice, ecco l'acqua. Perché io non riesco a trovare altri fattori premisi, non questi che mi tanno questa spettura.
+- **[01:06:08]** questo è il teorema fondamentale della vita medica che l'ho annunciato sicuramente lo
+  - contesto: eh... conoscevate ma forse non avrate mai visto la dimostrazione Allora, adesso rimane una cosa.
+- **[01:07:01]** conoscevate ma forse non avrate mai visto la dimostrazione Allora, adesso rimane una cosa.
+  - contesto: questo è il teorema fondamentale della vita medica che l'ho annunciato sicuramente lo I numeri primi sono un oggetto per i matematici fondamentali, come potete capire, e c'era una letteratura colossale, Diciamo ancora che vi spiegano bene, milioni di problemi 
+- **[01:07:37]** Ma una cosa ancora vi devo dire, questo è un altro teorema di quelli, sicuramente conoscete anche qui, anche qui, non so se avete visto la dimostrazione, mai una vera dimostrazione, ma il fatto di per sé lo conoscete, il teorema che è il noto, è il noto all'umanità da molto
+  - contesto: Diciamo a noi adesso questo non interessa, né probabilmente interessa mai a voi come informatici. tempo, staggia nei libri di Euclide, quindi negli elementi di Euclide, quindi insomma, ed è il fatto che no questi questi numeri primi 2, 3, 5, 7, 12, 13, 17, 19,
+- **[01:09:21]** Quello che però voglio dimostrare è la risposta più semplice a questa domanda che questo tra rema che dice esistono infiniti numeri che vuol dire che un altro modo di dire questo
+  - contesto: numeri più piccoli ma insomma queste sono questioni appunto che non ci riguardano. è che dato comunque un n esistono un primo più grande di n e di fatto non esistono infiniti.
+- **[01:10:57]** Adesso faccio questa cosa, considero il numero n grande che è fatto così, prendo tutti quei premi dentro s, il moltipico fra di loro e aggiungo uno, per esempio, fare l'esempio non fa parte della dimostrazione, tanto per capirci.
+  - contesto: quindi s lo posso scrivere così come p1, etc., etc., p con k, ce l'hanno k numeri primi dentro s, va bene? se io prendo 2, 3 e 5 allora n è 2 per 3, 3 per 5, 30, 31, se io prendo, se io prendo per esempio come s prendo invece 2, 5 e 11 allora n è uguale a 2 pe

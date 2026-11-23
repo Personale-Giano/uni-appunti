@@ -1,0 +1,103 @@
+{
+  "nota": "Correzioni proposte (NON applicate) ai blocchi di algebra.json in base agli appunti a mano 2026. 'vecchio' è una sottostringa esatta (HTML) del campo h, presente una sola volta. Controllato su evid_export.json del 2026-11-23T09:42:13.635Z: nessun blocco toccato è evidenziato e nessun capitolo toccato ha evidenziazioni (Algebra ne ha solo nei cap. 1-13).",
+  "correzioni": [
+    {
+      "blocco": "cap47.21",
+      "vecchio": "A lezione (registrazione 2024) questa proposizione è solo enunciata, insieme alla successiva, e alla lavagna Ker f e Im f sono detti «sottospazi lineari».",
+      "nuovo": "A lezione (registrazione 2024) questa proposizione è solo enunciata, insieme alla successiva, e alla lavagna Ker f e Im f sono detti «sottospazi lineari». Nella lezione 2026, invece, la dimostrazione è svolta alla lavagna: per il nucleo con gli stessi tre punti di sopra, per l&#x27;immagine solo i primi due.",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap49.33",
+      "vecchio": "A lezione la dimostrazione è lasciata come esercizio («è carino»), con questa traccia:",
+      "nuovo": "Nella registrazione 2025 la dimostrazione è lasciata come esercizio («è carino»); nella lezione 2026 è svolta alla lavagna, con la stessa traccia:",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap53.43",
+      "vecchio": "che le dispense enunciano come corollario e che a lezione compare solo nel caso dell&#x27;identità.",
+      "nuovo": "che le dispense enunciano come corollario e che a lezione (registrazione 2025) compare solo nel caso dell&#x27;identità; nella lezione 2026 è enunciata in generale.",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap61.58",
+      "vecchio": "qui la si usa solo per questo controllo, non presente nelle dispense né in lezione",
+      "nuovo": "la matrice compare alla lavagna nella lezione 2026 (cap. 59); il controllo che segue non è presente nelle dispense né in lezione",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap61.67",
+      "vecchio": "Alla lavagna questa proprietà non compare.",
+      "nuovo": "Alla lavagna (registrazione 2025) questa proprietà non compare; nella lezione 2026 sì, con questa stessa dimostrazione (scritta con B = M<sup>−1</sup>AM).",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap62.50",
+      "vecchio": "Alla lavagna la definizione è data direttamente in questa forma.",
+      "nuovo": "Alla lavagna (registrazione 2024) la definizione è data direttamente in questa forma; nella lezione 2026 il docente usa invece quella delle dispense.",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap62.50",
+      "vecchio": "Il simbolo ⊕ si usa nelle dispense; alla lavagna non compare.",
+      "nuovo": "Il simbolo ⊕ si usa nelle dispense; alla lavagna 2024 non compare, in quella 2026 sì (nella dimostrazione del teorema di diagonalizzabilità, cap. 63).",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap63.21",
+      "vecchio": "Alla lavagna (registrazione 2024) è scritta solo la disuguaglianza m<sub>g</sub>(λ) ≤ m<sub>a</sub>(λ), riquadrata e senza dimostrazione.",
+      "nuovo": "Alla lavagna (registrazione 2024) è scritta solo la disuguaglianza m<sub>g</sub>(λ) ≤ m<sub>a</sub>(λ), riquadrata e senza dimostrazione. Nella lezione 2026 è enunciata, rispetto alla lavagna 2024, anche la prima disuguaglianza, cioè la catena completa 1 ≤ m<sub>g</sub>(λ) ≤ m<sub>a</sub>(λ), con la conseguenza che se m<sub>a</sub>(λ) = 1 allora m<sub>g</sub>(λ) = 1, anche qui senza dimostrazione.",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap63.30",
+      "vecchio": "Il teorema non è dimostrato a lezione; la dimostrazione è quella delle dispense.",
+      "nuovo": "Nella registrazione 2024 il teorema non è dimostrato; nella lezione 2026 il docente svolge alla lavagna il verso ⟸: da (a) e (b) la somma delle m<sub>g</sub>(λ<sub>i</sub>) è n, quindi 𝕂ⁿ = V<sub>λ1</sub> ⊕ … ⊕ V<sub>λk</sub>, e unendo basi degli autospazi si ottiene una base di autovettori. La dimostrazione completa è quella delle dispense.",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap63.51",
+      "vecchio": "A lezione non ci sono esempi 3 × 3; le dispense ne svolgono due.",
+      "nuovo": "Nella registrazione 2024 non ci sono esempi 3 × 3; nella lezione 2026 c&#x27;è la triangolare ( 1 0 0 ; 1 2 0 ; 2 1 3 ) dei cap. 61-62 e della tabella delle molteplicità più sopra. Le dispense ne svolgono due.",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap63.8",
+      "vecchio": "(λ − t)<sup>m</sup> = (−1)<sup>m</sup>(t − λ)<sup>m</sup>.",
+      "nuovo": "(λ − t)<sup>m</sup> = (−1)<sup>m</sup>(t − λ)<sup>m</sup>. Nella lezione 2026 la stessa definizione è detta come massimo k tale che (t − λ)<sup>k</sup> divide p<sub>T</sub>(t).",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap52.60",
+      "vecchio": "e a trattare il caso in cui nessuna delle due basi è la canonica.",
+      "nuovo": "e a trattare senza sistemi il caso in cui nessuna delle due basi è la canonica, come nell&#x27;esempio dei polinomi qui sopra.",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap60.58",
+      "vecchio": "Calcolare cento prodotti sarebbe estremamente dispendioso, ma",
+      "nuovo": "Calcolare cento prodotti sarebbe estremamente dispendioso (alla lavagna, lezione 2026, è il «metodo 1» a forza bruta: A<sup>2</sup> = ( 9 20 ; 0 4 ), poi A<sup>4</sup> = A<sup>2</sup>·A<sup>2</sup>, …), ma",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    },
+    {
+      "blocco": "cap60.60",
+      "vecchio": "(cap. 36; il determinante è 1). Quindi",
+      "nuovo": "(cap. 36; il determinante è 1).",
+      "evidenziato": false,
+      "evidenziazioni_nel_capitolo": 0
+    }
+  ]
+}

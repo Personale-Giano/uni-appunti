@@ -16,7 +16,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-ETICHETTA = re.compile(r"^\s*<strong>\s*(Definizione|Teoria|Legge|Esperimento)\b\s*(\(([^)<]{1,80})\))?\s*[.:]?\s*</strong>\s*[.:]?\s*", re.I)
+ETICHETTA = re.compile(r"^\s*<strong>\s*(Definizione|Teoria|Legge|Esperimento|Film|Opera|Movimento)\b\s*(\(([^)<]{1,120})\))?\s*[.:]?\s*</strong>\s*[.:]?\s*", re.I)
 _SUP = str.maketrans("0123456789+-−n", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁻ⁿ")
 _SUB = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
 
@@ -71,6 +71,12 @@ def schede(mat, slug, caps):
                 d = f"Che cosa si intende per {term.group(1).strip()}?"
             elif tipo == "Esperimento":
                 d = f"L'esperimento di {nome}: che cosa voleva capire, come si è svolto, che cosa è risultato e perché è importante?" if nome else "Descrivi l'esperimento: domanda, procedura, risultato."
+            elif tipo == "Film":
+                d = f"Il film {nome}: chi l'ha diretto, quando, e perché è importante nella storia del cinema?" if nome else "Di quale film si parla e perché è importante?"
+            elif tipo == "Opera":
+                d = f"{nome}: autore, contenuto essenziale e perché è importante?" if nome else "Di quale opera si parla e perché è importante?"
+            elif tipo == "Movimento":
+                d = f"{nome}: quando e dove nasce, chi sono i protagonisti, quali sono i tratti principali?" if nome else "Quali sono i tratti principali di questo movimento?"
             else:
                 d = f"{tipo} {('«' + nome + '»') if nome else ''}: che cosa sostiene?".replace("  ", " ")
             r = "\n".join(x for x in risposta if x)

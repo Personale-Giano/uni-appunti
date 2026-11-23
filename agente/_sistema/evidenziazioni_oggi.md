@@ -1,3 +1,3 @@
-# Evidenziazioni: cambiamenti dall'ultimo controllo (2026-11-04)
+# Evidenziazioni: cambiamenti dall'ultimo controllo (2026-11-23)
 
 Nessun cambiamento.
