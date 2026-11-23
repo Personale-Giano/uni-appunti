@@ -1,6 +1,6 @@
 <!-- fonte: _sistema/fonti/Appunti/Mate_2026/17 Novembre/17 Novembre.pdf -->
 # Matematica discreta, lezione 16 (17 novembre 2026): appunti a mano di Emanuele
-(Trascrizione delle 2 pagine della scansione. La seconda pagina continua con il teorema fondamentale dell'aritmetica e tre foto della lavagna (unicità della fattorizzazione e infinità dei primi): per il calendario e per gli appunti del docente (perm5 = 17 nov, perm6 = 19 nov) questa parte è quasi certamente della **lezione 17 del 19 novembre**, la cui scansione separata («19 Novembre/Quadretti - Grande.pdf») è una pagina bianca. Formule in Unicode; tra parentesi quadre le mie note di lettura.)
+(Trascrizione delle 2 pagine della scansione. La seconda pagina continua con il teorema fondamentale dell'aritmetica e tre foto della lavagna (unicità della fattorizzazione e infinità dei primi): anche questa parte è della lezione 16 del 17 novembre (Moodle: perm5 = 12 nov, perm6 = 17 nov, che contiene proprio il teorema fondamentale). La scansione del 19 nov («19 Novembre/Quadretti - Grande.pdf») è una pagina bianca. Formule in Unicode; tra parentesi quadre le mie note di lettura.)
 
 ## Pagina 1
 
