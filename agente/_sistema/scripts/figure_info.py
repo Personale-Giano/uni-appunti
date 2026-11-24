@@ -104,10 +104,10 @@ def celle_memoria():
         ax.text(i * 1.05 + 0.5, -0.3, str(i), ha="center", fontsize=11, color=BLU)
     ax.text(-0.2, -0.3, "indirizzi", ha="right", fontsize=9, color=BLU)
     ax.text(4.2, 1.35, "memoria principale: celle consecutive, ciascuna con il proprio indirizzo", ha="center", fontsize=10)
-    freccia(ax, (3.65, -0.7), (5.85, -2.0), GRIGIO, 1.0, ls="--"); freccia(ax, (3.65, -0.7), (1.3, -2.0), GRIGIO, 1.0, ls="--")
+    freccia(ax, (3.65, -0.7), (5.3, -2.0), GRIGIO, 1.0, ls="--"); freccia(ax, (3.65, -0.7), (1.3, -2.0), GRIGIO, 1.0, ls="--")
     for i, b in enumerate("01101010"):
         box(ax, 1.3 + i * 0.5, -2.7, 0.5, 0.7, b, fc="white", fs=11, style="square,pad=0")
-    ax.text(1.55, -3.05, "MSB", ha="center", fontsize=9.5, color=ROSSO, fontweight="bold"); ax.text(4.55, -3.05, "LSB", ha="center", fontsize=9.5, color=VERDE, fontweight="bold")
+    ax.text(1.55, -3.05, "MSB", ha="center", fontsize=9.5, color=ROSSO, fontweight="bold"); ax.text(5.05, -3.05, "LSB", ha="center", fontsize=9.5, color=VERDE, fontweight="bold")
     ax.text(3.0, -3.55, "il contenuto della cella 3, bit per bit", ha="center", fontsize=9, color=GRIGIO)
     return _salva(fig, "fond/ch05_celle_memoria")
 
