@@ -356,7 +356,10 @@ def pagina(titolo, corpo):
 def main(argv):
     solo_controllo = "--controlla" in argv
     pronte, tutti_errori = [], []
+    escludi = set(filter(None, __import__("os").environ.get("SCHEMI_ESCLUDI", "").split(",")))  # materie ancora in revisione
     for slug, nome in MATERIE:
+        if slug in escludi:
+            continue
         gruppi, err = leggi(slug)
         tutti_errori += err
         if gruppi:

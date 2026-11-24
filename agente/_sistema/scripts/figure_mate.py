@@ -177,7 +177,7 @@ def quoziente():
     ax.text(2.6, 5.85, "ℕ", ha="center", fontsize=13, style="italic"); ax.text(1.8, 3.1, "P", ha="center", fontsize=14, color=BLU, style="italic"); ax.text(3.45, 3.1, "D", ha="center", fontsize=14, color=ROSSO, style="italic")
     ax.add_patch(Ellipse((8.6, 3.1), 2.2, 3.4, fill=False, ec="black", lw=1.6)); ax.text(8.6, 5.15, "Q = {P, D}", ha="center", fontsize=12)
     ax.plot(8.6, 3.9, "o", color=BLU); ax.plot(8.6, 2.3, "o", color=ROSSO); ax.text(8.9, 3.9, "P", fontsize=12, color=BLU, va="center"); ax.text(8.9, 2.3, "D", fontsize=12, color=ROSSO, va="center")
-    ax.add_patch(FancyArrowPatch((3.0, 3.4), (8.4, 3.85), arrowstyle="-|>", mutation_scale=12, color=BLU, lw=1.4)); ax.add_patch(FancyArrowPatch((3.9, 2.8), (8.4, 2.35), arrowstyle="-|>", mutation_scale=12, color=ROSSO, lw=1.4))
+    ax.add_patch(FancyArrowPatch((1.95, 3.55), (8.4, 3.9), arrowstyle="-|>", mutation_scale=12, color=BLU, lw=1.4, connectionstyle="arc3,rad=-0.28")); ax.add_patch(FancyArrowPatch((3.9, 2.8), (8.4, 2.35), arrowstyle="-|>", mutation_scale=12, color=ROSSO, lw=1.4))
     ax.text(6.0, 0.4, "ogni blocco diventa un elemento di Q", fontsize=9.5, ha="center", color=GRIGIO)
     return _salva(fig, "mate/ch07_insieme_quoziente")
 
@@ -315,9 +315,9 @@ def immagine_controimmagine():
         ov = [dict(nome="A", elems=A, cx=2.1, evid=S, sub="S", col=BLU), dict(nome="B", elems=B, cx=7.9, evid={f[a] for a in S}, sub="f(S)", col=BLU)]
         ovali_ax(ax, ov, [dict(da=(0, a), a=(1, f[a]), col=BLU if a in S else GRIGIO) for a in A], titolo="immagine di S: f(S) = {b₁, b₂}", fs=11)
     def ctr(ax):
-        T = {"b₁", "b₃"}; pre = {a for a in A if f[a] in T}
+        T = {"b₂", "b₃"}; pre = {a for a in A if f[a] in T}
         ov = [dict(nome="A", elems=A, cx=2.1, evid=pre, sub="f⁻¹(T)", col=ROSSO), dict(nome="B", elems=B, cx=7.9, evid=T, sub="T", col=ROSSO)]
-        ovali_ax(ax, ov, [dict(da=(0, a), a=(1, f[a]), col=ROSSO if f[a] in T else GRIGIO) for a in A], titolo="controimmagine di T = {b₁, b₃}", fs=11)
+        ovali_ax(ax, ov, [dict(da=(0, a), a=(1, f[a]), col=ROSSO if f[a] in T else GRIGIO) for a in A], titolo="controimmagine di T = {b₂, b₃}", fs=11)
     return pannelli("mate/ch13_immagine_controimmagine", [img, ctr], larghezza=4.4, altezza=3.6, wspace=0.55)
 
 
