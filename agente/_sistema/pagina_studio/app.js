@@ -361,8 +361,19 @@ function renderMaterie() {
   const mats = Object.keys(DATA.materie); const openSet = new Set($$('#materie .subj.open').map(e => e.dataset.m));
   $('#materie').innerHTML = mats.map((m, i) => {
     const x = DATA.materie[m], pct = x.capitoli ? x.studiati / x.capitoli : 0, p = Math.round(100 * pct);
-    const sq = (x.elenco || []).map((c, k) => `<button class="sq s${c.s}" style="--k:${k}" data-t="${esc(c.t)}" data-n="${c.n}" data-s="${c.s}" title="Cap. ${c.n}: ${esc(c.t)}" aria-label="Capitolo ${c.n}, ${c.s === 2 ? 'studiato' : (c.s === 1 ? 'studiato in parte' : 'da studiare')}: ${esc(c.t)}">${c.s === 2 ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>' : c.n}</button>`).join('');
-    const lst = (x.elenco || []).map(c => `<li class="s${c.s}"><i></i><span>${c.n}. ${esc(c.t)}</span></li>`).join('');
+    const el = (x.elenco || []).slice().sort((a, b) => a.n - b.n);
+    const one = (c, k) => `<button class="sq s${c.s}" style="--k:${k}" data-t="${esc(c.t)}" data-n="${c.n}" data-s="${c.s}" title="Cap. ${c.n}: ${esc(c.t)}" aria-label="Capitolo ${c.n}, ${c.s === 2 ? 'studiato' : (c.s === 1 ? 'studiato in parte' : 'da studiare')}: ${esc(c.t)}">${c.s === 2 ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>' : c.n}</button>`;
+    // capitoli studiati consecutivi (3 o più) raccolti in un'unica etichetta che si apre al tocco
+    let sq = '', k = 0;
+    while (k < el.length) {
+      let j = k;
+      while (j < el.length && el[j].s === 2 && (j === k || el[j].n === el[j - 1].n + 1)) j++;
+      if (j - k >= 3) {
+        sq += `<button class="sq-run" aria-expanded="false" title="Capitoli ${el[k].n}–${el[j - 1].n} studiati: tocca per aprirli"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>${el[k].n}–${el[j - 1].n}</button><span class="run-items">${el.slice(k, j).map((c, t) => one(c, k + t)).join('')}</span>`;
+        k = j;
+      } else { sq += one(el[k], k); k++; }
+    }
+    const lst = el.map(c => `<li class="s${c.s}"><i></i><span>${c.n}. ${esc(c.t)}</span></li>`).join('');
     return `<article class="subj ${openSet.has(m) ? 'open' : ''}" data-m="${esc(m)}" style="--c:var(--s${i % 4})">
       <button class="subj-head" aria-expanded="${openSet.has(m)}">${ring(pct, 56, 6, { cls: 'sm' + (pct >= 1 ? ' ok' : ''), label: p + '% studiato', center: `<b>${p}%</b>` })}<span><span class="nm">${esc(m)}</span><br><span class="sub">${x.studiati} di ${x.capitoli} capitoli studiati</span></span>${IC.chev}</button>
       <div class="squares" role="group" aria-label="Capitoli: verde studiato, arancio in parte">${sq}</div>
@@ -372,6 +383,7 @@ function renderMaterie() {
   }).join('');
   $$('#materie .subj').forEach(card => {
     $('.subj-head', card).addEventListener('click', e => { const o = card.classList.toggle('open'); $('.fold', card).classList.toggle('open', o); e.currentTarget.setAttribute('aria-expanded', String(o)); });
+    $$('.sq-run', card).forEach(b => b.addEventListener('click', () => { const o = b.classList.toggle('open'); b.setAttribute('aria-expanded', String(o)); }));
     $$('.sq', card).forEach(b => b.addEventListener('click', () => {
       $$('.sq.on', card).forEach(s => s.classList.remove('on')); b.classList.add('on');
       const st = { 2: 'studiato', 1: 'in parte', 0: 'da studiare' }[b.dataset.s];

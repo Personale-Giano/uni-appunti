@@ -258,15 +258,19 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
 .subj-head .chev { width: 22px; height: 22px; fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s var(--ease); }
 .subj.open .chev { transform: rotate(180deg); }
 .subj .ring .bar { stroke: var(--c); }
-.squares { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 16px 14px; }
-.sq { appearance: none; position: relative; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 .72rem var(--font-mono); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s var(--ease), border-color .2s; }
+.squares { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 14px 8px; }
+.sq-run { appearance: none; height: 24px; padding: 0 9px 0 6px; border-radius: 7px; border: 1.5px solid var(--green); background: var(--green-soft); color: var(--green); font: 700 .7rem var(--font-mono); display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.sq-run svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.sq-run.open { opacity: .6; }
+.run-items { display: none; } .sq-run.open + .run-items { display: contents; }
+.sq { appearance: none; position: relative; width: 24px; height: 24px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 .72rem var(--font-mono); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s var(--ease), border-color .2s; }
 .sq:hover { transform: translateY(-2px) scale(1.08); border-color: var(--ink); }
 .sq:active { transform: scale(.94); }
 .sq.s2 { background: var(--green-soft); border-color: var(--green); color: var(--green); }
 .sq.s1 { background: linear-gradient(135deg, var(--orange-soft) 50%, var(--surface-2) 50%); border-color: var(--orange); color: var(--orange); }
-.sq svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw .5s var(--ease) forwards; animation-delay: calc(var(--k) * 28ms + .35s); }
+.sq svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw .5s var(--ease) forwards; animation-delay: calc(var(--k) * 28ms + .35s); }
 .sq.on { outline: 2px solid var(--c); outline-offset: 2px; }
-.sq-label { padding: 0 16px 12px; min-height: 2.4em; font-size: .84rem; color: var(--muted); }
+.sq-label { padding: 0 14px 10px; min-height: 1.3em; font-size: .78rem; color: var(--muted); }
 .sq-label b { color: var(--ink); }
 .subj-more .fold-in { padding: 0 16px; }
 .subj-more .meta { padding: 10px 0 4px; border-top: 1px solid var(--line-2); font-size: .9rem; display: grid; gap: 6px; }
@@ -472,7 +476,7 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
   .bn:active { transform: scale(.94); }
   .q-in { padding: 16px 16px 18px; } .q-text { font-size: 1.14rem; }
   .face { padding: 22px 18px 22px 44px; }   .p-card { padding: 18px 16px; }
-  .exam { min-height: 96px; padding: 10px 12px 12px; } .exam .cd b { font-size: 2rem; } .exam .nm { font-size: .88rem; } .sq { width: 34px; height: 34px; }
+  .exam { min-height: 96px; padding: 10px 12px 12px; } .exam .cd b { font-size: 2rem; } .exam .nm { font-size: .88rem; } .sq { width: 28px; height: 28px; } .sq-run { height: 28px; }
 }
 
 /* ---------- toast e dialoghi ---------- */
