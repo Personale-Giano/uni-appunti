@@ -42,7 +42,7 @@ CSS_EXTRA = """<style>
   .subj-read{min-height:44px;margin-bottom:14px}
   .chips-pick > *,.tchip{min-height:44px}
   .bn span,.bnlink span{font-size:.75rem}
-  .bottomnav{grid-template-columns:repeat(6,1fr)!important}
+  .bottomnav{grid-template-columns:repeat(5,1fr)!important}
   .bnlink{appearance:none;border:0;background:none;color:var(--muted);font:600 .72rem var(--font-body);min-height:56px;display:grid;justify-items:center;align-content:center;gap:3px;border-radius:14px;text-decoration:none;position:relative}
   .bnlink svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
   .bnlink:active{transform:scale(.96)}
@@ -92,8 +92,8 @@ def adatta(html):
     html = sostituisci(html, r"const LS_KEY = '([^']+)';", lambda m: f"const LS_KEY = '{m.group(1)}:__QUSER__';", "LS_KEY", regex=True)
     html = sostituisci(html, r"\$\{greeting\(\)\} Emanuele", "${greeting()} __QNOME__", "saluto", regex=True)
     # "Riassunti" come voce del menu (schermi grandi) e della barra in basso (telefono)
-    html = sostituisci(html, r"(Schede</button>\s*)(</nav>)", lambda m: m.group(1) + TABLINK + m.group(2), "menu", regex=True)
-    html = sostituisci(html, r"(<span>Schede</span></button>\s*)(</nav>)", lambda m: m.group(1) + BNLINK + m.group(2), "barra in basso", regex=True)
+    html = sostituisci(html, r"(Esercizi</button>\s*)(</nav>)", lambda m: m.group(1) + TABLINK + m.group(2), "menu", regex=True)
+    html = sostituisci(html, r"(<span>Esercizi</span></button>\s*)(</nav>)", lambda m: m.group(1) + BNLINK + m.group(2), "barra in basso", regex=True)
     # pulsante Esci accanto al tema e alle impostazioni
     html = sostituisci(html, '<div class="tools">', '<div class="tools">' + ESCI, "strumenti")
     # link ai riassunti dalle carte delle materie e dai quadratini dei capitoli
@@ -118,8 +118,9 @@ TESTI_SPAZIO = [
     (" Le soluzioni ufficiali in PDF hanno qualche errore: dove l'ho trovato lo segnalo.", " Ogni domanda ha la spiegazione subito dopo la risposta e il link al capitolo da rivedere."),
     (": 'Tutti gli argomenti presenti nel Word sono coperti.';", ": '';"),
     ('<span class="kbd">1</span>–<span class="kbd">5</span> rispondi', '<span class="kbd">1</span>–<span class="kbd">4</span> rispondi'),
-    ('aria-controls="tab-problemi" tabindex="-1">Problemi</button>', 'aria-controls="tab-problemi" tabindex="-1">Domande</button>'),
-    ('<span>Problemi</span>', '<span>Domande</span>'),
+    ('data-sub="problemi" aria-checked="true">Problemi</button>', 'data-sub="problemi" aria-checked="true">Domande</button>'),
+    ('data-sub="problemi" aria-checked="false">Problemi</button>', 'data-sub="problemi" aria-checked="false">Domande</button>'),
+    ('aria-label="Problemi o schede"', 'aria-label="Domande o schede"'),
     ('aria-label="Problemi" aria-labelledby="t-problemi"', 'aria-label="Domande aperte" aria-labelledby="t-problemi"'),
     ("<h1>Problemi d'esame</h1><p class=\"muted\">I 30 problemi delle prove 2024-2026, con soluzione. Prima provi tu, poi guardi e dici com'è andata: i temi dove sbagli tornano più spesso.</p>",
      "<h1>Domande aperte</h1><p class=\"muted\">Le domande di ripasso di ogni capitolo, come all'esame orale. Prima rispondi tu, a voce o per iscritto, poi guardi la risposta e dici com'è andata: i capitoli dove sbagli tornano più spesso.</p>"),
@@ -146,7 +147,7 @@ def homepage_spazio(sc, sd, py):
     html = adatta((PAG / "index.html").read_text(encoding="utf-8"))
     # gli spazi non hanno (ancora) gli schemi: niente voce «Schemi» nel menu
     html = html.replace(f'<a class="tablink" href="schemi/">{IC_SCHEMI}<span>Schemi</span></a>', "").replace(f'<a class="bnlink" href="schemi/">{IC_SCHEMI}<span>Schemi</span></a>', "")
-    html = html.replace(".bottomnav{grid-template-columns:repeat(6,1fr)!important}", ".bottomnav{grid-template-columns:repeat(5,1fr)!important}")
+    html = html.replace(".bottomnav{grid-template-columns:repeat(5,1fr)!important}", ".bottomnav{grid-template-columns:repeat(4,1fr)!important}")
     mats = info["mats"]
     html = sostituisci(html, r"const MATS = \[[^\]]*\];", lambda m: "const MATS = " + json.dumps(mats, ensure_ascii=False) + ";", "materie dei quiz", regex=True)
     html = sostituisci(html, r"const SIM = \{.*?\};\n", lambda m: "const SIM = " + json.dumps({x: {"n": 20, "min": 30} for x in mats}, ensure_ascii=False) + ";\n", "simulazione", regex=True)

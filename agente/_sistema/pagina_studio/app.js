@@ -247,18 +247,22 @@ const subjIdx = m => Math.max(0, Object.keys(DATA.materie).indexOf(m));
 
 /* ---------- navigazione ---------- */
 const TABS = ['oggi', 'quiz', 'problemi', 'schede'];
+const NAV = ['oggi', 'quiz', 'esercizi'];   // Problemi e Schede stanno sotto un'unica voce «Esercizi»
+const navOf = t => (t === 'problemi' || t === 'schede') ? 'esercizi' : t;
 let current = 'oggi', pending = null;
 function moveInd(instant) {
-  const b = $('#t-' + current), ind = $('#seg-ind'); if (!b || !b.offsetWidth) return;
+  const b = $('#t-' + navOf(current)), ind = $('#seg-ind'); if (!b || !b.offsetWidth) return;
   if (instant) ind.style.transition = 'none';
   ind.style.width = b.offsetWidth + 'px'; ind.style.transform = `translateX(${b.offsetLeft}px)`;
   if (instant) { void ind.offsetWidth; ind.style.transition = ''; }
 }
 function showTab(name) {
+  if (name === 'esercizi') { let u = null; try { u = localStorage.getItem('quaderno-sub'); } catch (e) {} name = u === 'schede' ? 'schede' : 'problemi'; }
   if (!TABS.includes(name)) name = 'oggi';
+  if (name === 'problemi' || name === 'schede') { try { localStorage.setItem('quaderno-sub', name); } catch (e) {} }
   const changed = name !== current;
   current = name;
-  $$('.tab, .bn').forEach(b => { const on = b.dataset.tab === name; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
+  $$('.tab, .bn').forEach(b => { const on = b.dataset.tab === navOf(name); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
   moveInd(!DATA);
   try { localStorage.setItem('quaderno-tab', name); history.replaceState(null, '', '#' + name); } catch (e) {}
   if (!DATA) { pending = name; return; }
@@ -277,10 +281,11 @@ $$('.tab, .bn').forEach(b => {
   b.addEventListener('click', () => showTab(b.dataset.tab));
   b.addEventListener('keydown', e => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    const i = TABS.indexOf(b.dataset.tab), n = TABS[(i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length];
+    const i = NAV.indexOf(b.dataset.tab), n = NAV[(i + (e.key === 'ArrowRight' ? 1 : NAV.length - 1)) % NAV.length];
     showTab(n); const t = $(b.classList.contains('bn') ? `.bn[data-tab="${n}"]` : '#t-' + n); if (t) t.focus(); e.preventDefault();
   });
 });
+$$('.sub-sw button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.sub)));
 $('.brand').addEventListener('click', e => { e.preventDefault(); showTab('oggi'); });
 window.addEventListener('resize', () => moveInd(true));
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveInd(true));

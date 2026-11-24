@@ -573,3 +573,5 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
 
 /* sopralineatura (negazione booleana) nei quiz */
 .ov { display: inline-block; border-top: 1.5px solid currentColor; line-height: 1.05; padding: 0 .08em; }
+
+.sub-sw { max-width: 22rem; margin: 0 auto 14px; }
