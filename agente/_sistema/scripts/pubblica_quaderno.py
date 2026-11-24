@@ -18,11 +18,14 @@ PAG = BASE / "pagina_studio"
 REPO_DEFAULT = Path.home() / "Documents" / "GitHub" / "quaderno-privato"
 
 IC_LIBRO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 19V5.5M8.5 7.5h7M8.5 11h5"/></svg>'
+IC_SCHEMI = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M14 15h6M14 18.5h4"/></svg>'
 IC_ESCI = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M16 8l4 4-4 4M20 12H9"/></svg>'
 
 # voce "Riassunti" nel menu (schermi grandi), nella barra in basso (telefono) e pulsante Esci
-TABLINK = f'<a class="tablink" href="riassunti/">{IC_LIBRO}<span>Riassunti</span></a>'
-BNLINK = f'<a class="bnlink" href="riassunti/">{IC_LIBRO}<span>Riassunti</span></a>'
+TABLINK = (f'<a class="tablink" href="riassunti/">{IC_LIBRO}<span>Riassunti</span></a>'
+           f'<a class="tablink" href="schemi/">{IC_SCHEMI}<span>Schemi</span></a>')
+BNLINK = (f'<a class="bnlink" href="riassunti/">{IC_LIBRO}<span>Riassunti</span></a>'
+          f'<a class="bnlink" href="schemi/">{IC_SCHEMI}<span>Schemi</span></a>')
 ESCI = f'<button class="icon-btn" id="logout-btn" title="Esci (__QUSER__)" aria-label="Esci">{IC_ESCI}</button>'
 CSS_EXTRA = """<style>
 .seg .tablink{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);font:600 .98rem var(--font-body);min-height:44px;padding:0 18px;border-radius:10px;white-space:nowrap;transition:color .2s}
@@ -39,7 +42,7 @@ CSS_EXTRA = """<style>
   .subj-read{min-height:44px;margin-bottom:14px}
   .chips-pick > *,.tchip{min-height:44px}
   .bn span,.bnlink span{font-size:.75rem}
-  .bottomnav{grid-template-columns:repeat(5,1fr)!important}
+  .bottomnav{grid-template-columns:repeat(6,1fr)!important}
   .bnlink{appearance:none;border:0;background:none;color:var(--muted);font:600 .72rem var(--font-body);min-height:56px;display:grid;justify-items:center;align-content:center;gap:3px;border-radius:14px;text-decoration:none;position:relative}
   .bnlink svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
   .bnlink:active{transform:scale(.96)}
@@ -141,6 +144,9 @@ def homepage_spazio(sc, sd, py):
         raise RuntimeError(r.stderr)
     info = json.loads(r.stdout.strip().splitlines()[-1])
     html = adatta((PAG / "index.html").read_text(encoding="utf-8"))
+    # gli spazi non hanno (ancora) gli schemi: niente voce «Schemi» nel menu
+    html = html.replace(f'<a class="tablink" href="schemi/">{IC_SCHEMI}<span>Schemi</span></a>', "").replace(f'<a class="bnlink" href="schemi/">{IC_SCHEMI}<span>Schemi</span></a>', "")
+    html = html.replace(".bottomnav{grid-template-columns:repeat(6,1fr)!important}", ".bottomnav{grid-template-columns:repeat(5,1fr)!important}")
     mats = info["mats"]
     html = sostituisci(html, r"const MATS = \[[^\]]*\];", lambda m: "const MATS = " + json.dumps(mats, ensure_ascii=False) + ";", "materie dei quiz", regex=True)
     html = sostituisci(html, r"const SIM = \{.*?\};\n", lambda m: "const SIM = " + json.dumps({x: {"n": 20, "min": 30} for x in mats}, ensure_ascii=False) + ";\n", "simulazione", regex=True)
@@ -220,6 +226,10 @@ def main():
     if (PAG / "img").exists():
         shutil.copytree(PAG / "img", dest / "img")
     r = subprocess.run([py, "-X", "utf8", "-W", "ignore", str(SCRIPTS / "riassunti_html.py"), str(dest), str(repo / "contenuti")], capture_output=True, text=True, encoding="utf-8")
+    print(r.stdout.strip())
+    if r.returncode:
+        print(r.stderr); return 1
+    r = subprocess.run([py, "-X", "utf8", "-W", "ignore", str(SCRIPTS / "schemi_html.py"), str(dest)], capture_output=True, text=True, encoding="utf-8")
     print(r.stdout.strip())
     if r.returncode:
         print(r.stderr); return 1
