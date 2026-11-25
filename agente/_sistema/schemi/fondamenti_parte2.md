@@ -604,3 +604,74 @@ while (i < n && found == false) {
 - su {a, b}, α ↦ αab e α ↦ αα sono iniettive ma non suriettive
 ! Trabocchetto: per la suriettività non si ricava α dalla tesi α^{R} = β: si sceglie il testimone, poi si verifica che funziona.
 > Vedi anche: Funzione biiettiva, Funzione suriettiva
+
+## Stringa come funzione {49}
+= Una stringa di lunghezza n ≥ 0 è una funzione α : [1, n] → X, con α(i) il carattere di posto i; la rovesciata è α^{R}(i) = α(n + 1 − i), della stessa lunghezza.
+- n + 1 − i è il «contatore all'indietro»: per i da 1 a n va da n a 1, quindi resta dentro [1, n]
+- per n = 0 gli indici sono vuoti e la stringa è λ
+- esempio: α = assi, n = 4, α^{R}(1) = α(4) = i, …, α^{R} = issa
+- due stringhe sono uguali se hanno la stessa lunghezza e lo stesso carattere in ogni posizione
+- concatenazione: (αβ)(i) = α(i) per i ≤ n e β(i − n) per n < i ≤ n + m
+> Vedi anche: Concatenazione e rovesciata, Espandere le definizioni
+
+## Espandere le definizioni {49}
+= Per dimostrare (α^{R})^{R} = α si **espandono le definizioni** e si fa algebra: è un metodo meccanico, quello che serve a una macchina per una risposta certa e non solo plausibile.
+- tesi carattere per carattere: per ogni i ∈ [1, n], (α^{R})^{R}(i) = α(i)
+- rovesciata esterna: (α^{R})^{R}(i) = α^{R}(n + 1 − i)
+- rovesciata interna, come **istanza** di α^{R}(k) = α(n + 1 − k) con k = n + 1 − i: α(n + 1 − (n + 1 − i)) = α(i)
+- ricetta: scrivere la tesi, espandere dalla definizione più esterna, fare le istanze, semplificare
+- con lo stesso metodo, per casi, (αβ)^{R} = β^{R}α^{R}: (roma)^{R} = amor = am · or
+! Trabocchetto: l'espressione va sostituita tutta, tra parentesi: n + 1 − n + 1 − i fa 2 − i, non i.
+> Vedi anche: Stringa come funzione, Rovesciamento e concatenazione come funzioni, Dimostrazione diretta
+
+# Relazioni
+
+## Relazione e grafo diretto {50}
+= Una **relazione** R da X a Y è un sottoinsieme di X × Y; si scrive x R y se (x, y) ∈ R. Se X = Y è una relazione su X.
+![il grafo di R = {(a, a), (b, c), (c, b), (d, d)}: cappi in a e d, due frecce opposte tra b e c](figure/fond/relazione_abcd.png)
+- **grafo diretto**: un punto per elemento e una freccia da x a y per ogni coppia (x, y)
+- una coppia (x, x) è un **cappio** (loop), una freccia che torna nel punto
+- una funzione è una relazione in cui da ogni elemento di X parte esattamente una coppia
+- elenco di coppie e disegno sono equivalenti: il disegno spesso fa vedere subito la risposta
+> Vedi anche: Proprietà delle relazioni, Funzione
+
+## Proprietà delle relazioni {50}
+= Le quattro proprietà sono universali; la loro negazione (De Morgan) dice quale controesempio cercare.
+- **riflessiva** ∀x (x, x) ∈ R: un cappio su ogni punto; no se un x non ha il cappio
+- **simmetrica** ∀x, y ((x, y) ∈ R → (y, x) ∈ R): ogni freccia ha il ritorno
+- **antisimmetrica** ∀x, y ((x, y) ∈ R ∧ (y, x) ∈ R → x = y): tra punti distinti al più una freccia
+- **transitiva** ∀x, y, z ((x, y) ∈ R ∧ (y, z) ∈ R → (x, z) ∈ R): per ogni cammino di due frecce c'è la scorciatoia
+- R = {(a, a), (b, c), (c, b), (d, d)}: non riflessiva (b), simmetrica, non antisimmetrica (b ≠ c), non transitiva ((b, b) ∉ R)
+- valgono o non valgono «perfettamente»: un solo controesempio le rende false
+! Trabocchetto: antisimmetrica non vuol dire «non simmetrica»: {(a, a), (b, b), (c, c)} è entrambe, {(1, 2), (2, 1), (2, 3)} nessuna delle due.
+> Vedi anche: Relazione e grafo diretto, De Morgan per i quantificatori, Controesempio
+
+## Relazione d'ordine {51}
+= Una **relazione d'ordine** (ordine parziale, x ≼ y) è riflessiva, antisimmetrica e transitiva; è **totale** se due elementi qualunque sono **confrontabili**, x ≼ y oppure y ≼ x.
+![(a) ≤ su {1, 2, 3, 4}, (b) un'equivalenza con classi {1, 3, 5}, {2, 6}, {4}, (c) l'uguaglianza su {a, b, c}](figure/fond/ordine_equivalenza.png)
+- esempi: ≤ sugli interi (totale); divisibilità sui positivi e ⊆ sui sottoinsiemi di {a, b, c} (non totali)
+- {a} e {b} non sono confrontabili per ⊆, 2 e 3 non lo sono per la divisibilità
+- nel grafo, passati a un elemento distinto non si torna più indietro; senza i cappi di ≤ resta l'ordine stretto <
+- in informatica gli ordini sono quasi sempre parziali: una scelta può migliorare alcuni parametri e peggiorarne altri
+! Trabocchetto: «ordine» non vuol dire «ordine totale»: l'inclusione è un ordine anche se due insiemi possono non essere confrontabili.
+> Vedi anche: Proprietà delle relazioni, Relazione di equivalenza, Doppia inclusione
+
+## Relazione di equivalenza {51}
+= Una **relazione di equivalenza** è riflessiva, simmetrica e transitiva: rispetto a un ordine, la simmetria prende il posto dell'antisimmetria.
+- divide l'insieme in **classi di equivalenza**: dentro una classe ci si muove liberamente, ma non si passa mai a un'altra
+- esempio: su {1, …, 6} le classi {1, 3, 5}, {2, 6}, {4}; da 3 a 5 e da 5 a 1 c'è già la freccia da 3 a 1
+- l'unica relazione che è insieme ordine ed equivalenza è l'**uguaglianza** {(x, x) : x ∈ X}
+- dimostrazione: se a R b, per simmetria b R a, per antisimmetria a = b; la riflessività dà tutti i cappi, e si chiude per doppia inclusione
+- l'uguaglianza è l'ordine più piccolo, che non ordina niente: non totale appena ci sono due elementi distinti
+> Vedi anche: Relazione d'ordine, Doppia inclusione
+
+## Quantificatori su un grafo di frecce {52}
+= Nei quiz d'esame su un grafo si traduce ogni formula in una frase sul disegno, poi si cerca un testimone (∃) o un controesempio (∀).
+![D = {1, …, 10}, A = {6, 7, 8}, B = {3, 4, 5}: una freccia da a a b vuol dire a R b](figure/fond/grafo_dieci_punti.png)
+- ∀x ∈ A ∃y ∈ B x R y, «ogni punto di A ha una freccia verso B»: vera (6 → 3, 7 → 4, 8 → 5)
+- ∀x ∈ A ∀y ∈ A ∃z ∈ B (x R z ∧ y R z), «immagine comune in B»: falsa con 7 e 8
+- ∃x ∀y y R x vorrebbe dieci frecce entranti: falsa; ∃x ∀y ¬(y R x) vale con il 9, che non riceve frecce
+- **confluenza** ∀x ∀y ∀z (x R y ∧ x R z → ∃u (y R u ∧ z R u)): falsa, per esempio con x = 3 e y = z = 1, da cui non esce nessuna freccia
+- contare le frecce entranti e uscenti spesso risponde subito
+! Trabocchetto: con ∨ al posto di ∧ la formula sull'immagine comune diventa vera; e in ∀x ∀y anche il caso x = y va controllato.
+> Vedi anche: Quantificatori annidati, Dimostrare o confutare un annidato, Funzione suriettiva

@@ -268,15 +268,19 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
 .subj-head .chev { width: 22px; height: 22px; fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s var(--ease); }
 .subj.open .chev { transform: rotate(180deg); }
 .subj .ring .bar { stroke: var(--c); }
-.squares { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 16px 14px; }
-.sq { appearance: none; position: relative; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 .72rem var(--font-mono); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s var(--ease), border-color .2s; }
+.squares { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 14px 8px; }
+.sq-run { appearance: none; height: 24px; padding: 0 9px 0 6px; border-radius: 7px; border: 1.5px solid var(--green); background: var(--green-soft); color: var(--green); font: 700 .7rem var(--font-mono); display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.sq-run svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.sq-run.open { opacity: .6; }
+.run-items { display: none; } .sq-run.open + .run-items { display: contents; }
+.sq { appearance: none; position: relative; width: 24px; height: 24px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 .72rem var(--font-mono); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s var(--ease), border-color .2s; }
 .sq:hover { transform: translateY(-2px) scale(1.08); border-color: var(--ink); }
 .sq:active { transform: scale(.94); }
 .sq.s2 { background: var(--green-soft); border-color: var(--green); color: var(--green); }
 .sq.s1 { background: linear-gradient(135deg, var(--orange-soft) 50%, var(--surface-2) 50%); border-color: var(--orange); color: var(--orange); }
-.sq svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw .5s var(--ease) forwards; animation-delay: calc(var(--k) * 28ms + .35s); }
+.sq svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw .5s var(--ease) forwards; animation-delay: calc(var(--k) * 28ms + .35s); }
 .sq.on { outline: 2px solid var(--c); outline-offset: 2px; }
-.sq-label { padding: 0 16px 12px; min-height: 2.4em; font-size: .84rem; color: var(--muted); }
+.sq-label { padding: 0 14px 10px; min-height: 1.3em; font-size: .78rem; color: var(--muted); }
 .sq-label b { color: var(--ink); }
 .subj-more .fold-in { padding: 0 16px; }
 .subj-more .meta { padding: 10px 0 4px; border-top: 1px solid var(--line-2); font-size: .9rem; display: grid; gap: 6px; }
@@ -482,7 +486,7 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
   .bn:active { transform: scale(.94); }
   .q-in { padding: 16px 16px 18px; } .q-text { font-size: 1.14rem; }
   .face { padding: 22px 18px 22px 44px; }   .p-card { padding: 18px 16px; }
-  .exam { min-height: 96px; padding: 10px 12px 12px; } .exam .cd b { font-size: 2rem; } .exam .nm { font-size: .88rem; } .sq { width: 34px; height: 34px; }
+  .exam { min-height: 96px; padding: 10px 12px 12px; } .exam .cd b { font-size: 2rem; } .exam .nm { font-size: .88rem; } .sq { width: 28px; height: 28px; } .sq-run { height: 28px; }
 }
 
 /* ---------- toast e dialoghi ---------- */
@@ -580,6 +584,8 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
 /* sopralineatura (negazione booleana) nei quiz */
 .ov { display: inline-block; border-top: 1.5px solid currentColor; line-height: 1.05; padding: 0 .08em; }
 
+.sub-sw { max-width: 22rem; margin: 0 auto 14px; }
+
 </style>
 <script>
 /* Lingua e tema impostati subito, prima del primo disegno, per evitare lampi di colore. */
@@ -604,8 +610,7 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
         <span class="seg-ind" id="seg-ind" aria-hidden="true"></span>
         <button class="tab" role="tab" id="t-oggi" data-tab="oggi" aria-selected="true" aria-controls="tab-oggi">Oggi</button>
         <button class="tab" role="tab" id="t-quiz" data-tab="quiz" aria-selected="false" aria-controls="tab-quiz" tabindex="-1">Quiz</button>
-        <button class="tab" role="tab" id="t-problemi" data-tab="problemi" aria-selected="false" aria-controls="tab-problemi" tabindex="-1">Problemi</button>
-        <button class="tab" role="tab" id="t-schede" data-tab="schede" aria-selected="false" aria-controls="tab-schede" tabindex="-1">Schede</button>
+        <button class="tab" role="tab" id="t-esercizi" data-tab="esercizi" aria-selected="false" aria-controls="tab-problemi" tabindex="-1">Esercizi</button>
       </nav>
       <div class="tools">
         <button class="icon-btn" id="theme-btn" aria-label="Tema: automatico. Tocca per cambiare" title="Tema"><span id="theme-ic"></span></button>
@@ -687,6 +692,7 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
 
     <!-- PROBLEMI -->
     <section id="tab-problemi" class="view wide" role="tabpanel" aria-label="Problemi" aria-labelledby="t-problemi" hidden>
+      <div class="seg-ctl sub-sw" role="group" aria-label="Problemi o schede"><button type="button" data-sub="problemi" aria-checked="true">Problemi</button><button type="button" data-sub="schede" aria-checked="false">Schede</button></div>
       <div id="prob-setup" class="stack narrow-in">
         <div class="view-head"><h1>Problemi d'esame</h1><p class="muted">I 30 problemi delle prove 2024-2026, con soluzione. Prima provi tu, poi guardi e dici com'è andata: i temi dove sbagli tornano più spesso.</p></div>
         <div class="card setup-card">
@@ -699,6 +705,7 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
 
     <!-- SCHEDE -->
     <section id="tab-schede" class="view narrow" role="tabpanel" aria-label="Schede" aria-labelledby="t-schede" hidden>
+      <div class="seg-ctl sub-sw" role="group" aria-label="Problemi o schede"><button type="button" data-sub="problemi" aria-checked="false">Problemi</button><button type="button" data-sub="schede" aria-checked="true">Schede</button></div>
       <div id="cards-setup" class="stack">
         <div class="view-head"><h1>Schede di ripasso</h1><p class="muted">Se la scheda era facile torna dopo più giorni; se era difficile o sbagliata torna prima, e a ridosso dell'esame gli intervalli si accorciano.</p></div>
         <div class="card setup-card">
@@ -715,8 +722,7 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
   <nav class="bottomnav" role="tablist" aria-label="Sezioni (barra in basso)" id="bnav">
     <button class="bn" role="tab" data-tab="oggi" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Oggi</span></button>
     <button class="bn" role="tab" data-tab="quiz" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.6a2.6 2.6 0 1 1 3.6 2.4c-.7.4-1.1.9-1.1 1.7M12 17h.01"/></svg><span>Quiz</span></button>
-    <button class="bn" role="tab" data-tab="problemi" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19zM14 7l3 3"/></svg><span>Problemi</span></button>
-    <button class="bn" role="tab" data-tab="schede" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="14" height="14" rx="2"/><path d="M7 7V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-2"/></svg><span>Schede</span></button>
+    <button class="bn" role="tab" data-tab="esercizi" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19zM14 7l3 3"/></svg><span>Esercizi</span></button>
   </nav>
 
   <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
@@ -1898,18 +1904,22 @@ const subjIdx = m => Math.max(0, Object.keys(DATA.materie).indexOf(m));
 
 /* ---------- navigazione ---------- */
 const TABS = ['oggi', 'quiz', 'problemi', 'schede'];
+const NAV = ['oggi', 'quiz', 'esercizi'];   // Problemi e Schede stanno sotto un'unica voce «Esercizi»
+const navOf = t => (t === 'problemi' || t === 'schede') ? 'esercizi' : t;
 let current = 'oggi', pending = null;
 function moveInd(instant) {
-  const b = $('#t-' + current), ind = $('#seg-ind'); if (!b || !b.offsetWidth) return;
+  const b = $('#t-' + navOf(current)), ind = $('#seg-ind'); if (!b || !b.offsetWidth) return;
   if (instant) ind.style.transition = 'none';
   ind.style.width = b.offsetWidth + 'px'; ind.style.transform = `translateX(${b.offsetLeft}px)`;
   if (instant) { void ind.offsetWidth; ind.style.transition = ''; }
 }
 function showTab(name) {
+  if (name === 'esercizi') { let u = null; try { u = localStorage.getItem('quaderno-sub'); } catch (e) {} name = u === 'schede' ? 'schede' : 'problemi'; }
   if (!TABS.includes(name)) name = 'oggi';
+  if (name === 'problemi' || name === 'schede') { try { localStorage.setItem('quaderno-sub', name); } catch (e) {} }
   const changed = name !== current;
   current = name;
-  $$('.tab, .bn').forEach(b => { const on = b.dataset.tab === name; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
+  $$('.tab, .bn').forEach(b => { const on = b.dataset.tab === navOf(name); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
   moveInd(!DATA);
   try { localStorage.setItem('quaderno-tab', name); history.replaceState(null, '', '#' + name); } catch (e) {}
   if (!DATA) { pending = name; return; }
@@ -1928,10 +1938,11 @@ $$('.tab, .bn').forEach(b => {
   b.addEventListener('click', () => showTab(b.dataset.tab));
   b.addEventListener('keydown', e => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    const i = TABS.indexOf(b.dataset.tab), n = TABS[(i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length];
+    const i = NAV.indexOf(b.dataset.tab), n = NAV[(i + (e.key === 'ArrowRight' ? 1 : NAV.length - 1)) % NAV.length];
     showTab(n); const t = $(b.classList.contains('bn') ? `.bn[data-tab="${n}"]` : '#t-' + n); if (t) t.focus(); e.preventDefault();
   });
 });
+$$('.sub-sw button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.sub)));
 $('.brand').addEventListener('click', e => { e.preventDefault(); showTab('oggi'); });
 window.addEventListener('resize', () => moveInd(true));
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveInd(true));
@@ -2012,8 +2023,19 @@ function renderMaterie() {
   const mats = Object.keys(DATA.materie); const openSet = new Set($$('#materie .subj.open').map(e => e.dataset.m));
   $('#materie').innerHTML = mats.map((m, i) => {
     const x = DATA.materie[m], pct = x.capitoli ? x.studiati / x.capitoli : 0, p = Math.round(100 * pct);
-    const sq = (x.elenco || []).map((c, k) => `<button class="sq s${c.s}" style="--k:${k}" data-t="${esc(c.t)}" data-n="${c.n}" data-s="${c.s}" title="Cap. ${c.n}: ${esc(c.t)}" aria-label="Capitolo ${c.n}, ${c.s === 2 ? 'studiato' : (c.s === 1 ? 'studiato in parte' : 'da studiare')}: ${esc(c.t)}">${c.s === 2 ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>' : c.n}</button>`).join('');
-    const lst = (x.elenco || []).map(c => `<li class="s${c.s}"><i></i><span>${c.n}. ${esc(c.t)}</span></li>`).join('');
+    const el = (x.elenco || []).slice().sort((a, b) => a.n - b.n);
+    const one = (c, k) => `<button class="sq s${c.s}" style="--k:${k}" data-t="${esc(c.t)}" data-n="${c.n}" data-s="${c.s}" title="Cap. ${c.n}: ${esc(c.t)}" aria-label="Capitolo ${c.n}, ${c.s === 2 ? 'studiato' : (c.s === 1 ? 'studiato in parte' : 'da studiare')}: ${esc(c.t)}">${c.s === 2 ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>' : c.n}</button>`;
+    // capitoli studiati consecutivi (3 o più) raccolti in un'unica etichetta che si apre al tocco
+    let sq = '', k = 0;
+    while (k < el.length) {
+      let j = k;
+      while (j < el.length && el[j].s === 2 && (j === k || el[j].n === el[j - 1].n + 1)) j++;
+      if (j - k >= 3) {
+        sq += `<button class="sq-run" aria-expanded="false" title="Capitoli ${el[k].n}–${el[j - 1].n} studiati: tocca per aprirli"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>${el[k].n}–${el[j - 1].n}</button><span class="run-items">${el.slice(k, j).map((c, t) => one(c, k + t)).join('')}</span>`;
+        k = j;
+      } else { sq += one(el[k], k); k++; }
+    }
+    const lst = el.map(c => `<li class="s${c.s}"><i></i><span>${c.n}. ${esc(c.t)}</span></li>`).join('');
     return `<article class="subj ${openSet.has(m) ? 'open' : ''}" data-m="${esc(m)}" style="--c:var(--s${i % 4})">
       <button class="subj-head" aria-expanded="${openSet.has(m)}">${ring(pct, 56, 6, { cls: 'sm' + (pct >= 1 ? ' ok' : ''), label: p + '% studiato', center: `<b>${p}%</b>` })}<span><span class="nm">${esc(m)}</span><br><span class="sub">${x.studiati} di ${x.capitoli} capitoli studiati</span></span>${IC.chev}</button>
       <div class="squares" role="group" aria-label="Capitoli: verde studiato, arancio in parte">${sq}</div>
@@ -2023,6 +2045,7 @@ function renderMaterie() {
   }).join('');
   $$('#materie .subj').forEach(card => {
     $('.subj-head', card).addEventListener('click', e => { const o = card.classList.toggle('open'); $('.fold', card).classList.toggle('open', o); e.currentTarget.setAttribute('aria-expanded', String(o)); });
+    $$('.sq-run', card).forEach(b => b.addEventListener('click', () => { const o = b.classList.toggle('open'); b.setAttribute('aria-expanded', String(o)); }));
     $$('.sq', card).forEach(b => b.addEventListener('click', () => {
       $$('.sq.on', card).forEach(s => s.classList.remove('on')); b.classList.add('on');
       const st = { 2: 'studiato', 1: 'in parte', 0: 'da studiare' }[b.dataset.s];

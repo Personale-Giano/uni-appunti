@@ -610,3 +610,107 @@ A = ( 1 1 )   p(t) = (1 − t)²             m_a(1) = 2
 - esempio 18.12, su ℝ con parametro: p_{A}(t) = (2 − t)(t^{2} + k − 5); per k > 5 fallisce la (a), per k = 5 la (b) (m_{g}(0) = 1 < 2): diagonalizzabile se e solo se k < 5
 ! Trabocchetto: radici tutte reali non bastano, serve m_{g} = m_{a} per ogni autovalore multiplo: ( 1 0 0 ; 0 1 0 ; 0 0 2 ) è diagonalizzabile, ( 1 1 0 ; 0 1 0 ; 0 0 2 ) no, con lo stesso polinomio.
 > Vedi anche: Molteplicità algebrica e geometrica, Diagonalizzare una matrice, Rotazione senza autovettori
+
+# Prodotti scalari
+
+## Prodotto scalare {64}
+= Su uno spazio vettoriale **reale** V, un **prodotto scalare** è una funzione V × V → ℝ, (v, w) ↦ ⟨v, w⟩, lineare nel primo vettore e simmetrica.
+- (1) ⟨v_{1} + v_{2}, w⟩ = ⟨v_{1}, w⟩ + ⟨v_{2}, w⟩; (2) ⟨λv, w⟩ = λ⟨v, w⟩; (3) ⟨v, w⟩ = ⟨w, v⟩
+- si scrive anche g(v, w), dando un nome g al prodotto scalare
+- da qui in poi 𝕂 = ℝ: serve dire che un numero è > 0 ed estrarre radici quadrate
+- esempio: in ℝ², ⟨(x_{1}, x_{2}), (y_{1}, y_{2})⟩ = x_{1}y_{1} + x_{2}y_{2}, e ⟨(1, 3), (−2, 1)⟩ = −2 + 3 = 1
+- servirà a definire lunghezze, distanze e angoli
+! Trabocchetto: non è il prodotto per scalare degli spazi vettoriali: quello prende uno scalare e un vettore e dà un vettore, questo prende due vettori e dà un numero.
+> Vedi anche: Bilinearità, Prodotto scalare euclideo
+
+## Bilinearità {64}
+= Per la simmetria il prodotto scalare è lineare anche nel secondo vettore: è **bilineare**, cioè lineare in ciascuno dei due posti tenendo fermo l'altro.
+- (1′) ⟨v, w_{1} + w_{2}⟩ = ⟨v, w_{1}⟩ + ⟨v, w_{2}⟩; (2′) ⟨v, λw⟩ = λ⟨v, w⟩
+- dimostrazione della (2′): ⟨v, λw⟩ = ⟨λw, v⟩ = λ⟨w, v⟩ = λ⟨v, w⟩, con simmetria, (2), simmetria
+- fissato w, v ↦ ⟨v, w⟩ è un'applicazione lineare V → ℝ
+- ⟨v, 0⟩ = ⟨0, v⟩ = 0 per ogni v, perché ⟨v, 0⟩ = ⟨v, 0 + 0⟩ = 2⟨v, 0⟩
+- in breve: un prodotto scalare è una funzione bilineare e simmetrica V × V → ℝ
+```
+⟨u + 2v, 3u − v⟩ = 3⟨u, u⟩ − ⟨u, v⟩ + 6⟨v, u⟩ − 2⟨v, v⟩
+                 = 3⟨u, u⟩ + 5⟨u, v⟩ − 2⟨v, v⟩
+```
+! Trabocchetto: nello sviluppo ⟨u, v⟩ e ⟨v, u⟩ sono lo stesso numero e vanno sommati: qui −1 + 6 = 5.
+> Vedi anche: Prodotto scalare, Applicazione lineare
+
+## Degenere e definito positivo {64, 65}
+= Un prodotto scalare è **degenere** se esiste v **≠ 0** con ⟨v, w⟩ = 0 per ogni w ∈ V; è **definito positivo** se ⟨v, v⟩ > 0 per ogni v ≠ 0.
+- degenere: c'è un vettore non nullo «invisibile», che fa zero con tutti, se stesso compreso
+- definito positivo ⇒ non degenere: basta scegliere w = v (Prop. 19.3)
+- il viceversa è falso: ⟨p, q⟩ = p(0)q(0) + p(1)q(1) − p(2)q(2) è non degenere ma non definito positivo
+- esempio: g((x_{1}, x_{2}), (y_{1}, y_{2})) = x_{1}y_{1} è degenere su ℝ², perché g(e_{2}, w) = 0 per ogni w
+- per dire «non definito positivo» basta un v ≠ 0 con ⟨v, v⟩ ≤ 0; per dire «degenere» basta un v ≠ 0 che fa zero con tutti
+! Trabocchetto: senza la condizione v ≠ 0 ogni prodotto scalare sarebbe degenere, perché ⟨0, w⟩ = 0 sempre.
+> Vedi anche: Prodotto scalare sui polinomi, Prodotto scalare da una matrice simmetrica
+
+## Prodotto scalare euclideo {65}
+= Il **prodotto scalare euclideo** di ℝⁿ è ⟨v, w⟩ = ᵗv · w = x_{1}y_{1} + … + x_{n}y_{n}: si moltiplicano le coordinate a coppie e si somma.
+![v = (2, 0) con tre vettori w: prodotto positivo se l'angolo è acuto, nullo se è retto, negativo se è ottuso](figure/alg/prodotto_scalare_angolo.png)
+- ᵗv è 1 × n e w è n × 1: il prodotto righe per colonne dà una 1 × 1, cioè un numero
+- esempio: ⟨(1, 1, 2), (−1, −1, 1)⟩ = −1 − 1 + 2 = 0, vettori perpendicolari
+- anticipazione: ⟨v, w⟩ = ‖v‖ · ‖w‖ · cos θ, quindi il segno è quello di cos θ
+- è definito positivo (Prop. 19.6): ⟨v, v⟩ = x_{1}^{2} + … + x_{n}^{2} > 0 se v ≠ 0; per (3, 4) vale 25 = 5^{2}, Pitagora
+- di prodotti scalari ce ne sono infiniti: l'euclideo è solo un esempio
+! Trabocchetto: due vettori non nulli possono avere prodotto scalare 0: vuol dire che sono perpendicolari, non che uno dei due è nullo.
+> Vedi anche: Prodotto scalare, Prodotto scalare da una matrice simmetrica
+
+## Prodotto scalare sui polinomi {65}
+= Su ℝ_{2}[x] si definisce ⟨p, q⟩ = p(0)q(0) + p(1)q(1) + p(2)q(2): si valutano i polinomi in 0, 1, 2, si moltiplicano i valori e si somma.
+- esempio: ⟨1 + x, x²⟩ = 1·0 + 2·1 + 3·4 = 14
+- è come il prodotto euclideo dei vettori (p(0), p(1), p(2)) e (q(0), q(1), q(2)) di ℝ³
+- è definito positivo: ⟨p, p⟩ = 0 vorrebbe tre radici, ma un polinomio non nullo di grado ≤ 2 ne ha al più 2
+- con due soli punti, p(0)q(0) + p(1)q(1), è degenere: p = x(1 − x) fa zero con ogni q
+- con il segno meno, p(0)q(0) + p(1)q(1) − p(2)q(2), non è definito positivo: per p = x − 1 si ha 1 + 0 − 1 = 0
+! Trabocchetto: con un segno meno davanti a un termine ⟨p, p⟩ non è più una somma di quadrati, e la definita positività può cadere.
+> Vedi anche: Degenere e definito positivo, Al più n radici
+
+## Prodotto scalare da una matrice simmetrica {66}
+= Per ogni matrice simmetrica S ∈ S(n), g_{S}(v, w) = ᵗv · S · w è un prodotto scalare su ℝⁿ (Prop. 19.7): l'euclideo con S «in mezzo».
+- linearità come per l'euclideo; la simmetria usa ᵗ(ᵗv S w) = ᵗw · ᵗS · v e ᵗS = S
+- con una matrice non simmetrica la simmetria cade: A = ( 0 1 ; 0 0 ) dà ᵗe_{1}Ae_{2} = 1 e ᵗe_{2}Ae_{1} = 0
+- S = I_{n} dà il prodotto scalare euclideo
+- esempio: S = ( 1 2 ; 2 3 ), S · (2, 3) = (8, 13), quindi g_{S}((1, 1), (2, 3)) = 8 + 13 = 21
+- S ↦ g_{S} è l'analogo di A ↦ L_{A}
+! Trabocchetto: g_{S} è sempre un prodotto scalare, ma non sempre definito positivo: con S = ( 1 2 ; 2 3 ) e v = (2, −1), g_{S}(v, v) = 4 − 8 + 3 = −1 < 0.
+> Vedi anche: Formula con le entrate di S, Matrice associata a un prodotto scalare
+
+## Formula con le entrate di S {66}
+= Se S ha entrate a_{ij}, allora g_{S}((x_{1}, …, x_{n}), (y_{1}, …, y_{n})) = Σ_{i} Σ_{j} a_{ij} x_{i} y_{j} (Prop. 19.8): ogni termine x_{i}y_{j} ha per coefficiente l'entrata in riga i e colonna j.
+- n^{2} termini, come un doppio ciclo su i e su j: 4 per n = 2, 9 per n = 3
+- g_{S}(e_{i}, e_{j}) = a_{ij} (Cor. 19.9)
+- per y = x: S = ( 2 1 ; 1 1 ) dà g_{S}(v, v) = 2x_{1}^{2} + 2x_{1}x_{2} + x_{2}^{2} = x_{1}^{2} + (x_{1} + x_{2})^{2}, definito positivo
+- al contrario: 2x_{1}y_{1} + x_{1}y_{2} + x_{2}y_{1} + x_{2}y_{2} è g_{S} con S = ( 2 1 ; 1 1 )
+```
+S = ( 1 2 )   g_S(v, w) = x₁y₁ + 2x₁y₂ + 2x₂y₁ + 3x₂y₂
+    ( 2 3 )   (1, 1) e (2, 3):  2 + 6 + 4 + 9 = 21
+```
+! Trabocchetto: un'espressione con 4x_{1}y_{2} ma senza il termine in x_{2}y_{1} ha coefficienti non simmetrici: non è un prodotto scalare.
+> Vedi anche: Prodotto scalare da una matrice simmetrica
+
+## Matrice associata a un prodotto scalare {67}
+= Data una base B = {v_{1}, …, v_{n}} di V, la **matrice associata** a g è [g]_{B} con entrate S_{ij} = g(v_{i}, v_{j}): la tabella dei prodotti scalari fra i vettori della base.
+- è sempre **simmetrica**, perché g(v_{j}, v_{i}) = g(v_{i}, v_{j}): bastano diagonale e parte sopra
+- una sola base, e le entrate sono numeri: niente immagini da scrivere in coordinate
+- nella base canonica [g_{S}]_{C} = S, come [L_{A}]^{C}_{C} = A
+- dipende dalla base: l'euclideo ha I_{2} nella canonica e ( 1 1 ; 1 2 ) in B = {(1, 0), (1, 1)}
+```
+S = ( 1 2 ; 2 3 ),   B = {v₁ = (0, 1), v₂ = (1, 1)}
+g_S(v₁, v₁) = 3   g_S(v₁, v₂) = 5   g_S(v₂, v₂) = 8
+[g_S]_B = ( 3 5 )
+          ( 5 8 )
+```
+> Vedi anche: Prodotto scalare in coordinate, Matrice associata
+
+## Prodotto scalare in coordinate {67}
+= Con la matrice associata, per ogni v, w ∈ V vale g(v, w) = ᵗ[v]_{B} · [g]_{B} · [w]_{B}: riga delle coordinate di v, per la tabella, per la colonna delle coordinate di w (Cor. 19.16).
+![v = (2, 3) e w = (1, 2) nella base v₁ = (0, 1), v₂ = (1, 1): coordinate (1, 2) e (1, 1)](figure/alg/coordinate_base_b.png)
+- si dimostra sviluppando con la bilinearità: g(Σλ_{i}v_{i}, Σμ_{j}v_{j}) = Σ_{i}Σ_{j} λ_{i} S_{ij} μ_{j}
+- esempio: con S = ( 1 2 ; 2 3 ) direttamente g_{S}((2, 3), (1, 2)) = 34
+- in coordinate: (1 2) · ( 3 5 ; 5 8 ) · (1, 1) = (1 2) · (8, 13) = 34, lo stesso valore
+- parallelo con gli endomorfismi: g ↔ T, S ↦ g_{S} ↔ A ↦ L_{A}, g_{I_{n}} euclideo ↔ L_{I_{n}} identità, [g]_{B} ↔ [T]^{B}_{B}
+! Trabocchetto: in [T(v)]_{B} = [T]^{B}_{B}[v]_{B} il risultato è un vettore; in ᵗ[v]_{B}[g]_{B}[w]_{B} la matrice sta fra una riga e una colonna e il risultato è un numero. E [g]_{B} è sempre simmetrica, [T]^{B}_{B} no.
+> Vedi anche: Matrice associata a un prodotto scalare, Calcolare con la matrice associata

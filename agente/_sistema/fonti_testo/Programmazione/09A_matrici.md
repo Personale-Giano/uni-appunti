@@ -478,14 +478,14 @@ int*
 <!-- pagina 17 -->
 Matrici a dimensione fissa (compile-time)
 • Se le dimensioni della matrice sono note a tempo di 
-compilazione, possiamo deﬁnirle con #deﬁne
+compilazione, possiamo deﬁnirle con #define
 • Per passare la matrice a una funzione, il prototipo deve 
 includere le dimensioni:
 void fn(int m[ROWS][COLS]); // prototipo
 fn(mat);                    // chiamata
 • ROWS documenta la forma attesa, ma la prima dimensione 
-non fa parte del tipo del parametro e può essere omessa (non 
-useremo questo approccio):
+non fa parte del tipo del parametro e il linguaggio C consente 
+di ometterla (tipicamente non useremo questo approccio):
 void fn2(const size_t rows, int m[][COLS]);
 void fn3(const size_t rows, int (*m)[COLS]);
 17
@@ -718,9 +718,9 @@ lettura dei dati (autodocumentazione)
 27
 
 <!-- pagina 28 -->
-Somma di matrici
-Operazione su più matrici, somma di 
-elementi in posizioni corrispondenti
+Operazioni con matrici
+Somma di elementi in posizioni 
+corrispondenti, trasposizione, prodotto
 28
 
 <!-- pagina 29 -->
@@ -790,33 +790,29 @@ Somma di matrici
 3.
 #define COLS 3
 4.
+ 
 5.
-int main(void) {
+void sommaMatrici(...);
 6.
-    int m1[ROWS][COLS] = {{0,1,2}, {3,4,5}};
+void stampaMatrice(...);
 7.
-    int m2[ROWS][COLS] = {{6,7,8}, {9,10,11}};
 8.
-    int s[ROWS][COLS];
+int main(void) {
 9.
+    int m1[ROWS][COLS] = {{0,1,2}, {3,4,5}};
 10.
-    sommaMatrici(ROWS, COLS, m1, m2, s);
+    int m2[ROWS][COLS] = {{6,7,8}, {9,10,11}};
 11.
+    int s[ROWS][COLS];
 12.
-    printf("Matrice somma:\n");
 13.
-    for (size_t i = 0; i < ROWS; i++) {
+    sommaMatrici(ROWS, COLS, m1, m2, s);
 14.
-        for (size_t j = 0; j < COLS; j++) {
 15.
-            printf("%2d ", s[i][j]);
+    printf("Matrice somma:\n");
 16.
-        }
+    stampaMatrice(ROWS, COLS, s);
 17.
-        printf("\n");
-18.
-    }
-19.
 }
 33
 Matrice somma:
@@ -886,9 +882,9 @@ Esercizi: prodotto matrice-matrice
 Prodotto matrice⨉matrice: test.
 40
 1.
-void prodottoMatrici(size_t m, size_t n, size_t p, const int a[m][n],
+void prodottoMatrici(...);
 2.
-                     const int b[n][p], int c[m][p]);
+void stampaMatrice(...);
 3.
 4.
 #define M 2
@@ -910,18 +906,8 @@ int main(void) {
 13.
     printf("Matrice prodotto:\n");
 14.
-    for (size_t i = 0; i < M; i++) {
+    stampaMatrice(M, P, s);
 15.
-        for (size_t j = 0; j < P; j++) {
-16.
-            printf("%2d ", prod[i][j]);
-17.
-        }
-18.
-        printf("\n");
-19.
-    }
-20.
 }
 
 <!-- pagina 41 -->
@@ -940,7 +926,7 @@ quale si considerano solo gli elementi strettamente positivi
 massimo nella matrice.  Se tale elemento esiste, ritorna true.
 Se non esistono elementi strettamente positivi, allora la funzione 
 deve segnalare l’assenza ritornando false e assegnando:
-iMax = rows, jMax = cols   (valori sentinella fuori intervallo)
+iMax = rows,   jMax = cols   (valori sentinella fuori intervallo)
 • Esempio:
 m = { {0, -1, 2}, 
       {3,  5, 4} } → massimo = 5 in posizione (1,1)
@@ -957,11 +943,11 @@ Deﬁniamo l’insieme degli indici validi:
 
 <!-- pagina 44 -->
 Dalla formulazione alla soluzione
-• Scandire la matrice con due cicli annidati (i righe, j colonne)
-• Durante la scansione teniamo traccia del valore massimo, per decidere 
-se l’elemento visitato supera il massimo trovato ﬁno a quel punto
 • Inizializziamo gli indici iMax e jMax con i valori sentinella, e esistePos a 
 false (all’inizio non sappiamo se la matrice contiene elementi positivi)
+• Eseguiamo scansione matrice con due cicli annidati (i righe, j colonne)
+• Durante la scansione teniamo traccia del valore massimo, per decidere 
+se l’elemento visitato supera il massimo trovato ﬁno a quel punto
 • Per ogni elemento m[i][j]:
 ■Se m[i][j] > 0 && m[i][j] > max
 ■aggiorna max = m[i][j],  aggiorna iMax = i, jMax = j  e esistePos = true
@@ -1051,10 +1037,10 @@ Deﬁniamo un problema di veriﬁca di proprietà su matrici.
 – Una proprietà logica Cond(x) che, dato un elemento x della 
 matrice, può essere vera o falsa
 • Output. Un valore booleano:
-– true se tutti gli elementi della matrice veriﬁcano la proprietà 
+– true sse tutti gli elementi della matrice veriﬁcano la proprietà 
 Cond(.)
 – false altrimenti
-Esempio: se Cond(x) è “x è pari”  (x % 2 == 0):
+Esempio: con Cond(x) è “x è pari”  (x % 2 == 0):
 48
 → true
 → false (perché 3 non è pari).
@@ -1272,3 +1258,151 @@ matrice di interi M e ritorni true se esiste almeno una riga
 per la quale tutte le coppie di elementi adiacenti appaiono 
 in ordine non decrescente
 58
+
+<!-- pagina 59 -->
+Matrici nello heap
+Puntatori a matrici, allocazione
+59
+
+<!-- pagina 60 -->
+Puntatori a matrici
+• Una matrice è un array di righe. Consideriamo una matrice VLA:
+size_t rows = 3, cols = 4;
+int m[rows][cols];
+• Ogni riga ha tipo:
+int[cols]
+e, nelle espressioni, m viene convertito in un puntatore alla prima riga. 
+• Il tipo di questo puntatore è:
+int (*)[cols]
+• Possiamo quindi dichiarare esplicitamente una variabile puntatore a matrice:
+int (*p)[cols];
+che si legge:   p è un puntatore a uno o più array di cols elementi di tipo int.
+• Se p punta alla prima riga di una matrice, possiamo usare normalmente:
+p[i][j]
+• Questa è la forma di puntatore che useremo per rappresentare una matrice 
+allocata nello heap.
+60
+
+<!-- pagina 61 -->
+Allocare una matrice nello heap
+• Una matrice di rows × cols interi contiene rows * cols elementi 
+contigui. Possiamo quindi allocare l'intera matrice con una sola malloc:
+size_t rows = 3, cols = 4;
+int (*m)[cols] = malloc(rows * cols * sizeof(int));
+• m ha tipo:    int (*)[cols]  e quindi punta alla prima di rows righe, 
+ciascuna composta da cols interi.
+• La matrice mantiene la stessa organizzazione in memoria già vista, e 
+può essere utilizzata normalmente, accedendo con m[i][j]
+• Al termine:
+free(m); 
+m = NULL;
+• Lo heap cambia la durata e la modalità di allocazione/rilascio.
+61
+
+<!-- pagina 62 -->
+Restituire una matrice: il problema
+• Vogliamo scrivere una funzione che:
+1. legga rows e cols;
+2. allochi la matrice nello heap;
+3. legga gli elementi;
+4. restituisca matrice e dimensioni al chiamante.
+• Con un array potevamo scrivere:
+size_t n;
+int *a = leggiArray(&n); // OK
+• Per una matrice vorremmo analogamente scrivere:
+size_t rows, cols;
+int (*m)[cols] = leggiMatrice(&rows, &cols); // ERRORE
+ma questa dichiarazione contiene una dipendenza impossibile da 
+risolvere per il linguaggio C: il tipo del puntatore ritornato dipende da 
+cols, che è noto solo al ritorno di leggiMatrice.
+62
+
+<!-- pagina 63 -->
+Un tipo intermedio
+• Il linguaggio ci obbliga a separare in due fasi
+1. ottenere un puntatore intermedio, rows e cols
+2. usare cols per deﬁnire il tipo preciso del puntatore a matrice
+• Il tipo intermedio si dichiara con typedef:
+typedef int (*int_matrix_ptr_t)[];
+• Non approfondiremo ulteriormente typedef: questo costrutto verrà 
+ripreso in modo sistematico in Programmazione II.
+• Possiamo ora scrivere il prototipo della funzione:
+int_matrix_ptr_t leggiMatrice(size_t* out_rows, 
+                                 size_t* out_cols);
+• Il tipo intermedio int_matrix_ptr_t è necessario perché puntatore e 
+dimensioni vengono restituiti separatamente: la lunghezza delle righe 
+è nota al chiamante solo dopo il ritorno della funzione leggiMatrice.
+63
+
+<!-- pagina 64 -->
+Ricevere la matrice
+• A questo punto abbiamo tutti gli elementi:
+– riceviamo dimensioni e puntatore intermedio:
+size_t rows, cols;
+int_matrix_ptr_t p = leggiMatrice(&rows, &cols);
+– e poi possiamo dichiarare un puntatore con il tipo preciso della 
+matrice:
+int (*m)[cols] = p;
+• Da questo momento possiamo usare normalmente:   
+m[i][j]
+• e passare la matrice alle funzioni già viste, come:
+stampaMatrice(rows, cols, m);
+64
+
+<!-- pagina 65 -->
+Ricevere la matrice
+Il main diventa quindi:
+1. int main(void) {
+2.    size_t rows, cols;
+3.    int_matrix_ptr_t p = leggiMatrice(&rows, &cols);
+4.
+5.    if (p != NULL) {
+6.        int (*m)[cols] = p;  // puntatore a matrice
+7.
+8.        stampaMatrice(rows, cols, m);
+9.
+10.        free(m);             // rilascia la memoria heap
+11.        m = p = NULL; 
+12.    }
+13. }
+65
+
+<!-- pagina 66 -->
+La funzione leggiMatrice
+1.
+typedef int (*int_matrix_ptr_t)[];  // dichiarazione del tipo intermedio
+2.
+3.
+int_matrix_ptr_t leggiMatrice(size_t* out_rows, size_t* out_cols) {
+4.
+    *out_rows = *out_cols = 0;
+5.
+    size_t rows, cols;
+6.
+    scanf("%zu%zu", &rows, &cols);  // leggi dimensioni
+7.
+    int (*m)[cols] = malloc(rows * cols * sizeof(int));  // allocazione
+8.
+9.
+    if (m != NULL) {
+10.
+        for (size_t i = 0; i < rows; i++) {
+11.
+            for (size_t j = 0; j < cols; j++) {
+12.
+                scanf("%d", &m[i][j]);  // inizializzazione
+13.
+            }
+14.
+        }
+15.
+        *out_rows = rows;
+16.
+        *out_cols = cols;
+17.
+    }
+18.
+    return m;
+19.
+}
+66

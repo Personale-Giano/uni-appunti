@@ -719,3 +719,203 @@ for (size_t i = 0; i < rows && !esisteRiga; ++i) {
 }
 ```
 ! Trabocchetto: se `allZero` fosse dichiarata fuori dal ciclo esterno, dopo la prima riga non nulla resterebbe `false` per sempre.
+
+# Matrici nello heap
+
+## Puntatore a matrice {50}
+= Un **puntatore a matrice** `int (*p)[cols]` punta a una o più righe di cols interi: è il tipo in cui si converte il nome di una matrice.
+- se p punta alla prima riga, gli elementi si raggiungono con il solito `p[i][j]`
+- `p + i` salta i righe intere, cioè i · cols · sizeof(int) byte: per questo nel tipo serve cols e non rows
+- `p[i][j]` sta a base + (i · cols + j) × sizeof(int), la formula row-major
+- esempio: con cols = 4 e int da 4 byte, `p + 1` sta 16 byte dopo p e `p[2][1]` 36 byte dopo
+```c
+size_t rows = 3, cols = 4;
+int m[rows][cols];
+int (*p)[cols] = m;    // puntatore alla prima riga
+p[2][1] = 7;           // come m[2][1]
+```
+! Trabocchetto: senza parentesi `int *p[cols]` è un array di cols puntatori a int, non un puntatore a matrice.
+> Vedi anche: Matrice in memoria, Passare una matrice a una funzione
+
+## Matrice nello heap {50}
+= Una matrice rows × cols si alloca nello heap con **una sola malloc** di rows · cols · sizeof(int) byte, assegnata a un puntatore a matrice.
+![nello stack c'è solo il puntatore m, nello heap le tre righe una dopo l'altra](figure/prog/matrice_heap.png)
+- la forma in memoria non cambia (righe contigue), si usa sempre `m[i][j]`
+- cambiano durata e gestione: vive fino alla `free`, in qualunque funzione ci si trovi
+- un solo blocco, quindi una sola `free`, poi `m = NULL`
+- le funzioni con parametro `m[rows][cols]` (capitoli 47-49) la accettano così com'è
+```c
+int (*m)[cols] = malloc(rows * cols * sizeof(int));
+if (m != NULL) {
+    m[1][2] = 5;
+    free(m);
+    m = NULL;
+}
+```
+! Trabocchetto: si controlla `m != NULL` prima di usare il blocco, come per gli array.
+> Vedi anche: Puntatore a matrice, malloc, free
+
+## Il tipo intermedio int_matrix_ptr_t {51}
+= Una funzione non può restituire `int (*)[cols]` se cols lo legge lei stessa: si restituisce un **tipo intermedio**, puntatore a righe di lunghezza non specificata.
+- `typedef int (*int_matrix_ptr_t)[];`: **typedef** dà un nome nuovo a un tipo, il suffisso `_t` è solo una convenzione
+- un puntatore a `int[]` è compatibile con qualunque `int (*)[cols]`: l'indirizzo passa da un tipo all'altro senza cast
+- due fasi: prima si ricevono puntatore intermedio, rows e cols; poi, con cols noto, si dichiara il tipo preciso
+```c
+size_t rows, cols;
+int_matrix_ptr_t p = leggiMatrice(&rows, &cols);
+int (*m)[cols] = p;    // ora cols è noto: tipo preciso
+```
+! Trabocchetto: con il solo puntatore intermedio `p[i][j]` non si può scrivere: manca la lunghezza delle righe, serve solo a trasportare l'indirizzo.
+> Vedi anche: Leggere una matrice nello heap
+
+## Leggere una matrice nello heap {51}
+= leggiMatrice legge le dimensioni, alloca la matrice nello heap, legge gli elementi e restituisce il puntatore intermedio, con le dimensioni in uscita.
+![dopo il ritorno p e m, nello stack di main, indicano lo stesso blocco nello heap](figure/prog/leggi_matrice_heap.png)
+- prima riga: `*out_rows = *out_cols = 0`, così se qualcosa va storto il chiamante riceve una 0 × 0
+- dentro la funzione cols è già letto: m si dichiara subito con il tipo preciso `int (*m)[cols]`
+- le dimensioni si comunicano solo alla fine, a matrice pronta; se la malloc fallisce si ritorna `NULL`
+- il blocco sopravvive al ritorno e la responsabilità di liberarlo passa al chiamante
+```c
+if (p != NULL) {
+    int (*m)[cols] = p;
+    stampaMatrice(rows, cols, m);
+    free(m);           // una sola free
+    m = p = NULL;      // azzerati tutti e due
+}
+```
+! Trabocchetto: p e m sono alias dello stesso blocco: `free` su entrambi è una doppia free, e azzerarne uno solo lascia l'altro appeso.
+> Vedi anche: Il tipo intermedio int_matrix_ptr_t, Restituire un array dallo heap, Responsabilità della memoria
+
+## Quantificatori annidati in due funzioni {52}
+= Le soluzioni del docente spezzano una proprietà «per ogni riga esiste…» o «esiste una riga in cui per ogni…» in **due funzioni**: una su un array, una che la chiama su ogni riga `m[i]`.
+- ∀i ∃j (tutte le righe hanno un elemento in [minVal, maxVal]): verifica universale sulle righe, ricerca lineare dentro
+- ∃i ∀j (esiste una riga in ordine non decrescente): ricerca lineare sulle righe, test di ordinamento dentro
+- casi limite: rows = 0 rende vero il «per ogni» e falso l'«esiste»; con cols = 0 (e rows > 0) decide il quantificatore interno
+- vantaggi: un solo schema per funzione, test separati, nessuna sentinella interna da reinizializzare a ogni riga
+- nel prodotto di matrici il docente accumula direttamente in `c[i][j]`, azzerato prima del ciclo su k
+```c
+bool tutteRighe = true;
+for (size_t i = 0; i < rows && tutteRighe; i++) {
+    if (!esisteElemInIntervalloInArray(cols, m[i], minVal, maxVal))
+        tutteRighe = false;
+}
+```
+> Vedi anche: Esiste una riga di zeri, Passare una riga, Prodotto di matrici
+
+# Schemi su array e stringhe
+
+## Domande sui puntatori {lab 17}
+= Tre trabocchetti del laboratorio 7: la stellina nelle dichiarazioni multiple, il puntatore a puntatore e la precedenza di `*` e `++`.
+- `int* countPtr, count;`: solo countPtr è un puntatore, count è un `int`; un puntatore per riga evita l'equivoco
+- `&pC`, con pC di tipo `int*`, è un `int**`: non si assegna a un `int*`
+- per stampare il dato puntato serve `*pC`: `printf("%d", pC)` passa un indirizzo
+- `*p++` e `*(p++)` incrementano il puntatore; `(*p)++` e `*p += 1` il valore puntato
+```c
+size_t index = 2;
+size_t* p = &index;
+(*p)++;     // index vale 3
+*p += 1;    // index vale 4
+```
+! Trabocchetto: `++` postfisso lega più forte di `*`: `*p++` sposta la freccia, e dopo `*p` legge fuori dalla variabile.
+> Vedi anche: Puntatore, Dereferenziamento, Precedenza degli operatori
+
+## Schemi di modifica degli array {lab 17, lab 18}
+= Quattro schemi ricorrenti su un array a di lunghezza aLen: **trasformazione**, **filtro selettivo**, **riduzione sul posto** e **duplicazione selettiva**.
+- trasformazione: `a[i] = tr(a[i])` per ogni i, la lunghezza non cambia
+- filtro: copia in b gli elementi con Cond, con `bLen < BMAX` nel ciclo (è la selezione)
+- riduzione sul posto: tiene in a solo gli elementi con Cond, con due indici sullo stesso array
+- duplicazione: copia tutto in b, due volte gli elementi con Cond
+- una funzione che cambia la lunghezza la riceve per puntatore, `size_t* p_aLen`, e la aggiorna alla fine
+```c
+size_t bLen = 0;
+for (size_t i = 0; i < aLen && bLen < BMAX; i++) {
+    b[bLen] = a[i];  bLen++;
+    if (Cond(a[i]) && bLen < BMAX) { b[bLen] = a[i];  bLen++; }
+}
+```
+! Trabocchetto: nella duplicazione il controllo `bLen < BMAX` va ripetuto prima della seconda copia: il buffer può riempirsi a metà.
+> Vedi anche: Selezione, Riduzione sul posto, Modello dimensione-capacità
+
+## Riduzione sul posto {lab 17, lab 18}
+= La **riduzione sul posto** (in-place removal) compatta verso l'inizio dello stesso array gli elementi da tenere: i legge tutto, j scrive solo quelli che rispettano Cond.
+- j avanza solo quando un elemento viene tenuto, e alla fine è la nuova lunghezza: `aLen = j`
+- vale sempre j ≤ i: la scrittura non cancella mai un elemento non ancora letto
+- dopo [0, aLen) restano dei residui, che non fanno più parte dell'array
+- esempio: 0, 3, 2, 4, 3 con Cond «≥ 3» diventa 3, 4, 3 (più i residui 4, 3)
+```c
+void filtra_maggiori_di(size_t* p_aLen, int a[], const int maggiori_di) {
+    size_t j = 0;
+    for (size_t i = 0; i < *p_aLen; i++)
+        if (a[i] > maggiori_di) { a[j] = a[i]; j++; }
+    *p_aLen = j;
+}
+```
+> Vedi anche: Schemi di modifica degli array, Elimina vocali con due puntatori
+
+## Scorrere una stringa con un puntatore {lab 19}
+= Una stringa si scorre con un puntatore: `*pStr` è il carattere corrente, `pStr++` avanza, ci si ferma su `'\0'`.
+- due forme: `while (*pStr != '\0') { …; pStr++; }` oppure `for ( ; *pStr != '\0'; pStr++)`
+- il parametro è una copia dell'indirizzo: farlo avanzare non sposta il puntatore del chiamante
+- se la funzione modifica la stringa il parametro è `char*`, senza `const`
+- codifica: ogni maiuscola diventa la successiva e Z torna ad A, gli altri caratteri restano; decodifica fa il contrario
+```c
+void codifica(char *pStr) {
+    for ( ; *pStr != '\0'; pStr++)
+        if (*pStr >= 'A' && *pStr <= 'Z') {
+            if (*pStr == 'Z') *pStr = 'A';
+            else *pStr = *pStr + 1;
+        }
+}
+```
+! Trabocchetto: senza il caso a parte per la Z, `'Z' + 1` non è una lettera ma `'['`, il codice ASCII 91.
+> Vedi anche: Caratteri come numeri e ctype.h, Stringa e terminatore
+
+## Elimina vocali con due puntatori {lab 19}
+= elimina_vocali è una riduzione sul posto scritta con i puntatori: pSrc legge ogni carattere, pDst scrive solo quelli da tenere e alla fine riceve il terminatore.
+![elimina_vocali su "informazione": prima e dopo, con le posizioni finali di pSrc e pDst](figure/lab/elimina_vocali.png)
+- pDst non supera mai pSrc, quindi non si sovrascrive un carattere non ancora letto
+- `"informazione"` diventa `"nfrmzn"`; i residui dopo il nuovo `'\0'` non contano più
+- senza vocali ogni carattere si ricopia su se stesso; con solo vocali resta la stringa vuota
+```c
+void elimina_vocali(char* pStr) {
+    char* pDst = pStr;
+    for (char* pSrc = pStr; *pSrc != '\0'; pSrc++)
+        if (!is_vowel(*pSrc)) { *pDst = *pSrc; pDst++; }
+    *pDst = '\0';                   // nuovo terminatore
+}
+```
+! Trabocchetto: va chiamata su un array, `char s[] = "informazione";`: modificare una stringa letterale è comportamento indefinito.
+> Vedi anche: Riduzione sul posto, Scorrere una stringa con un puntatore
+
+## Intervallo semiaperto di indici {lab 20}
+= Un **intervallo semiaperto** [left, right) contiene gli indici left ≤ i < right, con 0 ≤ left ≤ right ≤ len: left incluso, right escluso.
+![l'intervallo [left, right) dentro l'array](figure/lab/intervallo_semiaperto.png)
+- ha right − left elementi, è vuoto se left == right, primo elemento `a[left]`, ultimo `a[right - 1]`
+- [a, b) e [b, c) si incollano senza sovrapporsi in [a, c); il caso base è [0, len)
+- le funzioni su un intervallo sono i soliti schemi con `for (size_t i = left; i < right; i++)`; copiandolo in un nuovo array, `b[i] = a[left + i]`
+- per restringerlo si passano gli estremi per puntatore, `(*pLeft)++` e `(*pRight)--`, con la guardia prima dell'accesso
+```c
+while (*pLeft < *pRight && a[*pLeft] == 0)
+    (*pLeft)++;                 // zero iniziale escluso
+while (*pRight > *pLeft && a[*pRight - 1] == 0)
+    (*pRight)--;                // zero finale escluso
+```
+! Trabocchetto: con indici `size_t` l'invariante da controllare è `assert(right >= left)`: se è violato right − left non è negativo ma enorme, e `assert(len >= 0)` non controlla nulla.
+> Vedi anche: Intervalli, size_t e wrap-around
+
+## Funzioni sulle stringhe senza string.h {lab 21}
+= Nel laboratorio 7 si riscrivono a mano lunghezza, confronto, prefisso, ricerca di una sottostringa e concatenazione in un buffer.
+- `my_strlen`: l'indice del terminatore è la lunghezza; ritorna `size_t`
+- `my_equal` e `startswith` avanzano finché i caratteri coincidono: un `'\0'` interrompe il confronto, quindi non si esce mai dalle stringhe
+- `contains`: ricerca lineare delle partenze con `startswith(str + i, sub)`; la prima occorrenza è [i, i + subLen)
+- in un buffer di strLen char si scrivono al massimo strLen − 1 caratteri più il `'\0'`; con strLen = 0 niente
+```c
+bool startswith(const char* str, const char* prefix) {
+    size_t i = 0;
+    while (prefix[i] != '\0' && str[i] == prefix[i])
+        i++;
+    return prefix[i] == '\0';    // prefisso confrontato tutto
+}
+```
+! Trabocchetto: con i `size_t` si scrive `i + subLen <= strLen`, non `i <= strLen - subLen`, e si controlla `strLen > 0` prima di `strLen - 1`: le sottrazioni andrebbero in wrap-around.
+> Vedi anche: Le funzioni di string.h, Intervallo semiaperto di indici, size_t e wrap-around
